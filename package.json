@@ -1,0 +1,46 @@
+{
+  "name": "nft-react",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "author": "jander",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.16.0",
+    "@truffle/hdwallet-provider": "^1.5.1",
+    "axios": "^0.24.0",
+    "browserify-fs": "^1.0.0",
+    "config": "^3.3.6",
+    "dotenv": "^10.0.0",
+    "file-url": "^4.0.0",
+    "form-data": "^4.0.0",
+    "ipfs-only-hash": "^4.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "^4.0.3",
+    "semantic-ui-react": "^2.0.4",
+    "stream-to-blob": "^2.0.1",
+    "web3": "^1.6.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

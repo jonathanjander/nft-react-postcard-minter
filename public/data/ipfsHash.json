@@ -1,0 +1,254 @@
+[
+  {
+    "IpfsHash": "QmUxszgn1ienFqR9rqwMBgDR98Do5rR2kYX3Y7JP1YzsC3",
+    "PinSize": 17614,
+    "Timestamp": "2021-10-07T12:13:52.560Z",
+    "isDuplicate": true
+  },
+  {
+    "ipfsHash": "some dummy data"
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-21T10:07:19.180Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmbYopgyDg6yUzYustwoHXZ3K4qHjqW4ZU3R1c7oqCeph5",
+    "PinSize": 132,
+    "Timestamp": "2021-10-21T11:33:41.783Z"
+  },
+  {
+    "IpfsHash": "Qme61qk8D42HymU4Dy32txrM35Jv5UoPDtbfxY9JByuVQQ",
+    "PinSize": 147,
+    "Timestamp": "2021-10-21T11:59:26.574Z"
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-21T11:59:26.774Z"
+  },
+  {
+    "IpfsHash": "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
+    "PinSize": 6,
+    "Timestamp": "2021-10-21T12:08:42.392Z"
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-21T12:08:42.905Z"
+  },
+  {
+    "IpfsHash": "QmQUVmVDt7N4Z4mpCTccv9tJCsng6jZFUsqFoKTAeV6yYU",
+    "PinSize": 98,
+    "Timestamp": "2021-10-21T12:16:17.999Z"
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-21T12:16:18.088Z"
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-21T12:16:18.088Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmQUVmVDt7N4Z4mpCTccv9tJCsng6jZFUsqFoKTAeV6yYU",
+    "PinSize": 98,
+    "Timestamp": "2021-10-21T12:16:17.999Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-26T12:06:42.656Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
+    "PinSize": 6,
+    "Timestamp": "2021-10-26T12:06:42.052Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
+    "PinSize": 6,
+    "Timestamp": "2021-10-26T13:12:07.107Z"
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-26T13:12:07.695Z"
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-26T13:12:07.695Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
+    "PinSize": 6,
+    "Timestamp": "2021-10-26T13:12:07.107Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
+    "PinSize": 6,
+    "Timestamp": "2021-10-26T13:15:30.100Z"
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-26T13:15:30.791Z"
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-26T13:15:30.791Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH",
+    "PinSize": 6,
+    "Timestamp": "2021-10-26T13:15:30.100Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-26T13:15:30.791Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmPZmM7HcR9BWAxcRAWpvFTA17UjJikaCTc1yJzQuqHUMz",
+    "PinSize": 107,
+    "Timestamp": "2021-10-26T13:19:36.796Z"
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-26T13:15:30.791Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmS8S25cxD9pTGkDjt1pQxBdNgRELGQp3tvT5c8a9YBVY2",
+    "PinSize": 147,
+    "Timestamp": "2021-10-26T13:24:06.754Z"
+  },
+  {
+    "IpfsHash": "QmS8S25cxD9pTGkDjt1pQxBdNgRELGQp3tvT5c8a9YBVY2",
+    "PinSize": 147,
+    "Timestamp": "2021-10-26T13:24:06.754Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-26T13:15:30.791Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-26T13:15:30.791Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmS8S25cxD9pTGkDjt1pQxBdNgRELGQp3tvT5c8a9YBVY2",
+    "PinSize": 147,
+    "Timestamp": "2021-10-26T13:24:06.754Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-26T13:15:30.791Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmS8S25cxD9pTGkDjt1pQxBdNgRELGQp3tvT5c8a9YBVY2",
+    "PinSize": 147,
+    "Timestamp": "2021-10-26T13:24:06.754Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-26T13:15:30.791Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmS8S25cxD9pTGkDjt1pQxBdNgRELGQp3tvT5c8a9YBVY2",
+    "PinSize": 147,
+    "Timestamp": "2021-10-26T13:24:06.754Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-26T13:15:30.791Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmS8S25cxD9pTGkDjt1pQxBdNgRELGQp3tvT5c8a9YBVY2",
+    "PinSize": 147,
+    "Timestamp": "2021-11-09T12:43:36.771Z"
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-26T13:15:30.791Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmS8S25cxD9pTGkDjt1pQxBdNgRELGQp3tvT5c8a9YBVY2",
+    "PinSize": 147,
+    "Timestamp": "2021-11-09T12:43:36.771Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-26T13:15:30.791Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-26T13:15:30.791Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-26T13:15:30.791Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmS8S25cxD9pTGkDjt1pQxBdNgRELGQp3tvT5c8a9YBVY2",
+    "PinSize": 147,
+    "Timestamp": "2021-11-11T15:05:12.231Z"
+  },
+  {
+    "IpfsHash": "QmNmTAUDQL5cqwYLDTxDemUB2uAecg2THnewG18nfUd8Qn",
+    "PinSize": 2189,
+    "Timestamp": "2021-10-26T13:15:30.791Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmS8S25cxD9pTGkDjt1pQxBdNgRELGQp3tvT5c8a9YBVY2",
+    "PinSize": 147,
+    "Timestamp": "2021-11-11T15:05:12.231Z",
+    "isDuplicate": true
+  },
+  {
+    "IpfsHash": "QmS8S25cxD9pTGkDjt1pQxBdNgRELGQp3tvT5c8a9YBVY2",
+    "PinSize": 147,
+    "Timestamp": "2021-11-11T15:05:12.231Z",
+    "isDuplicate": true
+  }
+]
