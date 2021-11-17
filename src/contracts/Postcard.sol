@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 //import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-
+//TODO ADD METADATA FREEZING AND SENDTO FUNCTION
 contract Postcard is ERC721URIStorage, Ownable {
 //    uint256 public tokenCounter;
     using Counters for Counters.Counter;

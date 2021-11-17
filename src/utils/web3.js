@@ -10,6 +10,11 @@ export const getWallet = async ()=> {
             // Get network provider and web3 instance.
             const web3 = await getWeb3();
 
+            // reload page when chain or account changes
+            // from: https://docs.metamask.io/guide/ethereum-provider.html#events
+            window.ethereum.on('chainChanged', (_chainId) => window.location.reload());
+            window.ethereum.on('accountsChanged', function (_address) {window.location.reload()})
+
             // Use web3 to get the user's accounts.
             // const accounts = await web3.eth.getAccounts();
             const accounts = await window.ethereum.request({
@@ -58,13 +63,15 @@ export const getContract = async (web3, networkId)=> {
             networkId = await web3.eth.net.getId();
         }
 
+
+
         // Get the contract instance.
         const deployedNetwork = PostcardContract.networks[networkId];
         const instance = new web3.eth.Contract(
             PostcardContract.abi,
             deployedNetwork && deployedNetwork.address,
         );
-        console.log("contract: " + instance._address)
+
         return {
             contract: instance
         };
@@ -118,5 +125,60 @@ const getWeb3 = () =>
             }
         });
     });
+export const getNetwork = async (web3) => {
+    const networkId = await web3.eth.net.getId();
+    if(networkId==4)
+        return "Rinkeby Testnetwork"
+    else if (networkId == 0)
+        return "Ganache local Blockchain"
+
+}
+// from alchemy web3
+export async function mintNFT(tokenHash) {
+    const PUBLIC_KEY = process.env.REACT_APP_PUBLIC_KEY;
+    const PRIVATE_KEY = process.env.REACT_APP_PRIVATE_KEY;
+    const networkId = await web3.eth.net.getId();
+    const deployedNetwork = PostcardContract.networks[networkId];
+    const contractAddress = deployedNetwork && deployedNetwork.address;
+    const nonce = await web3.eth.getTransactionCount(PUBLIC_KEY, 'latest'); //get latest nonce
+    const nftContract = new web3.eth.Contract(PostcardContract.abi, contractAddress)
+
+
+
+
+    //the transaction
+    const tx = {
+        'from': PUBLIC_KEY,
+        'to': contractAddress,
+        'nonce': nonce,
+        'gas': 6721975,
+        'data': nftContract.methods.mint(tokenHash).encodeABI()
+    };
+
+    const signPromise = web3.eth.accounts.signTransaction(tx, PRIVATE_KEY);
+    signPromise
+        .then((signedTx) => {
+            web3.eth.sendSignedTransaction(
+                signedTx.rawTransaction,
+                function (err, hash) {
+                    if (!err) {
+                        console.log(
+                            "The hash of your transaction is: ",
+                            hash,
+                            "\nCheck Alchemy's Mempool to view the status of your transaction!"
+                        )
+                    } else {
+                        console.log(
+                            "Something went wrong when submitting your transaction:",
+                            err
+                        )
+                    }
+                }
+            )
+        })
+        .catch((err) => {
+            console.log(" Promise failed:", err)
+        })
+}
 
 

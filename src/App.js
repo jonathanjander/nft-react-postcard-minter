@@ -4,9 +4,9 @@ import getWeb3 from "./getWeb3";
 import "./App.css";
 import {uploadDataToIPFS, uploadJSONToIPFS} from "./utils/ipfsPinning";
 import axios from "axios";
-import {getContract, getWallet} from "./utils/web3"
+import {getContract, getNetwork, getWallet, mintNFT} from "./utils/web3"
 import {Table} from "semantic-ui-react";
-
+import History from "./History";
 
 // https://github.com/dappuniversity/nft
 class App extends Component {
@@ -26,6 +26,7 @@ class App extends Component {
 
         this.onFormSubmit = this.onFormSubmit.bind(this);
         this.onFileChanged = this.onFileChanged.bind(this);
+        this.getTableData = this.getTableData.bind(this);
     }
 
     componentDidMount = async () => {
@@ -37,38 +38,10 @@ class App extends Component {
             statusMessage: statusMessage,
             contract: contract
             });
-        // try {
-        //     // Get network provider and web3 instance.
-        //     const web3 = await getWeb3();
-        //
-        //     // Use web3 to get the user's accounts.
-        //     const accounts = await web3.eth.getAccounts();
-        //
-        //     // Get the contract instance.
-        //     const networkId = await web3.eth.net.getId();
-        //     const deployedNetwork = PostcardContract.networks[networkId];
-        //     const instance = new web3.eth.Contract(
-        //         PostcardContract.abi,
-        //         deployedNetwork && deployedNetwork.address,
-        //     );
-        //
-        //     // Set web3, accounts, and contract to the state, and then proceed with an
-        //     // example of interacting with the contract's methods.
-        //     this.setState({web3, account: accounts[0], contract: instance});
-        //
-        //
-        //     console.log("contract address: " + this.state.contract._address);
-        //     // console.log("totalSupply of minted NFTs: " + this.state.contract.methods.totalSupply())
-        //
-        // } catch (error) {
-        //     // Catch any errors for any of the above operations.
-        //     alert(
-        //         `Failed to load web3, accounts, or contract. Check console for details.`,
-        //     );
-        //     console.error(error);
-        // }
+
     };
-    mint = (hash) => {
+    mint = async (hash) => {
+        // await mintNFT(hash)
         this.state.contract.methods.duplicateMint(hash).send({from: this.state.account})
             .once('receipt', (receipt) => {
                 console.log("id: " + receipt.logs[0].topics[3]);
@@ -89,7 +62,7 @@ class App extends Component {
             const metadata =
                 {
                     pinataMetadata: {
-                        name: name + ".json"
+                        name: name.replace(/\s+/g, '-').toLowerCase() + ".json" // from https://stackoverflow.com/a/1983661
                     },
                     pinataContent: {
                         name: name,
@@ -99,7 +72,7 @@ class App extends Component {
                 };
             this.setState({metadata: metadata});
             const metadataHash = await uploadJSONToIPFS(metadata);
-            this.mint(metadataHash);
+            await this.mint(metadataHash);
             //if network id == 4 aka equals rinkeby testnets. otherwise do something else i guess
             const url = "https://testnets.opensea.io/assets/" + this.state.contract._address + "/1"
 
@@ -107,6 +80,10 @@ class App extends Component {
         } catch (e) {
             console.log("something went wrong with creating your NFT: " + e);
         }
+    }
+    async getTableData(){
+        const networkId = await this.web3.eth.net.getId();
+        return (<h2 className="text-xl font-semibold text-gray-700 text-center">Contract address: {networkId}</h2>);
     }
 
     // https://codesandbox.io/s/react-eth-metamask-7vuy7?file=/src/App.js
@@ -168,31 +145,13 @@ class App extends Component {
                     </footer>
                 </div>
             </form>
-                {/*<div>*/}
-                {/*    <Table>*/}
-                {/*        <thead>*/}
-                {/*        <tr>*/}
-                {/*            <th></th>*/}
-                {/*            <th></th>*/}
-                {/*        </tr>*/}
-                {/*        </thead>*/}
-                {/*        <tbody>*/}
-                {/*        <tr>*/}
-                {/*            <td>Wallet address</td>*/}
-                {/*            <td>{this.state.account}</td>*/}
-                {/*        </tr>*/}
-                {/*        <tr>*/}
-                {/*            <td>Contract address</td>*/}
-                {/*            <td>{this.state.contract._address}</td>*/}
-                {/*        </tr>*/}
-                {/*        <tr>*/}
-                {/*            <td>Amount of Postcards minted</td>*/}
-                {/*            <td>{this.state.contract.methods.totalSupply}</td>*/}
-                {/*        </tr>*/}
-                {/*        </tbody>*/}
-                {/*    </Table>*/}
-                {/*    <h2 className="text-xl font-semibold text-gray-700 text-center">{this.state.account}</h2>*/}
-                {/*</div>*/}
+                <div>
+                <History
+                    web3={this.state.web3}
+                    account={this.state.account}
+                    contract={this.state.contract}
+                />
+                </div>
             </div>
 
         );

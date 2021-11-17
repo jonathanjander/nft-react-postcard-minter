@@ -21,6 +21,7 @@
     "browserify-fs": "^1.0.0",
     "config": "^3.3.6",
     "dotenv": "^10.0.0",
+    "ethers": "^5.5.1",
     "file-url": "^4.0.0",
     "form-data": "^4.0.0",
     "ipfs-only-hash": "^4.0.0",
