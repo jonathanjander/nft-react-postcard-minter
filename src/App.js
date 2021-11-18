@@ -7,6 +7,11 @@ import axios from "axios";
 import {getContract, getNetwork, getWallet, mintNFT} from "./utils/web3"
 import {Table} from "semantic-ui-react";
 import History from "./History";
+// import {Container, Form, Button} from "semantic-ui-react";
+import {Container, Form, Button} from "react-bootstrap";
+// import Container from 'react-bootstrap/Container';
+// import Form from 'react-bootstrap/Form';
+
 
 // https://github.com/dappuniversity/nft
 class App extends Component {
@@ -63,6 +68,7 @@ class App extends Component {
                 {
                     pinataMetadata: {
                         name: name.replace(/\s+/g, '-').toLowerCase() + ".json" // from https://stackoverflow.com/a/1983661
+                        // name: name+".json"
                     },
                     pinataContent: {
                         name: name,
@@ -70,6 +76,7 @@ class App extends Component {
                         image: "https://ipfs.io/ipfs/" + imageHash
                     }
                 };
+
             this.setState({metadata: metadata});
             const metadataHash = await uploadJSONToIPFS(metadata);
             await this.mint(metadataHash);
@@ -93,58 +100,92 @@ class App extends Component {
         }
         return (
             <div className="credit-card w-full lg:w-1/2 sm:w-auto shadow-lg mx-auto rounded-xl bg-white">
-            <form className="m-4" onSubmit={async (event) => {
-                event.preventDefault();
-                await this.onFormSubmit(this.name.value, this.description.value);
-            }}>
-                <div className="credit-card w-full lg:w-1/2 sm:w-auto shadow-lg mx-auto rounded-xl bg-white">
-                    <main className="mt-4 p-4">
-                        <h1 className="text-xl font-semibold text-gray-700 text-center">
-                            Mint Postcard NFT
-                        </h1>
-                        <div className="">
-                            <div className="my-3">
-                                <input
-                                    type='text'
-                                    className="input input-bordered block w-full focus:ring focus:outline-none"
-                                    placeholder='Name'
-                                    required
-                                    ref={(input) => {
-                                        this.name = input
-                                    }}
-                                />
-                            </div>
-                            <div className="my-3">
-                                <input
-                                    type='textarea'
-                                    className="input input-bordered block w-full focus:ring focus:outline-none"
-                                    placeholder='Description for your NFT'
-                                    required
-                                    ref={(input) => {
-                                        this.description = input
-                                    }}
-                                />
-                            </div>
-                            <div className="my-3">
-                                <input
-                                    type="file" onChange={this.onFileChanged}
-                                    accept="image/png, image/jpeg"
-                                    required
-                                />
+            {/*<form className="m-4" onSubmit={async (event) => {*/}
+                {/*event.preventDefault();*/}
+                {/*await this.onFormSubmit(this.name.value, this.description.value);*/}
+            {/*}}>*/}
+                {/*<div className="credit-card w-full lg:w-1/2 sm:w-auto shadow-lg mx-auto rounded-xl bg-white">*/}
+                    {/*<main className="mt-4 p-4">*/}
+                        {/*<h1 className="text-xl font-semibold text-gray-700 text-center">*/}
+                            {/*Mint Postcard NFT*/}
+                        {/*</h1>*/}
+                        {/*<div className="">*/}
+                            {/*<div className="my-3">*/}
+                                {/*<input*/}
+                                    {/*type='text'*/}
+                                    {/*className="input input-bordered block w-full focus:ring focus:outline-none"*/}
+                                    {/*placeholder='Name'*/}
+                                    {/*required*/}
+                                    {/*ref={(input) => {*/}
+                                        {/*this.name = input*/}
+                                    {/*}}*/}
+                                {/*/>*/}
+                            {/*</div>*/}
+                            {/*<div className="my-3">*/}
+                                {/*<input*/}
+                                    {/*type='textarea'*/}
+                                    {/*className="input input-bordered block w-full focus:ring focus:outline-none"*/}
+                                    {/*placeholder='Description for your NFT'*/}
+                                    {/*required*/}
+                                    {/*ref={(input) => {*/}
+                                        {/*this.description = input*/}
+                                    {/*}}*/}
+                                {/*/>*/}
+                            {/*</div>*/}
+                            {/*<div className="my-3">*/}
+                                {/*<input*/}
+                                    {/*type="file" onChange={this.onFileChanged}*/}
+                                    {/*accept="image/png, image/jpeg"*/}
+                                    {/*required*/}
+                                {/*/>*/}
 
-                            </div>
-                        </div>
-                    </main>
-                    <footer className="p-4">
-                        <button
-                            type="submit"
-                            className="btn btn-primary submit-button focus:ring focus:outline-none w-full"
-                        >
+                            {/*</div>*/}
+                        {/*</div>*/}
+                    {/*</main>*/}
+                    {/*<footer className="p-4">*/}
+                        {/*<button*/}
+                            {/*type="submit"*/}
+                            {/*className="btn btn-primary submit-button focus:ring focus:outline-none w-full"*/}
+                        {/*>*/}
+                            {/*Mint*/}
+                        {/*</button>*/}
+                    {/*</footer>*/}
+                {/*</div>*/}
+            {/*</form>*/}
+                <Container>
+                    <Form onSubmit={async (event) => {
+                        event.preventDefault();
+                        await this.onFormSubmit(this.name.value, this.description.value);
+                    }}>
+                        <Form.Group controlId="formName">
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control placeholder='Name'
+                                          required
+                                          ref={(input) => {
+                                              this.name = input
+                                          }}/>
+                        </Form.Group>
+                        <Form.Group controlId="formDescription">
+                            <Form.Label>Description</Form.Label>
+                            <Form.Control placeholder='Description'
+                                          type="textarea"
+                                          required
+                                          ref={(input) => {
+                                              this.description = input
+                                          }}  />
+                        </Form.Group>
+                        <Form.Group controlId="formFile">
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control type="file" onChange={this.onFileChanged}
+                                          accept="image/png, image/jpeg"
+                                          required
+                            />
+                        </Form.Group>
+                        <Button type="submit">
                             Mint
-                        </button>
-                    </footer>
-                </div>
-            </form>
+                        </Button>
+                    </Form>
+                </Container>
                 <div>
                 <History
                     web3={this.state.web3}
