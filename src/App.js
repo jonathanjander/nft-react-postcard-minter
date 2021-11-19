@@ -59,7 +59,6 @@ class App extends Component {
     onFileChanged(e) {
         this.setState({imageFile: e.target.files[0]})
     }
-
     async onFormSubmit(name, description) {
         try {
             const imageHash = await uploadDataToIPFS(this.state.imageFile);
