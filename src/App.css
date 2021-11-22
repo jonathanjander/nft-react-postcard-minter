@@ -21,3 +21,18 @@
   color: #09d3ac;
 }
 
+table {
+  width: 100%;
+  table-layout: fixed;
+}
+table tr th{
+  text-align: left;
+  background: gray;
+  color: white;
+}
+
+td {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
+}

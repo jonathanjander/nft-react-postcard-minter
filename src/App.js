@@ -8,9 +8,7 @@ import {getContract, getNetwork, getWallet, mintNFT} from "./utils/web3"
 import {Table} from "semantic-ui-react";
 import History from "./History";
 // import {Container, Form, Button} from "semantic-ui-react";
-import {Container, Form, Button} from "react-bootstrap";
-// import Container from 'react-bootstrap/Container';
-// import Form from 'react-bootstrap/Form';
+import {Container, Form, Button, Navbar} from "react-bootstrap";
 
 
 // https://github.com/dappuniversity/nft
@@ -98,7 +96,20 @@ class App extends Component {
             return <div>Loading Web3, accounts, and contract...</div>;
         }
         return (
+            <Container>
+                <Navbar>
+                    <Container>
+                        <Navbar.Text className="text-xl font-semibold text-gray-700 text-center">Contract Address: {this.state.contract._address}</Navbar.Text>
+                        <Navbar.Toggle />
+                        <Navbar.Collapse className="justify-content-end">
+                            <Navbar.Text className="text-xl font-semibold text-gray-700 text-center">
+                                Signed in as: {this.state.account}
+                            </Navbar.Text>
+                        </Navbar.Collapse>
+                    </Container>
+                </Navbar>
             <div className="credit-card w-full lg:w-1/2 sm:w-auto shadow-lg mx-auto rounded-xl bg-white">
+
             {/*<form className="m-4" onSubmit={async (event) => {*/}
                 {/*event.preventDefault();*/}
                 {/*await this.onFormSubmit(this.name.value, this.description.value);*/}
@@ -167,7 +178,7 @@ class App extends Component {
                         <Form.Group controlId="formDescription">
                             <Form.Label>Description</Form.Label>
                             <Form.Control placeholder='Description'
-                                          type="textarea"
+                                          as="textarea"
                                           required
                                           ref={(input) => {
                                               this.description = input
@@ -184,16 +195,17 @@ class App extends Component {
                             Mint
                         </Button>
                     </Form>
+                    <History
+                        web3={this.state.web3}
+                        account={this.state.account}
+                        contract={this.state.contract}
+                    />
                 </Container>
                 <div>
-                <History
-                    web3={this.state.web3}
-                    account={this.state.account}
-                    contract={this.state.contract}
-                />
+
                 </div>
             </div>
-
+            </Container>
         );
     }
 }
