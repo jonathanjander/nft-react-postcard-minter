@@ -1,13 +1,9 @@
 import React, {Component} from "react";
-import PostcardContract from "./abis/Postcard.json";
-import getWeb3 from "./getWeb3";
 import "./App.css";
 import {uploadDataToIPFS, uploadJSONToIPFS} from "./utils/ipfsPinning";
 import axios from "axios";
 import {getContract, getNetwork, getWallet, mintNFT} from "./utils/web3"
-import {Table} from "semantic-ui-react";
 import History from "./History";
-// import {Container, Form, Button} from "semantic-ui-react";
 import {Container, Form, Button, Navbar} from "react-bootstrap";
 
 
@@ -23,13 +19,14 @@ class App extends Component {
             tokens: [],
             imageFile: null,
             metadata: null,
-            statusMessage: ""
+            statusMessage: "",
+            networkId: null
         }
 
 
         this.onFormSubmit = this.onFormSubmit.bind(this);
         this.onFileChanged = this.onFileChanged.bind(this);
-        this.getTableData = this.getTableData.bind(this);
+        this.getHistoryTable = this.getHistoryTable.bind(this);
     }
 
     componentDidMount = async () => {
@@ -41,6 +38,11 @@ class App extends Component {
             statusMessage: statusMessage,
             contract: contract
             });
+
+        const networkId = await this.state.web3.eth.net.getId();
+        this.setState({
+            networkId: networkId
+        });
 
     };
     mint = async (hash) => {
@@ -85,10 +87,25 @@ class App extends Component {
             console.log("something went wrong with creating your NFT: " + e);
         }
     }
-    async getTableData(){
-        const networkId = await this.web3.eth.net.getId();
-        return (<h2 className="text-xl font-semibold text-gray-700 text-center">Contract address: {networkId}</h2>);
+
+    getHistoryTable = () => {
+
+        // network ids between 1 and 4 are the main- and testnets. anything after that might be local, where its not possible to render the history
+        if(this.state.networkId > 4){
+            console.log("ganache network (local)")
+            return <h6 className="text-center" >The NFT History doesn't exist on a local blockchain</h6>
+        }
+        else{
+            return(
+                <History
+                    web3={this.state.web3}
+                    account={this.state.account}
+                    contract={this.state.contract}
+                />
+            )
+        }
     }
+
 
     // https://codesandbox.io/s/react-eth-metamask-7vuy7?file=/src/App.js
     render() {
@@ -109,59 +126,6 @@ class App extends Component {
                     </Container>
                 </Navbar>
             <div className="credit-card w-full lg:w-1/2 sm:w-auto shadow-lg mx-auto rounded-xl bg-white">
-
-            {/*<form className="m-4" onSubmit={async (event) => {*/}
-                {/*event.preventDefault();*/}
-                {/*await this.onFormSubmit(this.name.value, this.description.value);*/}
-            {/*}}>*/}
-                {/*<div className="credit-card w-full lg:w-1/2 sm:w-auto shadow-lg mx-auto rounded-xl bg-white">*/}
-                    {/*<main className="mt-4 p-4">*/}
-                        {/*<h1 className="text-xl font-semibold text-gray-700 text-center">*/}
-                            {/*Mint Postcard NFT*/}
-                        {/*</h1>*/}
-                        {/*<div className="">*/}
-                            {/*<div className="my-3">*/}
-                                {/*<input*/}
-                                    {/*type='text'*/}
-                                    {/*className="input input-bordered block w-full focus:ring focus:outline-none"*/}
-                                    {/*placeholder='Name'*/}
-                                    {/*required*/}
-                                    {/*ref={(input) => {*/}
-                                        {/*this.name = input*/}
-                                    {/*}}*/}
-                                {/*/>*/}
-                            {/*</div>*/}
-                            {/*<div className="my-3">*/}
-                                {/*<input*/}
-                                    {/*type='textarea'*/}
-                                    {/*className="input input-bordered block w-full focus:ring focus:outline-none"*/}
-                                    {/*placeholder='Description for your NFT'*/}
-                                    {/*required*/}
-                                    {/*ref={(input) => {*/}
-                                        {/*this.description = input*/}
-                                    {/*}}*/}
-                                {/*/>*/}
-                            {/*</div>*/}
-                            {/*<div className="my-3">*/}
-                                {/*<input*/}
-                                    {/*type="file" onChange={this.onFileChanged}*/}
-                                    {/*accept="image/png, image/jpeg"*/}
-                                    {/*required*/}
-                                {/*/>*/}
-
-                            {/*</div>*/}
-                        {/*</div>*/}
-                    {/*</main>*/}
-                    {/*<footer className="p-4">*/}
-                        {/*<button*/}
-                            {/*type="submit"*/}
-                            {/*className="btn btn-primary submit-button focus:ring focus:outline-none w-full"*/}
-                        {/*>*/}
-                            {/*Mint*/}
-                        {/*</button>*/}
-                    {/*</footer>*/}
-                {/*</div>*/}
-            {/*</form>*/}
                 <Container>
                     <Form onSubmit={async (event) => {
                         event.preventDefault();
@@ -195,11 +159,12 @@ class App extends Component {
                             Mint
                         </Button>
                     </Form>
-                    <History
-                        web3={this.state.web3}
-                        account={this.state.account}
-                        contract={this.state.contract}
-                    />
+                    {this.getHistoryTable()}
+                    {/*<History*/}
+                    {/*    web3={this.state.web3}*/}
+                    {/*    account={this.state.account}*/}
+                    {/*    contract={this.state.contract}*/}
+                    {/*/>*/}
                 </Container>
                 <div>
 
@@ -209,6 +174,7 @@ class App extends Component {
         );
     }
 }
+
 const getData=()=>{
     fetch('data/test.json'
         ,{
