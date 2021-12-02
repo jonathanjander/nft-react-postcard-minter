@@ -4,7 +4,7 @@ import {uploadDataToIPFS, uploadJSONToIPFS} from "./utils/ipfsPinning";
 import axios from "axios";
 import {getContract, getNetwork, getWallet, mintNFT} from "./utils/web3"
 import History from "./History";
-import {Container, Form, Button, Navbar} from "react-bootstrap";
+import {Container, Form, Button, Navbar, Row, Col} from "react-bootstrap";
 
 
 // https://github.com/dappuniversity/nft
@@ -113,9 +113,9 @@ class App extends Component {
             return <div>Loading Web3, accounts, and contract...</div>;
         }
         return (
-            <Container>
+            <Container fluid>
                 <Navbar>
-                    <Container>
+                    <Container fluid>
                         <Navbar.Text className="text-xl font-semibold text-gray-700 text-center">Contract Address: {this.state.contract._address}</Navbar.Text>
                         <Navbar.Toggle />
                         <Navbar.Collapse className="justify-content-end">
@@ -125,51 +125,65 @@ class App extends Component {
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>
-            <div className="credit-card w-full lg:w-1/2 sm:w-auto shadow-lg mx-auto rounded-xl bg-white">
-                <Container>
-                    <Form onSubmit={async (event) => {
-                        event.preventDefault();
-                        await this.onFormSubmit(this.name.value, this.description.value);
-                    }}>
-                        <Form.Group controlId="formName">
-                            <Form.Label>Name</Form.Label>
-                            <Form.Control placeholder='Name'
-                                          required
-                                          ref={(input) => {
-                                              this.name = input
-                                          }}/>
-                        </Form.Group>
-                        <Form.Group controlId="formDescription">
-                            <Form.Label>Description</Form.Label>
-                            <Form.Control placeholder='Description'
-                                          as="textarea"
-                                          required
-                                          ref={(input) => {
-                                              this.description = input
-                                          }}  />
-                        </Form.Group>
-                        <Form.Group controlId="formFile">
-                            <Form.Label>Name</Form.Label>
-                            <Form.Control type="file" onChange={this.onFileChanged}
-                                          accept="image/png, image/jpeg"
-                                          required
-                            />
-                        </Form.Group>
-                        <Button type="submit">
-                            Mint
-                        </Button>
-                    </Form>
-                    {this.getHistoryTable()}
-                    {/*<History*/}
-                    {/*    web3={this.state.web3}*/}
-                    {/*    account={this.state.account}*/}
-                    {/*    contract={this.state.contract}*/}
-                    {/*/>*/}
-                </Container>
-                <div>
 
-                </div>
-            </div>
+            {/*<div className="credit-card w-full lg:w-1/2 sm:w-auto shadow-lg mx-auto rounded-xl bg-white">*/}
+                <Container>
+                    <Row>
+                        {/*<Col>*/}
+                            <Form onSubmit={async (event) => {
+                                event.preventDefault();
+                                await this.onFormSubmit(this.name.value, this.description.value);
+                            }} className="shadow p-5 mb-4 bg-white rounded">
+                                <Row>
+                                    <h1 className="title">Postcard NFT Minter</h1>
+                                <Col>
+
+                                <Form.Group controlId="formName" >
+                                    <Form.Label>Name</Form.Label>
+                                    <Form.Control placeholder='e.g. Bora Bora Beach In The Afternoon'
+                                                  required
+                                                  ref={(input) => {
+
+                                                      this.name = input
+
+                                                  }}/>
+                                </Form.Group>
+                                </Col>
+                                <Col xs={5}>
+                                <Form.Group controlId="formDescription">
+                                    <Form.Label>Description</Form.Label>
+                                    <Form.Control placeholder='e.g. 30°C in the Summer'
+                                                  // as="textarea"
+                                                  required
+                                                  ref={(input) => {
+
+                                                      this.description = input
+
+                                                  }}  />
+                                </Form.Group>
+                                </Col>
+                                <Col xs={3}>
+                                <Form.Group controlId="formFile">
+                                    <Form.Label>Asset File</Form.Label>
+                                    <Form.Control type="file" onChange={this.onFileChanged}
+                                                  accept="image/*, video/*, audio/*"
+                                                  required
+
+                                    />
+                                </Form.Group>
+                                </Col>
+                                <Button type="submit" variant="outline-primary" className="mt-5">
+                                    Mint
+                                </Button>
+                                </Row>
+                            </Form>
+
+                        <Container fluid className="pt-5">
+                            {this.getHistoryTable()}
+                        </Container>
+                    </Row>
+                </Container>
+            {/*</div>*/}
             </Container>
         );
     }

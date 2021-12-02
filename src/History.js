@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import Table from 'react-bootstrap/Table';
+import {FileEarmarkCode} from 'react-bootstrap-icons';
 import ToolTip from "react-tooltip";
 
 class History extends Component {
@@ -31,21 +32,35 @@ class History extends Component {
         };
 
         // TODO ADD HISTORY CAP (AROUND 15 MAYBE)
+        // TODO SORT CUZ SORTING IS KINDA FUCKED
+        // TODO REMOVE HARDCODED "RINKEBY" AND "TESTNETS"
+        // TODO USE https://rinkeby.etherscan.io/token/0xf88825da14E802eb5ca4834C450000f598EA3863 FOR SOMETHING
+        // TODO ADD KEYS TO LIST CUZ ERROR
         // listens to minted NFTs
         this.state.contract.events.Transfer(options)
             .on('data', async transfer => {
+                    const etherScanPrefix = "https://rinkeby.etherscan.io/address/";
+                    let timestamp = await this.getTimeStampOfTX(transfer.transactionHash);
 
-                    let timestamp = await this.getTimeStampOfTX(transfer.transactionHash)
+                    let from = (transfer.returnValues.from === "0x0000000000000000000000000000000000000000") ? transfer.address : transfer.returnValues.from;
+                    let osUrl = "https://testnets.opensea.io/assets/" + transfer.address + "/" + transfer.returnValues.tokenId;
+                    let fromUrl = etherScanPrefix + from;
+                    let toUrl = etherScanPrefix + transfer.returnValues.to;
 
-                    let url = "https://testnets.opensea.io/assets/" + transfer.address + "/" + transfer.returnValues.tokenId
+                    let icon = null;
+                    if(from === transfer.address){
+                        icon = <FileEarmarkCode className="d-inline mb-1 me-1"/>;
+                    }
 
                     let obj = {
                         tokenId: transfer.returnValues.tokenId,
                         transaction: transfer.transactionHash,
-                        from: transfer.returnValues.from,
-                        to: transfer.returnValues.to,
+                        from: <span>
+                            {icon}
+                            <a href={fromUrl} className="">{from.substr(2,6)}</a></span>,
+                        to: <a href={toUrl}>{transfer.returnValues.to.substr(2,6)}</a>,
                         created: timestamp +" ago",
-                        opensea: (<a href={url}>Opensea link</a>)
+                        opensea: <a href={osUrl}>Opensea</a>
                     }
                     await this.loadDataAsync({transferHistory: [...this.state.transferHistory, obj]})
 
@@ -70,7 +85,8 @@ class History extends Component {
         if(this.state.transferHistory != null && this.state.transferHistory[0] !== undefined){
             const keys = Object.keys(this.state.transferHistory[0])
             return keys.map((key, index)=>{
-                return <th key={key} width="50">{key.toUpperCase()}</th>
+                // return <th className="text-black text-center" key={key} width="50">{key.toUpperCase()}</th>
+                return <th className="text-black text-center" width="50">{key.toUpperCase()}</th>
             })
         }
     }
@@ -80,7 +96,9 @@ class History extends Component {
             // const items = Object.values(this.state.transferHistory);
             const keys = Object.keys(items[0])
             return items.map((row, index)=>{
-                return <tr style={{textOverflow:"ellipsis"}} key={index}><RenderRow key={index} data={row} keys={keys}/></tr>
+                // console.log(index +" at row: "+ row)
+                // return <tr style={{textOverflow:"ellipsis"}} ><RenderRow key={index} data={row} keys={keys}/></tr>
+                return <tr style={{textOverflow:"ellipsis"}} ><RenderRow data={row} keys={keys}/></tr>
             })
         }
     }
@@ -135,8 +153,9 @@ class History extends Component {
                 return b.tokenId-a.tokenId;
             })
             return (
+
                 <div>
-                    <Table striped bordered hover >
+                    <Table bordered hover>
                         <thead>
                         <tr>
                             {this.getHeader()}
@@ -160,7 +179,8 @@ class History extends Component {
 const RenderRow = (historyData) =>{
     if(historyData != null){
         return historyData.keys.map((key) =>{
-            return <td data-tip data-for='tt' key={historyData.data[key]}>{historyData.data[key]}</td>
+            // return <td key={historyData.data[key]}>{historyData.data[key]}</td>
+            return <td>{historyData.data[key]}</td>
 
         })
     }
