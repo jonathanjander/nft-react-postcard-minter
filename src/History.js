@@ -51,17 +51,25 @@ class History extends Component {
                     if(from === transfer.address){
                         icon = <FileEarmarkCode className="d-inline mb-1 me-1"/>;
                     }
-
+                    this.state.contract.get
                     let obj = {
                         tokenId: transfer.returnValues.tokenId,
                         transaction: transfer.transactionHash,
                         from: <span>
                             {icon}
-                            <a href={fromUrl} className="">{from.substr(2,6)}</a></span>,
-                        to: <a href={toUrl}>{transfer.returnValues.to.substr(2,6)}</a>,
+                            <a href={fromUrl} target="_blank" rel="noopener noreferrer">{from.substr(2,6)}</a></span>,
+                        to: <a href={toUrl} target="_blank" rel="noopener noreferrer">{transfer.returnValues.to.substr(2,6)}</a>,
                         created: timestamp +" ago",
-                        opensea: <a href={osUrl}>Opensea</a>
+                        opensea: <a href={osUrl} target="_blank" rel="noopener noreferrer">Opensea</a>
                     }
+                    // let obj = {
+                    //     tokenId: transfer.returnValues.tokenId,
+                    //     transaction: transfer.transactionHash,
+                    //     from: transfer.returnValues.from,
+                    //     to: <a href={osUrl} key="to" target="_blank" rel="noopener noreferrer">Opensea</a>,
+                    //     created: timestamp +" ago",
+                    //     opensea: "lol"
+                    // }
                     await this.loadDataAsync({transferHistory: [...this.state.transferHistory, obj]})
 
 
@@ -86,7 +94,7 @@ class History extends Component {
             const keys = Object.keys(this.state.transferHistory[0])
             return keys.map((key, index)=>{
                 // return <th className="text-black text-center" key={key} width="50">{key.toUpperCase()}</th>
-                return <th className="text-black text-center" width="50">{key.toUpperCase()}</th>
+                return <th className="text-black text-center" key={key} width="50">{key.toUpperCase()}</th>
             })
         }
     }
@@ -97,8 +105,8 @@ class History extends Component {
             const keys = Object.keys(items[0])
             return items.map((row, index)=>{
                 // console.log(index +" at row: "+ row)
-                // return <tr style={{textOverflow:"ellipsis"}} ><RenderRow key={index} data={row} keys={keys}/></tr>
-                return <tr style={{textOverflow:"ellipsis"}} ><RenderRow data={row} keys={keys}/></tr>
+                return <tr className="text-truncate" key={index}><RenderRow data={row} keys={keys}/></tr>
+                // return <tr className="text-truncate"><RenderRow data={row} key={index} keys={keys}/></tr>
             })
         }
     }
@@ -178,10 +186,9 @@ class History extends Component {
 // from https://medium.com/@subalerts/create-dynamic-table-from-json-in-react-js-1a4a7b1146ef
 const RenderRow = (historyData) =>{
     if(historyData != null){
-        return historyData.keys.map((key) =>{
-            // return <td key={historyData.data[key]}>{historyData.data[key]}</td>
-            return <td>{historyData.data[key]}</td>
-
+        return historyData.keys.map((key, index) =>{
+            // console.log(key);
+            return <td key={key}>{historyData.data[key]}</td>
         })
     }
 }
