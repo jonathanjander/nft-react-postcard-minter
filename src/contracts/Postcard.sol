@@ -2,7 +2,6 @@
 pragma solidity >=0.4.22 <0.9.0;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-//import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 //TODO ADD METADATA FREEZING AND SENDTO FUNCTION
@@ -51,21 +50,26 @@ contract Postcard is ERC721URIStorage, Ownable {
         return newItemId;
     }
 
-    function mintToAddress(address to, string memory tokenHash)
+    function duplicateMint(string memory tokenHash, uint256 numberOfTokens)
     public
     onlyOwner
-    returns(uint256)
+//    returns (uint256)
     {
-        require(_hashes[tokenHash] != 1);
-        _hashes[tokenHash] = 1;
-        _tokenIds.increment();
-        uint256 newItemId = _tokenIds.current();
-        _mint(to, newItemId);
-        _setTokenURI(newItemId, tokenHash);
-        return newItemId;
-    }
+        require(numberOfTokens<=10, "not more than 10 at once");
+        require(_hashes[tokenHash]<=100);
 
-    function duplicateMint(string memory tokenHash)
+        for(uint256 i=0; i < numberOfTokens; i++){
+            _hashes[tokenHash] = _hashes[tokenHash] + 1;
+            _tokenIds.increment();
+            uint256 newItemId = _tokenIds.current();
+            _safeMint(msg.sender, newItemId);
+//            _mint(msg.sender, newItemId);
+            _setTokenURI(newItemId, tokenHash);
+        }
+//        return newItemId;
+//        return numberOfTokens+" tokens of "+tokenHash;
+    }
+    function oldDuplicateMint(string memory tokenHash)
     public
     onlyOwner
     returns (uint256)
@@ -74,19 +78,6 @@ contract Postcard is ERC721URIStorage, Ownable {
         _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();
         _mint(msg.sender, newItemId);
-        _setTokenURI(newItemId, tokenHash);
-        return newItemId;
-    }
-
-    function duplicateMintToAddress(address to, string memory tokenHash)
-    public
-    onlyOwner
-    returns(uint256)
-    {
-        _hashes[tokenHash] = 1;
-        _tokenIds.increment();
-        uint256 newItemId = _tokenIds.current();
-        _mint(to, newItemId);
         _setTokenURI(newItemId, tokenHash);
         return newItemId;
     }
