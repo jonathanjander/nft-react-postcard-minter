@@ -62,7 +62,7 @@ class App extends Component {
     };
     mint = async (hash) => {
         // await mintNFT(hash)
-        this.state.contract.methods.duplicateMint(hash,2).send({from: this.state.account})
+        this.state.contract.methods.duplicateMint(hash,1).send({from: this.state.account})
             .once('receipt', (receipt) => {
                 console.log("id: " + receipt.logs[0].topics[3]);
                 this.setState({
