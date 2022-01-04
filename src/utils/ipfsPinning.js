@@ -22,7 +22,11 @@ const uploadJSONToIPFS = async (JSONData) => {
         };
         const response = await axios(request)
         console.log('Successfully pinned file to IPFS : ', response);
-        return response.data.IpfsHash;
+        // return response.data.IpfsHash;
+        return {
+            hash: response.data.IpfsHash,
+            status: response.status
+        }
     }
     catch (err) {
         console.log('Error occurred while pinning file to IPFS: ', err);
@@ -46,7 +50,11 @@ const uploadDataToIPFS = async (data) => {
         };
         const response = await axios(request);
         console.log('Successfully pinned file to IPFS : ', response);
-        return response.data.IpfsHash;
+        // return response.data.IpfsHash;
+        return {
+            hash: response.data.IpfsHash,
+            status: response.status
+        };
     }
     catch (err) {
         console.log('Error occurred while pinning file to IPFS: ', err);

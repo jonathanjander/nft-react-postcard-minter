@@ -4,7 +4,7 @@ import {uploadDataToIPFS, uploadJSONToIPFS} from "./utils/ipfsPinning";
 import axios from "axios";
 import {getContract, getNetwork, getWallet, mintNFT} from "./utils/web3"
 import History from "./History";
-import {Container, Form, Button, Navbar, Row, Col, Card} from "react-bootstrap";
+import {Container, Form, Button, Navbar, Row, Col, Card, Alert} from "react-bootstrap";
 
 
 // https://github.com/dappuniversity/nft
@@ -42,10 +42,11 @@ class App extends Component {
         this.onFileChanged = this.onFileChanged.bind(this);
         this.getHistoryTable = this.getHistoryTable.bind(this);
         this.removeProperty = this.removeProperty.bind(this)
+        this.setStatus = this.setStatus.bind(this)
     }
 
     componentDidMount = async () => {
-        const {web3, account, statusMessage } = await getWallet();
+        const {web3, account, statusMessage} = await getWallet();
         const {contract} = await getContract(web3);
         this.setState({
             web3: web3,
@@ -62,13 +63,28 @@ class App extends Component {
     };
     mint = async (hash) => {
         // await mintNFT(hash)
-        this.state.contract.methods.duplicateMint(hash,1).send({from: this.state.account})
-            .once('receipt', (receipt) => {
-                console.log("id: " + receipt.logs[0].topics[3]);
-                this.setState({
-                    tokens: [...this.state.tokens, hash]
-                })
-            })
+        this.state.contract.methods.duplicateMint(hash,1).send({from: this.state.account}, (error, transactionHash) =>{
+            this.setStatus(transactionHash);
+            console.log(transactionHash);
+
+        }).on('error', function(error, receipt) { // If the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
+            console.log("status: e" + receipt.status);
+            this.setState({statusMessage: "couldn't mint the NFT: "+ error})
+        });
+        // this.state.contract.methods.duplicateMint(hash,1).send({from: this.state.account})
+        //     .on('receipt', (receipt) => {
+        //         console.log("id: " + receipt.logs[0].topics[3]);
+        //         console.log("status: " + receipt.status);
+        //         this.setState({
+        //             tokens: [...this.state.tokens, hash]
+        //         })
+        //     })
+        //     .on('confirmation', function(confirmationNumber, receipt){
+        //         console.log("status: " + confirmationNumber);
+        //     })
+        //     .on('error', function(error, receipt) { // If the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
+        //         console.log("status: e" + receipt.status);
+        //     });
     }
 
     onFileChanged(e) {
@@ -77,10 +93,11 @@ class App extends Component {
 
     async onFormSubmit() {
         try {
-            const imageHash = await uploadDataToIPFS(this.state.imageFile);
+            // const imageHash = await uploadDataToIPFS(this.state.imageFile);
+            const {hash: imageHash, status: imageStatus} = await uploadDataToIPFS(this.state.imageFile);
             let metadata = this.state.metadata;
-            metadata.pinataContent.image = "https://ipfs.io/ipfs/" + imageHash;
-            const attributes = metadata.pinataContent.attributes
+            metadata.pinataContent.image = "ipfs.io/ipfs/" + imageHash;
+            const attributes = metadata.pinataContent.attributes;
             for (let i = 0; i < attributes.length; i++) {
                 if(attributes[i].trait_type === "" || attributes[i].value === ""){
                     this.removeProperty(i)
@@ -88,6 +105,14 @@ class App extends Component {
             }
             this.setState({metadata: metadata});
 
+
+            // const metadataHash = await uploadJSONToIPFS(metadata);
+            const {hash:metadataHash, status: metadataStatus} = await uploadJSONToIPFS(metadata);
+            await this.mint(metadataHash);
+            console.log(imageStatus+ "   ",metadataStatus)
+            if(metadataStatus != 200 || imageStatus != 200){
+                this.setState({statusMessage: "There was a problem uploading the files to IPFS: "+ metadataStatus!=200? metadataStatus : imageStatus})
+            }
             // const metadata =
             //     {
             //         pinataMetadata: {
@@ -103,14 +128,14 @@ class App extends Component {
 
             // console.log("string: "+ JSON.stringify(metadata))
             // console.log(JSON.stringify(metadata))
-            const metadataHash = await uploadJSONToIPFS(metadata);
-            await this.mint(metadataHash);
+
             //if network id == 4 aka equals rinkeby testnets. otherwise do something else i guess
             // const url = "https://testnets.opensea.io/assets/" + this.state.contract._address + "/1"
 
             // window.location.href = url;
         } catch (e) {
             console.log("something went wrong with creating your NFT: " + e);
+            this.setState({statusMessage: "something went wrong (error at submit)"})
         }
     }
 
@@ -118,7 +143,7 @@ class App extends Component {
 
         // network ids between 1 and 4 are the main- and testnets. anything after that might be local, where its not possible to render the history
         if(this.state.networkId > 4){
-            console.log("ganache network (local)")
+            // console.log("ganache network (local)")
             return <h6 className="text-center" >The NFT History doesn't exist on a local blockchain</h6>
         }
         else{
@@ -158,6 +183,36 @@ class App extends Component {
             this.setState(({
                 metadata: data
             }))
+    }
+    // WIP
+     async setStatus(hash){
+        const variant="";
+        await this.state.web3.eth.getTransactionReceipt(hash, function (error, result) {
+                if(error){
+                    // this.setState(({
+                    //     statusMessage: "ERROR"
+                    // }));
+                }
+                if(result != null){
+                    console.log("receipt "+ result.status);
+                    this.setState(({statusMessage: "YES"}));
+
+                    // latestTx = null;
+
+                }
+            });
+
+
+    }
+    // WIP
+    getStatusMessage = async (variant) =>{
+        return (
+            <Row>
+                <Alert variant={variant} className="mt-3 fw-bold">
+                    <span className="text-center">{this.state.statusMessage}</span>
+                </Alert>
+            </Row>
+        )
     }
     // https://codesandbox.io/s/react-eth-metamask-7vuy7?file=/src/App.js
     render() {
@@ -284,24 +339,6 @@ class App extends Component {
             </Container>
         );
     }
-}
-
-const getData=()=>{
-    fetch('data/test.json'
-        ,{
-            headers : {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        }
-    )
-        .then(function(response){
-            console.log(response)
-            return response.json();
-        })
-        .then(function(myJson) {
-            console.log(myJson);
-        });
 }
 const testConnectionToPinata = async () => {
     const pinataEndpoint = "https://api.pinata.cloud/data/testAuthentication";
