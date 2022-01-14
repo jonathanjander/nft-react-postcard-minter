@@ -12,16 +12,16 @@ class App extends Component {
     constructor(props) {
         super(props)
         let formJSON = {
-            "pinataMetadata": {
-                "name": ""
+            pinataMetadata: {
+                name: ""
             },
-            "pinataContent": {
-                "name": "",
-                "description": "",
-                "image": "",
-                "attributes":[{
-                    "trait_type":"",
-                    "value":""
+            pinataContent: {
+                name: "",
+                description: "",
+                image: "",
+                attributes:[{
+                    trait_type:"",
+                    value:""
                 }]
             }
         };
@@ -96,7 +96,8 @@ class App extends Component {
             // const imageHash = await uploadDataToIPFS(this.state.imageFile);
             const {hash: imageHash, status: imageStatus} = await uploadDataToIPFS(this.state.imageFile);
             let metadata = this.state.metadata;
-            metadata.pinataContent.image = "ipfs.io/ipfs/" + imageHash;
+            // metadata.pinataContent.image = "ipfs.io/ipfs/" + imageHash;
+            metadata.pinataContent.image = "https://ipfs.io/ipfs/" + imageHash;
             const attributes = metadata.pinataContent.attributes;
             for (let i = 0; i < attributes.length; i++) {
                 if(attributes[i].trait_type === "" || attributes[i].value === ""){

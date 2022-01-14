@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -13,7 +12,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 //https://forum.openzeppelin.com/t/function-settokenuri-in-erc721-is-gone-with-pragma-0-8-0/5978/3 another ref
 contract Postcard is ERC721, Ownable {
     using Strings for uint256;
-//    uint256 public tokenCounter;
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIds;
@@ -22,12 +20,14 @@ contract Postcard is ERC721, Ownable {
     // copied from ERC721URIStorage.sol
     mapping(uint256 => string) private _tokenURIs;
 
+
     // mapping
     // not sure if i want it or not
     mapping(string => uint8) private _hashes;
 
     // Base URI
     string private _baseURIExtended = "https://ipfs.io/ipfs/";
+
 
     // constructor with name and symbol of nft
     constructor() ERC721("Postcard","PSC") {
@@ -37,7 +37,7 @@ contract Postcard is ERC721, Ownable {
     }
 
     // for opensea collection
-    // this is currently being used to determine which metadata(json) it uses for the NFT. token URI doesnt do anything atm
+    // this is currently being used to determine which metadata(json) it uses for the NFT
     function contractURI() public pure returns (string memory) {
         return "https://ipfs.io/ipfs/QmcbqmQn3248WytoNPKbapP8rYXmr1efVnb8t7qEi8aLgY"; // collection json ipfs
     }
@@ -63,6 +63,9 @@ contract Postcard is ERC721, Ownable {
             delete _tokenURIs[tokenId];
         }
     }
+    function burn(uint256 tokenId) public {
+        _burn(tokenId);
+    }
 
     // copied from ERC721URIStorage.sol
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
@@ -83,7 +86,30 @@ contract Postcard is ERC721, Ownable {
         return super.tokenURI(tokenId);
     }
 
-    function duplicateMint(string memory tokenHash, uint256 numberOfTokens)
+    function mint(string memory tokenHash)
+    public
+    onlyOwner
+    {
+        _hashes[tokenHash] = _hashes[tokenHash] + 1;
+        _tokenIds.increment();
+        uint256 newItemId = _tokenIds.current();
+        _safeMint(msg.sender, newItemId);
+        _setTokenURI(newItemId, tokenHash);
+    }
+    function mintTo(string memory tokenHash, address receiver)
+    public
+    onlyOwner
+    {
+        _hashes[tokenHash] = _hashes[tokenHash] + 1;
+        _tokenIds.increment();
+        uint256 newItemId = _tokenIds.current();
+        _safeMint(receiver, newItemId);
+        _setTokenURI(newItemId, tokenHash);
+    }
+
+    // questionable
+    // mint multiple tokens
+    function mintBatch(string memory tokenHash, uint256 numberOfTokens)
     public
     onlyOwner
     {
