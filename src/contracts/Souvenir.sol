@@ -4,13 +4,14 @@ pragma solidity >=0.4.22 <0.9.0;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./ERC2981Royalty.sol";
 //TODO ADD METADATA FREEZING
 //TODO SOMETHING DOESNT WORK PROPERLY
 //TODO ADD PERCENT TO CREATOR OF CONTRACTS
 
 //https://github.com/neha01/nft-demo/blob/master/contracts/ArtCollectible.sol ref
 //https://forum.openzeppelin.com/t/function-settokenuri-in-erc721-is-gone-with-pragma-0-8-0/5978/3 another ref
-contract Postcard is ERC721, Ownable {
+contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     using Strings for uint256;
     using Counters for Counters.Counter;
 
@@ -28,10 +29,26 @@ contract Postcard is ERC721, Ownable {
     // Base URI
     string private _baseURIExtended = "https://ipfs.io/ipfs/";
 
+    address royaltyRecipient = owner();
 
     // constructor with name and symbol of nft
     constructor() ERC721("Postcard","PSC") {
+
     }
+
+    //what does this even do
+    /// @inheritdoc	ERC165
+    function supportsInterface(bytes4 interfaceId)
+    public
+    view
+    virtual
+    override(ERC721, ERC2981Base)
+    returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
+    }
+
+
     function totalSupply() public view returns (uint256) {
         return _tokenIds.current();
     }
@@ -42,12 +59,33 @@ contract Postcard is ERC721, Ownable {
         return "https://ipfs.io/ipfs/QmcbqmQn3248WytoNPKbapP8rYXmr1efVnb8t7qEi8aLgY"; // collection json ipfs
     }
 
-    function setBaseURI(string memory baseURI_) external onlyOwner() {
+    function setBaseURI(string memory baseURI_)
+    external
+    onlyOwner
+    {
         _baseURIExtended = baseURI_;
     }
 
-    function _baseURI() internal view virtual override returns (string memory) {
+    function _baseURI()
+    internal
+    view
+    virtual
+    override
+    returns (string memory)
+    {
         return _baseURIExtended;
+    }
+
+    // memory didnt work
+    function setRoyaltyRecipient(address royaltyRecipient_)
+    external
+    onlyOwner
+    {
+        royaltyRecipient = royaltyRecipient_;
+    }
+
+    function _royaltyRecipient() internal view virtual returns (address) {
+        return royaltyRecipient;
     }
 
     // copied from ERC721URIStorage.sol
@@ -85,17 +123,21 @@ contract Postcard is ERC721, Ownable {
 
         return super.tokenURI(tokenId);
     }
-
-    function mint(string memory tokenHash)
+    // public or external?
+    function mint(string memory tokenHash, uint256 royaltyAmount)
     public
     onlyOwner
     {
         _hashes[tokenHash] = _hashes[tokenHash] + 1;
         _tokenIds.increment();
-        uint256 newItemId = _tokenIds.current();
-        _safeMint(msg.sender, newItemId);
-        _setTokenURI(newItemId, tokenHash);
+        uint256 newTokenId = _tokenIds.current();
+        _safeMint(msg.sender, newTokenId);
+        _setTokenURI(newTokenId, tokenHash);
+        if (royaltyAmount > 0) {
+            _setTokenRoyalty(newTokenId, _royaltyRecipient(), royaltyAmount);
+        }
     }
+
     function mintTo(string memory tokenHash, address receiver)
     public
     onlyOwner
