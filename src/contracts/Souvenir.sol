@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.4.22 <0.9.0;
+//pragma solidity >=0.4.22 <0.9.0;
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
@@ -29,13 +30,17 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     // Base URI
     string private _baseURIExtended = "https://ipfs.io/ipfs/";
 
-    address royaltyRecipient = owner();
+//    address private _royaltyRecipient = owner();
+    address private _royaltyRecipient;
 
     // constructor with name and symbol of nft
-    constructor() ERC721("Postcard","PSC") {
-
+    constructor() ERC721("Souvenir","SVN"){
+        _royaltyRecipient = owner();
     }
 
+
+
+    // write tests for this method
     //what does this even do
     /// @inheritdoc	ERC165
     function supportsInterface(bytes4 interfaceId)
@@ -49,6 +54,8 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     }
 
 
+    // FIX
+    // BROKEN CUZ OF BURN
     function totalSupply() public view returns (uint256) {
         return _tokenIds.current();
     }
@@ -81,11 +88,7 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     external
     onlyOwner
     {
-        royaltyRecipient = royaltyRecipient_;
-    }
-
-    function _royaltyRecipient() internal view virtual returns (address) {
-        return royaltyRecipient;
+        _royaltyRecipient = royaltyRecipient_;
     }
 
     // copied from ERC721URIStorage.sol
@@ -101,10 +104,13 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
             delete _tokenURIs[tokenId];
         }
     }
+
     function burn(uint256 tokenId) public {
         _burn(tokenId);
     }
-
+    function royaltyRecipient() public view virtual returns (address) {
+        return _royaltyRecipient;
+    }
     // copied from ERC721URIStorage.sol
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         require(_exists(tokenId), "ERC721: URI query for nonexistent token");
@@ -124,6 +130,7 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
         return super.tokenURI(tokenId);
     }
     // public or external?
+    /// value percentage (using 2 decimals - 10000 = 100, 0 = 0)
     function mint(string memory tokenHash, uint256 royaltyAmount)
     public
     onlyOwner
@@ -134,7 +141,7 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
         _safeMint(msg.sender, newTokenId);
         _setTokenURI(newTokenId, tokenHash);
         if (royaltyAmount > 0) {
-            _setTokenRoyalty(newTokenId, _royaltyRecipient(), royaltyAmount);
+            _setTokenRoyalty(newTokenId, _royaltyRecipient, royaltyAmount);
         }
     }
 
