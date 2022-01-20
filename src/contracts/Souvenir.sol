@@ -145,33 +145,41 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
         }
     }
 
-    function mintTo(string memory tokenHash, address receiver)
+    function mintTo(string memory tokenHash, address receiver, uint256 royaltyAmount)
     public
     onlyOwner
     {
         _hashes[tokenHash] = _hashes[tokenHash] + 1;
         _tokenIds.increment();
-        uint256 newItemId = _tokenIds.current();
-        _safeMint(receiver, newItemId);
-        _setTokenURI(newItemId, tokenHash);
+        uint256 newTokenId = _tokenIds.current();
+        _safeMint(receiver, newTokenId);
+        _setTokenURI(newTokenId, tokenHash);
+        if (royaltyAmount > 0) {
+            _setTokenRoyalty(newTokenId, _royaltyRecipient, royaltyAmount);
+        }
     }
 
     // questionable
     // mint multiple tokens
-    function mintBatch(string memory tokenHash, uint256 numberOfTokens)
+    /// value percentage (using 2 decimals - 10000 = 100, 0 = 0)
+    function mintBatch(string memory tokenHash, uint256 numberOfTokens, uint256 royaltyAmount)
     public
     onlyOwner
     {
-        require(numberOfTokens<=10, "not more than 10 at once");
-        require(_hashes[tokenHash]<=100);
+        require(numberOfTokens<=100, "not more than 100 at once");
+        require(_hashes[tokenHash]<=500);
 
         for(uint256 i=0; i < numberOfTokens; i++){
             _hashes[tokenHash] = _hashes[tokenHash] + 1;
             _tokenIds.increment();
-            uint256 newItemId = _tokenIds.current();
-            _safeMint(msg.sender, newItemId);
-            _setTokenURI(newItemId, tokenHash);
+            uint256 newTokenId = _tokenIds.current();
+            _safeMint(msg.sender, newTokenId);
+            _setTokenURI(newTokenId, tokenHash);
+            if (royaltyAmount > 0) {
+                _setTokenRoyalty(newTokenId, _royaltyRecipient, royaltyAmount);
+            }
         }
+
     }
 
 }
