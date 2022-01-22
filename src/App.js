@@ -1,35 +1,22 @@
 import React, {Component} from "react";
 import "./App.css";
 import {uploadDataToIPFS, uploadJSONToIPFS} from "./utils/ipfsPinning";
-import axios from "axios";
 import {getContract, getNetwork, getWallet, mintNFT} from "./utils/web3"
 import History from "./History";
-import {Container, Form, Button, Navbar, Row, Col, Card, Alert} from "react-bootstrap";
+import Error from "./Error";
+import {Container, Form, Button, Navbar, Row, Col, Alert} from "react-bootstrap";
 
 
 // https://github.com/dappuniversity/nft
 class App extends Component {
     constructor(props) {
         super(props)
-        // let formJSON = {
-        //     pinataMetadata: {
-        //         name: ""
-        //     },
-        //     pinataContent: {
-        //         name: "",
-        //         description: "",
-        //         image: "",
-        //         attributes:[{
-        //             trait_type:"",
-        //             value:""
-        //         }]
-        //     }
-        // };
         this.state = {
             account: "",
             contract: null,
             web3: null,
             statusMessage: "",
+            errorMessage: "",
             networkId: null,
             imageFile: null,
             metadata: null,
@@ -38,13 +25,13 @@ class App extends Component {
             royalty: 10,
         }
 
-
         this.onFormSubmit = this.onFormSubmit.bind(this);
         this.onFileChanged = this.onFileChanged.bind(this);
         this.getHistoryTable = this.getHistoryTable.bind(this);
         this.removeProperty = this.removeProperty.bind(this)
         this.setStatus = this.setStatus.bind(this)
         this.renderProperties = this.renderProperties.bind(this)
+        this.getStatusMessage = this.getStatusMessage.bind(this)
     }
     initState = async () =>{
         let formJSON = {
@@ -72,54 +59,41 @@ class App extends Component {
         });
     }
     componentDidMount = async () => {
-        await this.initState()
-        const {web3, account, statusMessage} = await getWallet();
-        const {contract} = await getContract(web3);
-        const networkId = await web3.eth.net.getId();
-        this.setState({
-            web3: web3,
-            account: account,
-            statusMessage: statusMessage,
-            contract: contract,
-            networkId: networkId
+        try {
+            await this.initState()
+            const {web3, account, errorMessage} = await getWallet();
+            const {contract} = await getContract(web3);
+            const networkId = await web3.eth.net.getId();
+            this.setState({
+                web3: web3,
+                account: account,
+                contract: contract,
+                networkId: networkId,
+                errorMessage: errorMessage
             });
+        }
+        catch (e) {
+            console.log("error at initialising: "+e);
+            if(this.state.errorMessage===""){
+                this.setState({errorMessage: "error at initialising: "+e.message})
+            }
+
+        }
 
     };
     mint = async (hash) => {
-        // await mintNFT(hash)
-        if(this.state.amountToMint === 1) {
-            this.state.contract.methods.mint(hash, this.state.royalty).send({from: this.state.account}, (error, transactionHash) => {
-                console.log(transactionHash);
 
-            }).on('error', function (error, receipt) { // If the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
+        this.state.contract.methods.mintBatch(hash, this.state.amountToMint ,this.state.royalty*100).send({from: this.state.account}, (error, transactionHash) => {
+            // this.setStatus(transactionHash);
+            if(error){
+                this.setState({errorMessage: "error at minting the NFT: "+error.message})
+            }
+            console.log(transactionHash);
+        }).on('error', function (error, receipt) { // If the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
+            if(receipt){
                 console.log("status: e" + receipt.status);
-                this.setState({statusMessage: "couldn't mint the NFT: " + error})
-            });
-        }
-        else{
-            this.state.contract.methods.mintBatch(hash, this.state.amountToMint ,this.state.royalty*100).send({from: this.state.account}, (error, transactionHash) => {
-                // this.setStatus(transactionHash);
-                console.log(transactionHash);
-
-            }).on('error', function (error, receipt) { // If the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
-                console.log("status: e" + receipt.status);
-                this.setState({statusMessage: "couldn't mint the NFT: " + error})
-            });
-        }
-        // this.state.contract.methods.duplicateMint(hash,1).send({from: this.state.account})
-        //     .on('receipt', (receipt) => {
-        //         console.log("id: " + receipt.logs[0].topics[3]);
-        //         console.log("status: " + receipt.status);
-        //         this.setState({
-        //             tokens: [...this.state.tokens, hash]
-        //         })
-        //     })
-        //     .on('confirmation', function(confirmationNumber, receipt){
-        //         console.log("status: " + confirmationNumber);
-        //     })
-        //     .on('error', function(error, receipt) { // If the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
-        //         console.log("status: e" + receipt.status);
-        //     });
+            }
+        });
     }
 
     onFileChanged(e) {
@@ -128,40 +102,35 @@ class App extends Component {
 
     async onFormSubmit() {
         try {
-            console.log(this.state.amountToMint+" amount");
-            console.log(this.state.rarity+" rarity");
-            console.log(this.state.royalty+" royalty");
-
-            // const imageHash = await uploadDataToIPFS(this.state.imageFile);
-            // const {hash: imageHash, status: imageStatus} = await uploadDataToIPFS(this.state.imageFile);
             let metadata = this.state.metadata;
+            // const imageHash = await uploadDataToIPFS(this.state.imageFile);
+            const {hash: imageHash, status: imageStatus} = await uploadDataToIPFS(this.state.imageFile);
+            // metadata.pinataContent.image = "ipfs://"+imageHash;
+            metadata.pinataContent.image = "https://ipfs.io/ipfs/"+imageHash;
 
-            // metadata.pinataContent.image = "ipfs://" + imageHash;
-            // metadata.pinataContent.image = "https://ipfs.io/ipfs/" + imageHash;
-            // const attributes = metadata.pinataContent.attributes;
-            // for (let i = 0; i < attributes.length; i++) {
-            //     if(attributes[i].trait_type === "" || attributes[i].value === ""){
-            //         this.removeProperty(i)
-            //     }
-            // }
+            let arr =  Object.keys(metadata.pinataContent.attributes).map((key) =>
+                metadata.pinataContent.attributes[key].trait_type
+            );
+            if (!arr.includes("Rarity")){
+                metadata.pinataContent.attributes.push({trait_type: "Rarity", value: this.state.rarity })
 
-            this.setState({metadata: metadata});
-            // used on purpose after setting the state
-            metadata.pinataContent.attributes.push({trait_type: "Rarity", value: this.state.rarity })
+            }
             console.log(JSON.stringify(metadata, null, 2))
-
+            this.setState({metadata: metadata});
 
             // const metadataHash = await uploadJSONToIPFS(metadata);
-            // const {hash:metadataHash, status: metadataStatus} = await uploadJSONToIPFS(metadata);
-            // await this.mint(metadataHash);
-            // console.log(imageStatus+ "   ",metadataStatus)
+            const {hash:metadataHash, status: metadataStatus} = await uploadJSONToIPFS(metadata);
+            await this.mint(metadataHash);
+
             if(metadataStatus != 200 || imageStatus != 200){
-                this.setState({statusMessage: "There was a problem uploading the files to IPFS: "+ metadataStatus!=200? metadataStatus : imageStatus})
+                // this.setState({statusMessage: "There was a problem uploading the files to IPFS: "+ metadataStatus!=200? imageStatus : metadataStatus})
+                this.setState({errorMessage: "There was a problem uploading the files to IPFS: "+ metadataStatus!=200? imageStatus : metadataStatus})
+
             }
 
         } catch (e) {
             console.log("something went wrong with creating your NFT: " + e);
-            this.setState({statusMessage: "something went wrong (error at submit)"})
+            this.setState({errorMessage: "something went wrong when trying to submit: "+e.message})
         }
     }
 
@@ -177,6 +146,7 @@ class App extends Component {
                     web3={this.state.web3}
                     account={this.state.account}
                     contract={this.state.contract}
+                    errorMessage={this.state.errorMessage}
                 />
             )
         }
@@ -208,34 +178,38 @@ class App extends Component {
                 metadata: data
             }))
     }
-    renderProperties(element, index) {
-        // if(element.trait_type!="Rarity") {
-            return (<Form.Group key={index} controlId="property" className="mt-2 mb-2">
-                <Button type="button" variant="danger" className="float-lg-end mt-2" size="sm"
-                        onClick={() => this.removeProperty(index)}>
-                    remove
-                </Button>
-                <Form.Label className="mt-2">Trait type</Form.Label>
-                <Form.Control
-                    placeholder='Region'
-                    value={element.trait_type}
-                    name="trait_type"
-                    onChange={e => this.handleChange(index, e)}
-                />
-                <Form.Label className="mt-2">Trait value</Form.Label>
-                <Form.Control
-                    placeholder='French polynesia'
-                    value={element.value}
-                    name="value"
-                    onChange={e => this.handleChange(index, e)}
-                />
-            </Form.Group>)
-        // }
+    renderProperties() {
+        let properties = [];
+        this.state.metadata.pinataContent.attributes.map((element, index) =>
+        {
+            if(element.trait_type!="Rarity") {
+                properties.push(<Form.Group key={index} controlId="property" className="mt-2 mb-2">
+                    <Button type="button" variant="danger" className="float-lg-end mt-2" size="sm"
+                            onClick={() => this.removeProperty(index)}>
+                        remove
+                    </Button>
+                    <Form.Label className="mt-2">Trait type</Form.Label>
+                    <Form.Control
+                        placeholder='Region'
+                        value={element.trait_type}
+                        name="trait_type"
+                        onChange={e => this.handleChange(index, e)}
+                    />
+                    <Form.Label className="mt-2">Trait value</Form.Label>
+                    <Form.Control
+                        placeholder='French polynesia'
+                        value={element.value}
+                        name="value"
+                        onChange={e => this.handleChange(index, e)}
+                    />
+                </Form.Group>);
+            }
+        })
+        return properties;
     }
 
     // WIP
      async setStatus(hash){
-        const variant="";
         await this.state.web3.eth.getTransactionReceipt(hash, function (error, result) {
                 if(error){
                     // this.setState(({
@@ -253,17 +227,25 @@ class App extends Component {
 
     }
     // WIP
-    getStatusMessage = async (variant) =>{
-        return (
-            <Row>
-                <Alert variant={variant} className="mt-3 fw-bold">
-                    <span className="text-center">{this.state.statusMessage}</span>
-                </Alert>
-            </Row>
-        )
+    getStatusMessage(variant){
+        if(this.state.statusMessage==="") {
+            return (
+                <Row>
+                    <Alert variant={variant} className="mt-3 fw-bold">
+                        <span className="text-center">{this.state.statusMessage}</span>
+                    </Alert>
+                </Row>
+            )
+        }
     }
     // https://codesandbox.io/s/react-eth-metamask-7vuy7?file=/src/App.js
     render() {
+        if(this.state.errorMessage && this.state.errorMessage!=="" ){
+            console.log("test")
+            return (<Error>
+                <h3>{this.state.errorMessage}</h3>
+            </Error>);
+        }
         if (!this.state.web3) {
             return <div>Loading Web3, accounts, and contract...</div>;
         }
@@ -280,7 +262,7 @@ class App extends Component {
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>
-
+                <Error>
                 <Container fluid>
                     <Row>
                             <Form onSubmit={async (event) => {
@@ -299,7 +281,7 @@ class App extends Component {
                                 <Form.Group controlId="formName">
                                     <Form.Label>Name</Form.Label>
                                     <Form.Control placeholder='e.g. Bora Bora Beach In The Afternoon'
-                                                  required
+                                                  // required
                                                   ref={(input) => {
                                                       this.name = input
                                                   }}/>
@@ -309,7 +291,7 @@ class App extends Component {
                                 <Form.Group controlId="formDescription">
                                     <Form.Label>Description</Form.Label>
                                     <Form.Control placeholder='e.g. 30°C in the Summer'
-                                                  required
+                                                  // required
                                                   ref={(input) => {
                                                       this.description = input
                                                   }}  />
@@ -320,7 +302,7 @@ class App extends Component {
                                     <Form.Label>Asset File</Form.Label>
                                     <Form.Control type="file" onChange={this.onFileChanged}
                                                   accept="image/*, video/*, audio/*"
-                                                  required
+                                                  // required
 
                                     />
                                 </Form.Group>
@@ -358,9 +340,9 @@ class App extends Component {
                                                                   this.setState({amountToMint: val})
                                                               })}
                                                               disabled = {(this.state.rarity==="Rare")? "" : "disabled"}
-                                                              // ref={(input) => {
-                                                              //     this.amount = input;
-                                                              // }}
+                                                              ref={(input) => {
+                                                                  this.amount = input;
+                                                              }}
                                                 />
                                             </Form.Group>
 
@@ -372,6 +354,7 @@ class App extends Component {
                                                               type="number"
                                                               min={0}
                                                               max={30}
+                                                              placeholder="between 0% and 30%"
                                                               ref={(input) => {
                                                                   this.royalty = input
                                                               }}/>
@@ -384,37 +367,16 @@ class App extends Component {
                                         Add property
                                     </Button>
                                 <Row xs={5} className="d-flex align-items-end mt-3" >
-                                        {this.state.metadata.pinataContent.attributes.map((element, index) =>
-                                                this.renderProperties(element,index)
-                                        //         (
-                                        //             <Form.Group key={index} controlId="property" className="mt-2 mb-2">
-                                        //                 <Button type="button" variant="danger" className="float-lg-end mt-2" size="sm" onClick={()=>this.removeProperty(index)}>
-                                        //                     remove
-                                        //                 </Button>
-                                        //                 <Form.Label className="mt-2">Trait type</Form.Label>
-                                        //                 <Form.Control
-                                        //                     placeholder='Region'
-                                        //                     value={element.trait_type}
-                                        //                     name="trait_type"
-                                        //                     onChange={e => this.handleChange(index, e)}
-                                        //                 />
-                                        //                 <Form.Label className="mt-2">Trait value</Form.Label>
-                                        //                 <Form.Control
-                                        //                     placeholder='French polynesia'
-                                        //                     value={element.value}
-                                        //                     name="value"
-                                        //                     onChange={e => this.handleChange(index, e)}
-                                        //                 />
-                                        //             </Form.Group>
-                                        // )
-                                        )}
+                                    {this.renderProperties()}
                                     </Row>
+
                                 </Form.Group>
                                 <Row>
                                 <Button type="submit" variant="outline-primary" className="mt-5">
                                     Mint
                                 </Button>
                                 </Row>
+                                {this.getStatusMessage()}
                             </Form>
 
                         <Container fluid className="pt-5">
@@ -422,6 +384,7 @@ class App extends Component {
                         </Container>
                     </Row>
                 </Container>
+                </Error>
             </Container>
         );
     }

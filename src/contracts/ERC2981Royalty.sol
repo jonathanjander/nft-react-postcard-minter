@@ -23,6 +23,7 @@ abstract contract ERC2981Royalty is ERC2981Base {
     }
 
     /// @inheritdoc	IERC2981Royalties
+    // value is price of nft
     function royaltyInfo(uint256 tokenId, uint256 value)
     external
     view

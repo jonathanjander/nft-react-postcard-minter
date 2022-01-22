@@ -1,5 +1,5 @@
 // import getWeb3 from "../getWeb3";
-import PostcardContract from "../abis/Postcard.json";
+import SouvenirContract from "../abis/Souvenir.json";
 import Web3 from "web3";
 
 //why do i have to export this but not pinFileToIPFS?
@@ -31,8 +31,7 @@ export const getWallet = async ()=> {
 
             return {
                 web3: web3,
-                account: accounts[0],
-                statusMessage: "Mint your own Postcard-NFT"
+                account: accounts[0]
             }
         } catch (error) {
             // Catch any errors for any of the above operations.
@@ -43,7 +42,7 @@ export const getWallet = async ()=> {
             return {
                 web3: null,
                 account: "",
-                statusMessage: "Failed to connect to Wallet: "+ error
+                errorMessage: "Failed to connect to Wallet: "+ error.message
             }
         }
     }
@@ -51,7 +50,7 @@ export const getWallet = async ()=> {
         return {
             web3: null,
             account: "",
-            statusMessage: "Metamask is not installed"
+            errorMessage: "Metamask is not installed"
         }
     }
 }
@@ -62,16 +61,12 @@ export const getContract = async (web3, networkId)=> {
             // current networkId
             networkId = await web3.eth.net.getId();
         }
-
-
-
         // Get the contract instance.
-        const deployedNetwork = PostcardContract.networks[networkId];
+        const deployedNetwork = SouvenirContract.networks[networkId];
         const instance = new web3.eth.Contract(
-            PostcardContract.abi,
+            SouvenirContract.abi,
             deployedNetwork && deployedNetwork.address,
         );
-
         return {
             contract: instance
         };
@@ -138,10 +133,10 @@ export async function mintNFT(tokenHash) {
     const PUBLIC_KEY = process.env.REACT_APP_PUBLIC_KEY;
     const PRIVATE_KEY = process.env.REACT_APP_PRIVATE_KEY;
     const networkId = await web3.eth.net.getId();
-    const deployedNetwork = PostcardContract.networks[networkId];
+    const deployedNetwork = SouvenirContract.networks[networkId];
     const contractAddress = deployedNetwork && deployedNetwork.address;
     const nonce = await web3.eth.getTransactionCount(PUBLIC_KEY, 'latest'); //get latest nonce
-    const nftContract = new web3.eth.Contract(PostcardContract.abi, contractAddress)
+    const nftContract = new web3.eth.Contract(SouvenirContract.abi, contractAddress)
 
 
 

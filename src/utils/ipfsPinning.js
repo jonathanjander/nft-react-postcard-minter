@@ -10,6 +10,8 @@ const pinataApiKey = process.env.REACT_APP_PINATA_API_KEY;
 const pinataApiSecret = process.env.REACT_APP_PINATA_API_SECRET;
 
 const uploadJSONToIPFS = async (JSONData) => {
+    JSONData = formatJSON(JSONData);
+    let result;
     try {
         const request = {
             method: 'post',
@@ -21,20 +23,31 @@ const uploadJSONToIPFS = async (JSONData) => {
             data: JSONData,
         };
         const response = await axios(request)
-        console.log('Successfully pinned file to IPFS : ', response);
+        console.log('Successfully pinned metadata to IPFS : ', response);
         // return response.data.IpfsHash;
-        return {
+        result = {
             hash: response.data.IpfsHash,
             status: response.status
         }
+        // return {
+        //     hash: response.data.IpfsHash,
+        //     status: response.status
+        // }
     }
     catch (err) {
-        console.log('Error occurred while pinning file to IPFS: ', err);
+        console.log('Error occurred while pinning metadata to IPFS: ', err);
+        result = {
+            hash: "not-found",
+            status:"Error occurred while pinning metadata to IPFS: " + err.message
+        }
     }
+    return result
 }
+
 // data must be a file or a blob otherwise it doesn't work
 const uploadDataToIPFS = async (data) => {
     const form_data = new FormData();
+    let result;
     try {
         form_data.append('file', data)
         const request = {
@@ -49,20 +62,40 @@ const uploadDataToIPFS = async (data) => {
             data: form_data,
         };
         const response = await axios(request);
-        console.log('Successfully pinned file to IPFS : ', response);
+        console.log('Successfully pinned image to IPFS : ', response);
         // return response.data.IpfsHash;
-        return {
+        result = {
             hash: response.data.IpfsHash,
             status: response.status
-        };
+        }
+        // return {
+        //     hash: response.data.IpfsHash,
+        //     status: response.status
+        // };
     }
     catch (err) {
-        console.log('Error occurred while pinning file to IPFS: ', err);
+        console.log('Error occurred while pinning the image to IPFS: ', err);
+        result = {
+            hash: "not-found",
+            status:"Error occurred while pinning the image to IPFS: " + err.message
+        }
     }
+    return result;
+}
+const formatJSON = (JSONData) => {
+    const attributes = JSONData.pinataContent.attributes;
+    for (let i = 0; i < attributes.length; i++) {
+        if(attributes[i].trait_type === "" || attributes[i].value === ""){
+            attributes.splice(i,1);
+        }
+    }
+    console.log(JSON.stringify(JSONData,null,2))
+    return JSONData;
 }
 
 
 module.exports = {
     uploadDataToIPFS,
-    uploadJSONToIPFS
+    uploadJSONToIPFS,
+    formatJSON
 }

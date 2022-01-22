@@ -1,8 +1,6 @@
 import React, {Component} from "react";
 import Table from 'react-bootstrap/Table';
 import {FileEarmarkCode} from 'react-bootstrap-icons';
-import ToolTip from "react-tooltip";
-
 class History extends Component {
     //https://rinkeby-api.opensea.io/api/v1/assets?owner=0xc7d2e073ed4aaf735ef12fffbf7afe752d1e2390
     constructor(props) {
@@ -12,7 +10,8 @@ class History extends Component {
             contract: this.props.contract,
             web3: this.props.web3,
             transferHistory: [],
-            networkId: null
+            networkId: null,
+            errorMessage: this.props.errorMessage
         }
         this.getTimeStampOfTX = this.getTimeStampOfTX.bind(this);
         this.getRowData = this.getRowData.bind(this);
@@ -35,10 +34,11 @@ class History extends Component {
         // TODO SORT CUZ SORTING IS KINDA FUCKED
         // TODO REMOVE HARDCODED "RINKEBY" AND "TESTNETS"
         // TODO USE https://rinkeby.etherscan.io/token/0xf88825da14E802eb5ca4834C450000f598EA3863 FOR SOMETHING
-        // TODO ADD KEYS TO LIST CUZ ERROR
         // listens to minted NFTs
+        try {
         this.state.contract.events.Transfer(options)
             .on('data', async transfer => {
+
                     const etherScanPrefix = "https://rinkeby.etherscan.io/address/";
                     let timestamp = await this.getTimeStampOfTX(transfer.transactionHash);
 
@@ -48,7 +48,7 @@ class History extends Component {
                     let toUrl = etherScanPrefix + transfer.returnValues.to;
 
                     let icon = null;
-                    if(from === transfer.address){
+                    if (from === transfer.address) {
                         icon = <FileEarmarkCode className="d-inline mb-1 me-1"/>;
                     }
                     this.state.contract.get
@@ -57,30 +57,23 @@ class History extends Component {
                         transaction: transfer.transactionHash,
                         from: <span>
                             {icon}
-                            <a href={fromUrl} target="_blank" rel="noopener noreferrer">{from.substr(2,6)}</a></span>,
-                        to: <a href={toUrl} target="_blank" rel="noopener noreferrer">{transfer.returnValues.to.substr(2,6)}</a>,
-                        created: timestamp +" ago",
+                            <a href={fromUrl} target="_blank" rel="noopener noreferrer">{from.substr(2, 6)}</a></span>,
+                        to: <a href={toUrl} target="_blank"
+                               rel="noopener noreferrer">{transfer.returnValues.to.substr(2, 6)}</a>,
+                        created: timestamp + " ago",
                         opensea: <a href={osUrl} target="_blank" rel="noopener noreferrer">Opensea</a>
                     }
-                    // let obj = {
-                    //     tokenId: transfer.returnValues.tokenId,
-                    //     transaction: transfer.transactionHash,
-                    //     from: transfer.returnValues.from,
-                    //     to: <a href={osUrl} key="to" target="_blank" rel="noopener noreferrer">Opensea</a>,
-                    //     created: timestamp +" ago",
-                    //     opensea: "lol"
-                    // }
                     await this.loadDataAsync({transferHistory: [...this.state.transferHistory, obj]})
-
 
 
             })
             .on('error', err =>  console.log(err))
+        }
+            catch (e) {
+                this.setState({errorMessage: "something went wrong: "+e.message})
+            }
 
 
-
-    }
-    componentWillUnmount = async () => {
     }
 
     loadDataAsync = async function(state){
@@ -88,6 +81,7 @@ class History extends Component {
             this.setState(state,resolve)
             });
     }
+
     // from https://medium.com/@subalerts/create-dynamic-table-from-json-in-react-js-1a4a7b1146ef
     getHeader = function(){
         if(this.state.transferHistory != null && this.state.transferHistory[0] !== undefined){
@@ -156,12 +150,14 @@ class History extends Component {
 
     }
     render() {
+        if(this.state.errorMessage!==""){
+            return <h3>{this.state.errorMessage}</h3>;
+        }
         if(this.state.transferHistory != null) {
             this.state.transferHistory.sort((a, b) =>{
                 return b.tokenId-a.tokenId;
             })
             return (
-
                 <div>
                     <Table bordered hover>
                         <thead>
@@ -174,6 +170,7 @@ class History extends Component {
                         </tbody>
                     </Table>
                 </div>
+                
             )
         }
         else{
@@ -186,7 +183,7 @@ class History extends Component {
 // from https://medium.com/@subalerts/create-dynamic-table-from-json-in-react-js-1a4a7b1146ef
 const RenderRow = (historyData) =>{
     if(historyData != null){
-        return historyData.keys.map((key, index) =>{
+        return historyData.keys.map((key) =>{
             // console.log(key);
             return <td key={key}>{historyData.data[key]}</td>
         })
