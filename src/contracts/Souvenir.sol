@@ -17,6 +17,7 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIds;
+    Counters.Counter private _numOfTokens;
 
     // Optional mapping for token URIs
     // copied from ERC721URIStorage.sol
@@ -57,7 +58,7 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     // FIX
     // BROKEN CUZ OF BURN
     function totalSupply() public view returns (uint256) {
-        return _tokenIds.current();
+        return _numOfTokens.current();
     }
 
     // for opensea collection
@@ -100,6 +101,7 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     // copied from ERC721URIStorage.sol
     function _burn(uint256 tokenId) internal virtual override {
         super._burn(tokenId);
+        _numOfTokens.decrement();
         if (bytes(_tokenURIs[tokenId]).length != 0) {
             delete _tokenURIs[tokenId];
         }
@@ -137,6 +139,7 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     {
         _hashes[tokenHash] = _hashes[tokenHash] + 1;
         _tokenIds.increment();
+        _numOfTokens.increment();
         uint256 newTokenId = _tokenIds.current();
         _safeMint(msg.sender, newTokenId);
         _setTokenURI(newTokenId, tokenHash);
@@ -151,6 +154,7 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     {
         _hashes[tokenHash] = _hashes[tokenHash] + 1;
         _tokenIds.increment();
+        _numOfTokens.increment();
         uint256 newTokenId = _tokenIds.current();
         _safeMint(receiver, newTokenId);
         _setTokenURI(newTokenId, tokenHash);
@@ -172,6 +176,7 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
         for(uint256 i=0; i < numberOfTokens; i++){
             _hashes[tokenHash] = _hashes[tokenHash] + 1;
             _tokenIds.increment();
+            _numOfTokens.increment();
             uint256 newTokenId = _tokenIds.current();
             _safeMint(msg.sender, newTokenId);
             _setTokenURI(newTokenId, tokenHash);

@@ -421,7 +421,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-01-22T16:55:57.211Z",
+  "updatedAt": "2022-01-23T17:40:39.689Z",
   "devdoc": {
     "details": "Interface for the ERC2981 - Token Royalty standard",
     "kind": "dev",

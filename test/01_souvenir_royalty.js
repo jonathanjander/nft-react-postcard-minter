@@ -24,14 +24,15 @@ contract('Souvenir', (accounts) => {
         })
 
         it('royalties set too high', async () => {
-            // await souvenir.mint('testhash',20000).should.be.rejectedWith('ERC2981Royalties: Too high');
-            // assert.equal(royaltyInfo[1].toNumber(),1000);
-            const tx = await souvenir.mint('testhash',20000);
-            assert.equal(tx.reason,'ERC2981Royalties: Too high', tx)
-            // await expect(tx.reason).should.be.rejectedWith('ERC2981Royalties: Too high');
+            try{
+                const tx = await souvenir.mint('testhash',20000)
+            }
+            catch (e) {
+                assert.equal(e.reason,'ERC2981Royalties: Too high', "royalties too high (>100%)")
+            }
         })
         it('royaltyrecipient is set correctly', async () => {
-            const tx = await souvenir.mint('testhash',1000);
+            await souvenir.mint('testhash',1000);
             const recipient = await souvenir.royaltyRecipient();
             assert.equal(accounts[0], recipient, "correct")
             // await expect(tx.reason).should.be.rejectedWith('ERC2981Royalties: Too high');

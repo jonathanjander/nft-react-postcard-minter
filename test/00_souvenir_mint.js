@@ -49,15 +49,12 @@ contract('Souvenir', (accounts) => {
     describe('burning', async () => {
 
         it('burns a token', async () => {
-            await souvenir.mint('testhash',0)
-            const tx = await souvenir.burn(1)
+            await souvenir.burn(1)
             const totalSupply = await souvenir.totalSupply()
             // SUCCESS
-            const event = tx.logs[0].args
             assert.equal(totalSupply, 0)
-
             // FAILURE
-            assert.equal()
+            // assert.equal()
         })
     })
 
