@@ -99,5 +99,15 @@ contract Postcard is ERC721, Ownable {
             _setTokenURI(newItemId, tokenHash);
         }
     }
+    function mint(string memory tokenHash)
+    public
+    onlyOwner
+    {
+            _hashes[tokenHash] = _hashes[tokenHash] + 1;
+            _tokenIds.increment();
+            uint256 newItemId = _tokenIds.current();
+            _safeMint(msg.sender, newItemId);
+            _setTokenURI(newItemId, tokenHash);
+    }
 
 }

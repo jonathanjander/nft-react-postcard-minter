@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import Table from 'react-bootstrap/Table';
 import {FileEarmarkCode} from 'react-bootstrap-icons';
+import {getLatestERC721Tx} from "./utils/etherscan";
+
 class History extends Component {
     //https://rinkeby-api.opensea.io/api/v1/assets?owner=0xc7d2e073ed4aaf735ef12fffbf7afe752d1e2390
     constructor(props) {
@@ -13,12 +15,15 @@ class History extends Component {
             networkId: null,
             errorMessage: this.props.errorMessage
         }
-        this.getTimeStampOfTX = this.getTimeStampOfTX.bind(this);
+        // this.getTimeStampOfTX = this.getTimeStampOfTX.bind(this);
         this.getRowData = this.getRowData.bind(this);
         this.getHeader = this.getHeader.bind(this);
         this.loadingDataMarkup = this.loadingDataMarkup.bind(this);
         this.loadDataAsync = this.loadDataAsync.bind(this);
         this.timeDifference = this.timeDifference.bind(this);
+        this.loadTxData = this.loadTxData.bind(this);
+        // this.loadTxDatatest = this.loadTxDatatest.bind(this);
+        this.getTimeDiff = this.getTimeDiff.bind(this);
 
     }
     componentDidMount = async () => {
@@ -29,52 +34,101 @@ class History extends Component {
             },
             fromBlock: 0
         };
-
-        // TODO ADD HISTORY CAP (AROUND 15 MAYBE)
-        // TODO SORT CUZ SORTING IS KINDA FUCKED
-        // TODO REMOVE HARDCODED "RINKEBY" AND "TESTNETS"
-        // TODO USE https://rinkeby.etherscan.io/token/0xf88825da14E802eb5ca4834C450000f598EA3863 FOR SOMETHING
-        // listens to minted NFTs
-        try {
-        this.state.contract.events.Transfer(options)
-            .on('data', async transfer => {
-
-                    const etherScanPrefix = "https://rinkeby.etherscan.io/address/";
-                    let timestamp = await this.getTimeStampOfTX(transfer.transactionHash);
-
-                    let from = (transfer.returnValues.from === "0x0000000000000000000000000000000000000000") ? transfer.address : transfer.returnValues.from;
-                    let osUrl = "https://testnets.opensea.io/assets/" + transfer.address + "/" + transfer.returnValues.tokenId;
-                    let fromUrl = etherScanPrefix + from;
-                    let toUrl = etherScanPrefix + transfer.returnValues.to;
-
-                    let icon = null;
-                    if (from === transfer.address) {
-                        icon = <FileEarmarkCode className="d-inline mb-1 me-1"/>;
-                    }
-                    this.state.contract.get
-                    let obj = {
-                        tokenId: transfer.returnValues.tokenId,
-                        transaction: transfer.transactionHash,
-                        from: <span>
-                            {icon}
-                            <a href={fromUrl} target="_blank" rel="noopener noreferrer">{from.substr(2, 6)}</a></span>,
-                        to: <a href={toUrl} target="_blank"
-                               rel="noopener noreferrer">{transfer.returnValues.to.substr(2, 6)}</a>,
-                        created: timestamp + " ago",
-                        opensea: <a href={osUrl} target="_blank" rel="noopener noreferrer">Opensea</a>
-                    }
-                    await this.loadDataAsync({transferHistory: [...this.state.transferHistory, obj]})
-
-
-            })
-            .on('error', err =>  console.log(err))
+        const entries = await getLatestERC721Tx(this.state.contract._address, this.state.account, 30);
+        for (const entry of entries.data.result) {
+            await this.loadTxData(entry);
         }
-            catch (e) {
-                this.setState({errorMessage: "something went wrong: "+e.message})
-            }
+
+
+
+        // listens to tx
+        // try {
+        // this.state.contract.events.Transfer(options)
+        //     .on('data', async transfer => {
+        //         await this.loadTxData(transfer);
+        //     })
+        //     .on('changed', async changed => {
+        //         console.log("does this shit even work")
+        //         await this.loadTxData(changed);
+        //     })
+        //     .on('error', err =>  console.log(err))
+        // }
+        // catch (e) {
+        //     this.setState({errorMessage: "something went wrong: "+e.message})
+        // }
 
 
     }
+
+    loadTxData = async function(tx){
+        const etherScanAddressPrefix = "https://rinkeby.etherscan.io/address/";
+        const etherScanTxPrefix = "https://rinkeby.etherscan.io/tx/";
+        let timestamp = await this.getTimeDiff(tx.timeStamp);
+
+        const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
+        let from = (tx.from === ZERO_ADDRESS) ? tx.contractAddress : tx.from;
+        let osUrl = "https://testnets.opensea.io/assets/" + tx.contractAddress + "/" + tx.tokenID;
+        let fromUrl = etherScanAddressPrefix + from;
+        let toUrl = etherScanAddressPrefix + tx.to;
+        let transUrl = etherScanTxPrefix + tx.hash;
+
+        let icon = null;
+        if (from === tx.contractAddress) {
+            icon = <FileEarmarkCode className="d-inline mb-1 me-1"/>;
+        }
+        this.state.contract.get
+        let entry = {
+            tokenID: tx.tokenID,
+            transaction: <a href={transUrl} target="_blank"
+                            rel="noopener noreferrer">{tx.hash.substr(2, 10)}</a>,
+            from: <span>
+                            {icon}
+                <a href={fromUrl} target="_blank" rel="noopener noreferrer">{from.substr(2, 10)}</a></span>,
+            to: <a href={toUrl} target="_blank"
+                   rel="noopener noreferrer">{tx.to.substr(2, 10)}</a>,
+            created: timestamp + " ago",
+            opensea: <a href={osUrl} target="_blank" rel="noopener noreferrer">Opensea</a>
+        }
+        this.setState({transferHistory: [...this.state.transferHistory, entry]})
+        // await this.loadDataAsync({transferHistory: [...this.state.transferHistory, obj]})
+    }
+    // loadTxData = async function(tx){
+    //     // TODO ADD HISTORY CAP (AROUND 15 MAYBE)
+    //     // TODO SORT CUZ SORTING IS KINDA FUCKED
+    //     // TODO REMOVE HARDCODED "RINKEBY" AND "TESTNETS"
+    //     // TODO USE https://rinkeby.etherscan.io/token/0xf88825da14E802eb5ca4834C450000f598EA3863 FOR SOMETHING
+    //
+    //     const etherScanAddressPrefix = "https://rinkeby.etherscan.io/address/";
+    //     const etherScanTxPrefix = "https://rinkeby.etherscan.io/tx/";
+    //     let timestamp = await this.getTimeStampOfTX(tx.transactionHash);
+    //
+    //     const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
+    //     let from = (tx.returnValues.from === ZERO_ADDRESS) ? tx.address : tx.returnValues.from;
+    //     let osUrl = "https://testnets.opensea.io/assets/" + tx.address + "/" + tx.returnValues.tokenId;
+    //     let fromUrl = etherScanAddressPrefix + from;
+    //     let toUrl = etherScanAddressPrefix + tx.returnValues.to;
+    //     let transUrl = etherScanTxPrefix + tx.transactionHash;
+    //
+    //     let icon = null;
+    //     if (from === tx.address) {
+    //         icon = <FileEarmarkCode className="d-inline mb-1 me-1"/>;
+    //     }
+    //     this.state.contract.get
+    //     let entry = {
+    //         tokenId: tx.returnValues.tokenId,
+    //         transaction: <a href={transUrl} target="_blank"
+    //                         rel="noopener noreferrer">{tx.transactionHash.substr(2, 10)}</a>,
+    //         from: <span>
+    //                         {icon}
+    //             <a href={fromUrl} target="_blank" rel="noopener noreferrer">{from.substr(2, 10)}</a></span>,
+    //         to: <a href={toUrl} target="_blank"
+    //                rel="noopener noreferrer">{tx.returnValues.to.substr(2, 10)}</a>,
+    //         created: timestamp + " ago",
+    //         opensea: <a href={osUrl} target="_blank" rel="noopener noreferrer">Opensea</a>
+    //     }
+    //     this.setState({transferHistory: [...this.state.transferHistory, entry]})
+    //     // await this.loadDataAsync({transferHistory: [...this.state.transferHistory, obj]})
+    // }
 
     loadDataAsync = async function(state){
         return new Promise((resolve) =>{
@@ -109,13 +163,17 @@ class History extends Component {
         return (<h6>Loading Table...</h6>)
     }
 
-    getTimeStampOfTX = async (txhash) =>{
-        const blockNumber = (await this.state.web3.eth.getTransaction(txhash)).blockNumber;
-        const timestamp = (await this.state.web3.eth.getBlock(blockNumber)).timestamp;
+    // getTimeStampOfTX = async (txhash) =>{
+    //     const blockNumber = (await this.state.web3.eth.getTransaction(txhash)).blockNumber;
+    //     const timestamp = (await this.state.web3.eth.getBlock(blockNumber)).timestamp;
+    //     const date = new Date(timestamp*1000);
+    //     return this.timeDifference(new Date(Date.now()), date);
+    //
+    // }
+
+    getTimeDiff = async (timestamp) =>{
         const date = new Date(timestamp*1000);
         return this.timeDifference(new Date(Date.now()), date);
-        // console.log("diff: "+ diff.toTimeString())
-        // return date.getHours()+":"+("0"+date.getMinutes()).substr(-2) + ":"+ ("0"+date.getSeconds()).substr(-2);
 
     }
 
@@ -150,9 +208,9 @@ class History extends Component {
 
     }
     render() {
-        if(this.state.errorMessage!==""){
-            return <h3>{this.state.errorMessage}</h3>;
-        }
+        // if(this.state.errorMessage!==""){
+        //     return <h3>{this.state.errorMessage}</h3>;
+        // }
         if(this.state.transferHistory != null) {
             this.state.transferHistory.sort((a, b) =>{
                 return b.tokenId-a.tokenId;
@@ -184,7 +242,6 @@ class History extends Component {
 const RenderRow = (historyData) =>{
     if(historyData != null){
         return historyData.keys.map((key) =>{
-            // console.log(key);
             return <td key={key}>{historyData.data[key]}</td>
         })
     }

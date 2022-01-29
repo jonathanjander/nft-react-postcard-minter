@@ -13,6 +13,6 @@ ReactDOM.render(<App />, document.getElementById('root'));
 serviceWorker.unregister();
 
 
-window.onunhandledrejection = (e) => {
-    alert("unhandled rejection: "+e)
-}
+// window.onunhandledrejection = (e) => {
+//     alert("unhandled rejection: "+e)
+// }

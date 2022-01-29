@@ -6,8 +6,8 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./ERC2981Royalty.sol";
+
 //TODO ADD METADATA FREEZING
-//TODO SOMETHING DOESNT WORK PROPERLY
 //TODO ADD PERCENT TO CREATOR OF CONTRACTS
 
 //https://github.com/neha01/nft-demo/blob/master/contracts/ArtCollectible.sol ref
@@ -23,15 +23,15 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     // copied from ERC721URIStorage.sol
     mapping(uint256 => string) private _tokenURIs;
 
-
     // mapping
     // not sure if i want it or not
     mapping(string => uint8) private _hashes;
 
     // Base URI
-    string private _baseURIExtended = "https://ipfs.io/ipfs/";
+    // string private _baseURIExtended = "https://ipfs.io/ipfs/";
+    string private _baseURIExtended = "ipfs://";
 
-//    address private _royaltyRecipient = owner();
+    // address private _royaltyRecipient = owner();
     address private _royaltyRecipient;
 
     // constructor with name and symbol of nft
@@ -41,9 +41,7 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
 
 
 
-    // write tests for this method
-    //what does this even do
-    /// @inheritdoc	ERC165
+    // function to validate interfaces
     function supportsInterface(bytes4 interfaceId)
     public
     view
@@ -55,16 +53,16 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     }
 
 
-    // FIX
-    // BROKEN CUZ OF BURN
     function totalSupply() public view returns (uint256) {
         return _numOfTokens.current();
     }
 
-    // for opensea collection
-    // this is currently being used to determine which metadata(json) it uses for the NFT
+    // collection representation
+    // marketplaces use this function in order to assign tokens to this collection
+    // pure is a keyword, which ensures that the function doesnt view nor modify the state
     function contractURI() public pure returns (string memory) {
-        return "https://ipfs.io/ipfs/QmcbqmQn3248WytoNPKbapP8rYXmr1efVnb8t7qEi8aLgY"; // collection json ipfs
+//        return "https://ipfs.io/ipfs/QmcbqmQn3248WytoNPKbapP8rYXmr1efVnb8t7qEi8aLgY"; // collection json ipfs
+        return "ipfs://QmPesCd1cJxnbAikjaoLy4UHiLZqfwbsCaVVzbSm3ZVyAJ"; // collection json ipfs
     }
 
     function setBaseURI(string memory baseURI_)
@@ -74,6 +72,7 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
         _baseURIExtended = baseURI_;
     }
 
+    // view is a keyword, which ensures that the function can view but not modify the state
     function _baseURI()
     internal
     view
@@ -107,12 +106,15 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
         }
     }
 
-    function burn(uint256 tokenId) public {
+    // burns (destroys) a token.
+    function burn(uint256 tokenId) public onlyOwner{
         _burn(tokenId);
     }
+
     function royaltyRecipient() public view virtual returns (address) {
         return _royaltyRecipient;
     }
+
     // copied from ERC721URIStorage.sol
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         require(_exists(tokenId), "ERC721: URI query for nonexistent token");
@@ -131,43 +133,14 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
 
         return super.tokenURI(tokenId);
     }
-    // public or external?
-    /// value percentage (using 2 decimals - 10000 = 100, 0 = 0)
-    function mint(string memory tokenHash, uint256 royaltyAmount)
-    public
-    onlyOwner
-    {
-        _hashes[tokenHash] = _hashes[tokenHash] + 1;
-        _tokenIds.increment();
-        _numOfTokens.increment();
-        uint256 newTokenId = _tokenIds.current();
-        _safeMint(msg.sender, newTokenId);
-        _setTokenURI(newTokenId, tokenHash);
-        if (royaltyAmount > 0) {
-            _setTokenRoyalty(newTokenId, _royaltyRecipient, royaltyAmount);
-        }
-    }
 
-    function mintTo(string memory tokenHash, address receiver, uint256 royaltyAmount)
-    public
-    onlyOwner
-    {
-        _hashes[tokenHash] = _hashes[tokenHash] + 1;
-        _tokenIds.increment();
-        _numOfTokens.increment();
-        uint256 newTokenId = _tokenIds.current();
-        _safeMint(receiver, newTokenId);
-        _setTokenURI(newTokenId, tokenHash);
-        if (royaltyAmount > 0) {
-            _setTokenRoyalty(newTokenId, _royaltyRecipient, royaltyAmount);
-        }
-    }
 
-    // questionable
     // mint multiple tokens
-    /// value percentage (using 2 decimals - 10000 = 100, 0 = 0)
-    function mintBatch(string memory tokenHash, uint256 numberOfTokens, uint256 royaltyAmount)
-    public
+    // value percentage (using 2 decimals - 10000 = 100, 0 = 0)
+    // @param numberOfTokens amount of tokens to be minted. not more that 100
+    // max copies of one nft is 500
+    function mint(string memory tokenHash, uint256 numberOfTokens, uint256 royaltyAmount)
+    external
     onlyOwner
     {
         require(numberOfTokens<=100, "not more than 100 at once");
@@ -186,5 +159,22 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
         }
 
     }
+
+    // mints nft to 'receiver'
+    function mintTo(string memory tokenHash, address receiver, uint256 royaltyAmount)
+    external
+    onlyOwner
+    {
+        _hashes[tokenHash] = _hashes[tokenHash] + 1;
+        _tokenIds.increment();
+        _numOfTokens.increment();
+        uint256 newTokenId = _tokenIds.current();
+        _safeMint(receiver, newTokenId);
+        _setTokenURI(newTokenId, tokenHash);
+        if (royaltyAmount > 0) {
+            _setTokenRoyalty(newTokenId, _royaltyRecipient, royaltyAmount);
+        }
+    }
+
 
 }

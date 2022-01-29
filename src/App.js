@@ -1,10 +1,11 @@
 import React, {Component} from "react";
 import "./App.css";
 import {uploadDataToIPFS, uploadJSONToIPFS} from "./utils/ipfsPinning";
-import {getContract, getNetwork, getWallet, mintNFT} from "./utils/web3"
+import {getContract, getWallet} from "./utils/web3"
 import History from "./History";
 import Error from "./Error";
 import {Container, Form, Button, Navbar, Row, Col, Alert} from "react-bootstrap";
+import {getTxStatus} from "./utils/etherscan"
 
 
 // https://github.com/dappuniversity/nft
@@ -64,6 +65,11 @@ class App extends Component {
             const {web3, account, errorMessage} = await getWallet();
             const {contract} = await getContract(web3);
             const networkId = await web3.eth.net.getId();
+            if(contract._address === null){
+                this.setState({
+                    statusMessage: "No Contract Address found. The Smart Contract might not have been deployed yet"
+                })
+            }
             this.setState({
                 web3: web3,
                 account: account,
@@ -83,15 +89,22 @@ class App extends Component {
     };
     mint = async (hash) => {
 
-        this.state.contract.methods.mintBatch(hash, this.state.amountToMint ,this.state.royalty*100).send({from: this.state.account}, (error, transactionHash) => {
-            // this.setStatus(transactionHash);
-            if(error){
-                this.setState({errorMessage: "error at minting the NFT: "+error.message})
-            }
-            console.log(transactionHash);
+        this.state.contract.methods.mint(hash, this.state.amountToMint ,this.state.royalty*100).send({from: this.state.account}, async (error, transactionHash) => {
+            const status = await getTxStatus(transactionHash);
+            console.log(status)
         }).on('error', function (error, receipt) { // If the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
+            this.setState({errorMessage: "error at minting the NFT: "+error.message})
             if(receipt){
-                console.log("status: e" + receipt.status);
+                console.log("status: " + receipt.status);
+            }
+        }).on('receipt', receipt =>{
+            const openseaPrefix = "https://testnets.opensea.io/"+ receipt.address + "/" + receipt.returnValues.tokenId;
+            console.log(receipt)
+            if(receipt.status){
+                this.setState({statusMessage: "Minting successful. It might take some time until the NFT is visibile on "+openseaPrefix})
+            }
+            else{
+                this.setState({errorMessage: "Something went wrong with minting the NFT. The transaction was reverted"});
             }
         });
     }
@@ -105,8 +118,8 @@ class App extends Component {
             let metadata = this.state.metadata;
             // const imageHash = await uploadDataToIPFS(this.state.imageFile);
             const {hash: imageHash, status: imageStatus} = await uploadDataToIPFS(this.state.imageFile);
-            // metadata.pinataContent.image = "ipfs://"+imageHash;
-            metadata.pinataContent.image = "https://ipfs.io/ipfs/"+imageHash;
+            metadata.pinataContent.image = "ipfs://"+imageHash;
+            // metadata.pinataContent.image = "https://ipfs.io/ipfs/"+imageHash;
 
             let arr =  Object.keys(metadata.pinataContent.attributes).map((key) =>
                 metadata.pinataContent.attributes[key].trait_type
@@ -115,7 +128,6 @@ class App extends Component {
                 metadata.pinataContent.attributes.push({trait_type: "Rarity", value: this.state.rarity })
 
             }
-            console.log(JSON.stringify(metadata, null, 2))
             this.setState({metadata: metadata});
 
             // const metadataHash = await uploadJSONToIPFS(metadata);
@@ -125,7 +137,6 @@ class App extends Component {
             if(metadataStatus != 200 || imageStatus != 200){
                 // this.setState({statusMessage: "There was a problem uploading the files to IPFS: "+ metadataStatus!=200? imageStatus : metadataStatus})
                 this.setState({errorMessage: "There was a problem uploading the files to IPFS: "+ metadataStatus!=200? imageStatus : metadataStatus})
-
             }
 
         } catch (e) {
@@ -228,7 +239,7 @@ class App extends Component {
     }
     // WIP
     getStatusMessage(variant){
-        if(this.state.statusMessage==="") {
+        if(this.state.statusMessage!=="") {
             return (
                 <Row>
                     <Alert variant={variant} className="mt-3 fw-bold">
@@ -238,14 +249,13 @@ class App extends Component {
             )
         }
     }
-    // https://codesandbox.io/s/react-eth-metamask-7vuy7?file=/src/App.js
+
     render() {
-        if(this.state.errorMessage && this.state.errorMessage!=="" ){
-            console.log("test")
-            return (<Error>
-                <h3>{this.state.errorMessage}</h3>
-            </Error>);
-        }
+        // if(this.state.errorMessage && this.state.errorMessage!=="" ){
+        //     return (<Error>
+        //         <h3>{this.state.errorMessage}</h3>
+        //     </Error>);
+        // }
         if (!this.state.web3) {
             return <div>Loading Web3, accounts, and contract...</div>;
         }
@@ -271,7 +281,6 @@ class App extends Component {
                                 data.pinataContent.name = this.name.value;
                                 data.pinataContent.description = this.description.value;
                                 data.pinataMetadata.name = data.pinataContent.name.replace(/\s+/g, '-').toLowerCase() + ".json"
-                                // await this.setState({metadata:data, amountToMint: this.amount.value, royalty: this.royalty.value})
                                 await this.setState({metadata:data, royalty: this.royalty.value})
                                 await this.onFormSubmit();
                             }} className="shadow p-5 mb-4 bg-white rounded">
