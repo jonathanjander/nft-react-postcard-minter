@@ -35,7 +35,7 @@ contract('Souvenir', (accounts) => {
     describe('minting', async () => {
 
         it('creates a new token', async () => {
-            const tx = await souvenir.mint('testhash',0)
+            const tx = await souvenir.mint('testhash',1,0)
             const totalSupply = await souvenir.totalSupply()
             // SUCCESS
             assert.equal(totalSupply, 1)
@@ -43,7 +43,7 @@ contract('Souvenir', (accounts) => {
             assert.equal(event.tokenId.toNumber(), 1, 'id is correct')
             assert.equal(event.from, '0x0000000000000000000000000000000000000000', 'from is correct')
             assert.equal(event.to, accounts[0], 'to is correct')
-            assert.equal(await souvenir.tokenURI(event.tokenId.toNumber()), 'https://ipfs.io/ipfs/testhash', 'tokenURI is correct')
+            assert.equal(await souvenir.tokenURI(event.tokenId.toNumber()), 'ipfs://testhash', 'tokenURI is correct')
         })
     })
     describe('burning', async () => {

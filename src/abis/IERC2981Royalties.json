@@ -40,7 +40,7 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n// from https://github.com/dievardump/EIP2981-implementation/blob/main/contracts/IERC2981Royalties.sol\r\n/// @title IERC2981Royalties\r\n/// @dev Interface for the ERC2981 - Token Royalty standard\r\ninterface IERC2981Royalties {\r\n    /// @notice Called with the sale price to determine how much royalty\r\n    //          is owed and to whom.\r\n    /// @param _tokenId - the NFT asset queried for royalty information\r\n    /// @param _value - the sale price of the NFT asset specified by _tokenId\r\n    /// @return _receiver - address of who should be sent the royalty payment\r\n    /// @return _royaltyAmount - the royalty payment amount for value sale price\r\n    function royaltyInfo(uint256 _tokenId, uint256 _value)\r\n    external\r\n    view\r\n    returns (address _receiver, uint256 _royaltyAmount);\r\n}",
-  "sourcePath": "C:\\Users\\Joey\\Desktop\\BA\\starting-from-new\\src\\contracts\\IERC2981Royalties.sol",
+  "sourcePath": "C:\\Users\\Joey\\Desktop\\BA\\souvenir-minter\\src\\contracts\\IERC2981Royalties.sol",
   "ast": {
     "absolutePath": "project:/src/contracts/IERC2981Royalties.sol",
     "exportedSymbols": {
@@ -421,7 +421,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-01-26T12:28:36.596Z",
+  "updatedAt": "2022-01-31T15:22:23.875Z",
   "devdoc": {
     "details": "Interface for the ERC2981 - Token Royalty standard",
     "kind": "dev",

@@ -8,7 +8,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./ERC2981Royalty.sol";
 
 //TODO ADD METADATA FREEZING
-//TODO ADD PERCENT TO CREATOR OF CONTRACTS
 
 //https://github.com/neha01/nft-demo/blob/master/contracts/ArtCollectible.sol ref
 //https://forum.openzeppelin.com/t/function-settokenuri-in-erc721-is-gone-with-pragma-0-8-0/5978/3 another ref
@@ -19,22 +18,24 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     Counters.Counter private _tokenIds;
     Counters.Counter private _numOfTokens;
 
-    // Optional mapping for token URIs
     // copied from ERC721URIStorage.sol
+    // mapping between tokenURIs and tokenIDs
     mapping(uint256 => string) private _tokenURIs;
 
-    // mapping
-    // not sure if i want it or not
+    // used to regulate how many copies of one NFT should exist
     mapping(string => uint8) private _hashes;
 
+    // amount of possible copies of one NFT
+    uint8 private constant AMOUNT_OF_COPIES = 100;
+
     // Base URI
-    // string private _baseURIExtended = "https://ipfs.io/ipfs/";
     string private _baseURIExtended = "ipfs://";
 
-    // address private _royaltyRecipient = owner();
+    // address that receives royalty fees
     address private _royaltyRecipient;
 
     // constructor with name and symbol of nft
+    // setting the owner to receive royalties
     constructor() ERC721("Souvenir","SVN"){
         _royaltyRecipient = owner();
     }
@@ -42,6 +43,7 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
 
 
     // function to validate interfaces
+    // used by marketplaces and other smart contracts in order to figure out if the contract followed the standards
     function supportsInterface(bytes4 interfaceId)
     public
     view
@@ -52,25 +54,27 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
         return super.supportsInterface(interfaceId);
     }
 
-
+    // returns the amount of total NFTs minted (created)
     function totalSupply() public view returns (uint256) {
         return _numOfTokens.current();
     }
 
     // collection representation
-    // marketplaces use this function in order to assign tokens to this collection
+    // marketplaces use this function in order to assign the NFT-tokens to this collection
     // pure is a keyword, which ensures that the function doesnt view nor modify the state
     function contractURI() public pure returns (string memory) {
-//        return "https://ipfs.io/ipfs/QmcbqmQn3248WytoNPKbapP8rYXmr1efVnb8t7qEi8aLgY"; // collection json ipfs
         return "ipfs://QmPesCd1cJxnbAikjaoLy4UHiLZqfwbsCaVVzbSm3ZVyAJ"; // collection json ipfs
     }
 
+    // setter for baseURI
+    // default is "ipfs://"
     function setBaseURI(string memory baseURI_)
     external
     onlyOwner
     {
         _baseURIExtended = baseURI_;
     }
+
 
     // view is a keyword, which ensures that the function can view but not modify the state
     function _baseURI()
@@ -83,7 +87,7 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
         return _baseURIExtended;
     }
 
-    // memory didnt work
+    // setter for royalty recipient
     function setRoyaltyRecipient(address royaltyRecipient_)
     external
     onlyOwner
@@ -92,12 +96,14 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     }
 
     // copied from ERC721URIStorage.sol
+    // internal setter for TokenURI
     function _setTokenURI(uint256 tokenId, string memory _tokenURI) internal virtual {
         require(_exists(tokenId), "ERC721: URI set of nonexistent token");
         _tokenURIs[tokenId] = _tokenURI;
     }
 
     // copied from ERC721URIStorage.sol
+    // internal burn _function
     function _burn(uint256 tokenId) internal virtual override {
         super._burn(tokenId);
         _numOfTokens.decrement();
@@ -110,12 +116,13 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     function burn(uint256 tokenId) public onlyOwner{
         _burn(tokenId);
     }
-
+    //royalty recipient getter
     function royaltyRecipient() public view virtual returns (address) {
         return _royaltyRecipient;
     }
 
     // copied from ERC721URIStorage.sol
+    // tokenURI getter
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         require(_exists(tokenId), "ERC721: URI query for nonexistent token");
 
@@ -135,16 +142,16 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     }
 
 
-    // mint multiple tokens
+    // mints "numberOfTokens" to account who called this function.
     // value percentage (using 2 decimals - 10000 = 100, 0 = 0)
-    // @param numberOfTokens amount of tokens to be minted. not more that 100
-    // max copies of one nft is 500
+    // numberOfTokens limited to 20 at once
+    // max copies of one nft is 100
     function mint(string memory tokenHash, uint256 numberOfTokens, uint256 royaltyAmount)
     external
     onlyOwner
     {
-        require(numberOfTokens<=100, "not more than 100 at once");
-        require(_hashes[tokenHash]<=500);
+        require(numberOfTokens<=20, "not more than 20 at once");
+        require(_hashes[tokenHash]<=AMOUNT_OF_COPIES);
 
         for(uint256 i=0; i < numberOfTokens; i++){
             _hashes[tokenHash] = _hashes[tokenHash] + 1;
