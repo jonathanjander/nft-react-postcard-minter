@@ -4,13 +4,13 @@ pragma solidity ^0.8.0;
 import '@openzeppelin/contracts/utils/introspection/ERC165.sol';
 
 import './ERC2981Base.sol';
-// from https://github.com/dievardump/EIP2981-implementation/blob/main/contracts/ERC2981PerTokenRoyalties.sol
+/// from https://github.com/dievardump/EIP2981-implementation/blob/main/contracts/ERC2981PerTokenRoyalties.sol
 /// @dev This is a contract used to add ERC2981 support to ERC721 and 1155
 abstract contract ERC2981Royalty is ERC2981Base {
     mapping(uint256 => RoyaltyInfo) internal _royalties;
 
     /// @dev Sets token royalties
-    /// @param tokenId the token id fir which we register the royalties
+    /// @param tokenId the token id for which we register the royalties
     /// @param recipient recipient of the royalties
     /// @param value percentage (using 2 decimals - 10000 = 100, 0 = 0)
     function _setTokenRoyalty(
@@ -23,7 +23,7 @@ abstract contract ERC2981Royalty is ERC2981Base {
     }
 
     /// @inheritdoc	IERC2981Royalties
-    // value is price of nft
+    // value is the price of nft
     function royaltyInfo(uint256 tokenId, uint256 value)
     external
     view

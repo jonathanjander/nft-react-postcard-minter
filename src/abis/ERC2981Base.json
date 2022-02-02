@@ -978,7 +978,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-01-31T15:22:23.866Z",
+  "updatedAt": "2022-02-02T13:12:57.121Z",
   "devdoc": {
     "details": "This is a contract used to add ERC2981 support to ERC721 and 1155",
     "kind": "dev",

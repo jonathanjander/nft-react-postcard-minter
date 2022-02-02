@@ -9,6 +9,7 @@ const pinataJSONEndpoint = process.env.REACT_APP_PINATA_JSON_ENDPOINT;
 const pinataApiKey = process.env.REACT_APP_PINATA_API_KEY;
 const pinataApiSecret = process.env.REACT_APP_PINATA_API_SECRET;
 
+
 const uploadJSONToIPFS = async (JSONData) => {
     JSONData = formatJSON(JSONData);
     let result;
@@ -24,15 +25,10 @@ const uploadJSONToIPFS = async (JSONData) => {
         };
         const response = await axios(request)
         console.log('Successfully pinned metadata to IPFS : ', response);
-        // return response.data.IpfsHash;
         result = {
             hash: response.data.IpfsHash,
             status: response.status
         }
-        // return {
-        //     hash: response.data.IpfsHash,
-        //     status: response.status
-        // }
     }
     catch (err) {
         console.log('Error occurred while pinning metadata to IPFS: ', err);
@@ -63,15 +59,10 @@ const uploadDataToIPFS = async (data) => {
         };
         const response = await axios(request);
         console.log('Successfully pinned image to IPFS : ', response);
-        // return response.data.IpfsHash;
         result = {
             hash: response.data.IpfsHash,
             status: response.status
         }
-        // return {
-        //     hash: response.data.IpfsHash,
-        //     status: response.status
-        // };
     }
     catch (err) {
         console.log('Error occurred while pinning the image to IPFS: ', err);

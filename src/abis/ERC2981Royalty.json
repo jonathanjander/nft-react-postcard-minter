@@ -50,7 +50,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.0+commit.c7dfd78e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"royaltyInfo\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"receiver\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"royaltyAmount\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"This is a contract used to add ERC2981 support to ERC721 and 1155\",\"kind\":\"dev\",\"methods\":{\"royaltyInfo(uint256,uint256)\":{\"params\":{\"_tokenId\":\"- the NFT asset queried for royalty information\",\"_value\":\"- the sale price of the NFT asset specified by _tokenId\"},\"returns\":{\"receiver\":\"- address of who should be sent the royalty payment\",\"royaltyAmount\":\"- the royalty payment amount for value sale price\"}},\"supportsInterface(bytes4)\":{\"details\":\"See {IERC165-supportsInterface}.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/src/contracts/ERC2981Royalty.sol\":\"ERC2981Royalty\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/utils/introspection/ERC165.sol\":{\"keccak256\":\"0xd10975de010d89fd1c78dc5e8a9a7e7f496198085c151648f20cba166b32582b\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://fb0048dee081f6fffa5f74afc3fb328483c2a30504e94a0ddd2a5114d731ec4d\",\"dweb:/ipfs/QmZptt1nmYoA5SgjwnSgWqgUSDgm4q52Yos3xhnMv3MV43\"]},\"@openzeppelin/contracts/utils/introspection/IERC165.sol\":{\"keccak256\":\"0x447a5f3ddc18419d41ff92b3773fb86471b1db25773e07f877f548918a185bf1\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://be161e54f24e5c6fae81a12db1a8ae87bc5ae1b0ddc805d82a1440a68455088f\",\"dweb:/ipfs/QmP7C3CHdY9urF4dEMb9wmsp1wMxHF6nhA2yQE5SKiPAdy\"]},\"project:/src/contracts/ERC2981Base.sol\":{\"keccak256\":\"0x6a878e3e1a93cf9e0ddac396134500027e1efbc9c5324b2792f169e6cf263a46\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d8f7cc3ce585feb3d4dbaeb0b0423ee6e23d361b55eeba4c4a7f2d1fe7a1528d\",\"dweb:/ipfs/QmXCQT2ebNgjQ1jEWTfQCAfugKahgeECuecp2WMqNMNBRQ\"]},\"project:/src/contracts/ERC2981Royalty.sol\":{\"keccak256\":\"0x37f507f3097925ffcf63bc59e87fd15eedcbc507fc76d4cdef55f5cb1c95c3ef\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6fa0d48bda85336d7c47790e6b591dcc80d17785b33a38824dd4fb5735cf3336\",\"dweb:/ipfs/QmSrGxbw3uFu3oJtfHCd5qcBcQqUnTzwhu44nuwK43eTdj\"]},\"project:/src/contracts/IERC2981Royalties.sol\":{\"keccak256\":\"0x7b88568a009486a81c0fb529da24dee537aa62e3826bf0aafba7a77bd4b9f5c0\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://bf35155c82810a717df530f9a0309bb6c461e7ec0a3c1441990f009c44263d07\",\"dweb:/ipfs/QmWidBPz8vQUFzaikDEnRqhuiAnfBzdtsbcTixGLMZSzDY\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.0+commit.c7dfd78e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"royaltyInfo\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"receiver\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"royaltyAmount\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"This is a contract used to add ERC2981 support to ERC721 and 1155\",\"kind\":\"dev\",\"methods\":{\"royaltyInfo(uint256,uint256)\":{\"params\":{\"_tokenId\":\"- the NFT asset queried for royalty information\",\"_value\":\"- the sale price of the NFT asset specified by _tokenId\"},\"returns\":{\"receiver\":\"- address of who should be sent the royalty payment\",\"royaltyAmount\":\"- the royalty payment amount for value sale price\"}},\"supportsInterface(bytes4)\":{\"details\":\"See {IERC165-supportsInterface}.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/src/contracts/ERC2981Royalty.sol\":\"ERC2981Royalty\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/utils/introspection/ERC165.sol\":{\"keccak256\":\"0xd10975de010d89fd1c78dc5e8a9a7e7f496198085c151648f20cba166b32582b\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://fb0048dee081f6fffa5f74afc3fb328483c2a30504e94a0ddd2a5114d731ec4d\",\"dweb:/ipfs/QmZptt1nmYoA5SgjwnSgWqgUSDgm4q52Yos3xhnMv3MV43\"]},\"@openzeppelin/contracts/utils/introspection/IERC165.sol\":{\"keccak256\":\"0x447a5f3ddc18419d41ff92b3773fb86471b1db25773e07f877f548918a185bf1\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://be161e54f24e5c6fae81a12db1a8ae87bc5ae1b0ddc805d82a1440a68455088f\",\"dweb:/ipfs/QmP7C3CHdY9urF4dEMb9wmsp1wMxHF6nhA2yQE5SKiPAdy\"]},\"project:/src/contracts/ERC2981Base.sol\":{\"keccak256\":\"0x6a878e3e1a93cf9e0ddac396134500027e1efbc9c5324b2792f169e6cf263a46\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d8f7cc3ce585feb3d4dbaeb0b0423ee6e23d361b55eeba4c4a7f2d1fe7a1528d\",\"dweb:/ipfs/QmXCQT2ebNgjQ1jEWTfQCAfugKahgeECuecp2WMqNMNBRQ\"]},\"project:/src/contracts/ERC2981Royalty.sol\":{\"keccak256\":\"0xb0fc5f2b2ee6e718795a3654d8ea7a56608d5884305523bc705227a515aca584\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://a0ec288774acbf944a963af1602607b8e68d0543a4855c8bba89891ef51b1512\",\"dweb:/ipfs/QmVN64y9K6VCMN8HA2zKAWACRHBb8rCHaz1LDhbNW7JT9D\"]},\"project:/src/contracts/IERC2981Royalties.sol\":{\"keccak256\":\"0x7b88568a009486a81c0fb529da24dee537aa62e3826bf0aafba7a77bd4b9f5c0\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://bf35155c82810a717df530f9a0309bb6c461e7ec0a3c1441990f009c44263d07\",\"dweb:/ipfs/QmWidBPz8vQUFzaikDEnRqhuiAnfBzdtsbcTixGLMZSzDY\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
@@ -58,7 +58,7 @@
   "deployedGeneratedSources": [],
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\nimport '@openzeppelin/contracts/utils/introspection/ERC165.sol';\r\n\r\nimport './ERC2981Base.sol';\r\n// from https://github.com/dievardump/EIP2981-implementation/blob/main/contracts/ERC2981PerTokenRoyalties.sol\r\n/// @dev This is a contract used to add ERC2981 support to ERC721 and 1155\r\nabstract contract ERC2981Royalty is ERC2981Base {\r\n    mapping(uint256 => RoyaltyInfo) internal _royalties;\r\n\r\n    /// @dev Sets token royalties\r\n    /// @param tokenId the token id fir which we register the royalties\r\n    /// @param recipient recipient of the royalties\r\n    /// @param value percentage (using 2 decimals - 10000 = 100, 0 = 0)\r\n    function _setTokenRoyalty(\r\n        uint256 tokenId,\r\n        address recipient,\r\n        uint256 value\r\n    ) internal {\r\n        require(value <= 10000, 'ERC2981Royalties: Too high');\r\n        _royalties[tokenId] = RoyaltyInfo(recipient, uint24(value));\r\n    }\r\n\r\n    /// @inheritdoc\tIERC2981Royalties\r\n    // value is price of nft\r\n    function royaltyInfo(uint256 tokenId, uint256 value)\r\n    external\r\n    view\r\n    override\r\n    returns (address receiver, uint256 royaltyAmount)\r\n    {\r\n        RoyaltyInfo memory royalties = _royalties[tokenId];\r\n        receiver = royalties.recipient;\r\n        royaltyAmount = (value * royalties.amount) / 10000;\r\n    }\r\n}\r\n\r\n\r\n\r\n",
+  "source": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\nimport '@openzeppelin/contracts/utils/introspection/ERC165.sol';\r\n\r\nimport './ERC2981Base.sol';\r\n// from https://github.com/dievardump/EIP2981-implementation/blob/main/contracts/ERC2981PerTokenRoyalties.sol\r\n/// @dev This is a contract used to add ERC2981 support to ERC721 and 1155\r\nabstract contract ERC2981Royalty is ERC2981Base {\r\n    mapping(uint256 => RoyaltyInfo) internal _royalties;\r\n\r\n    /// @dev Sets token royalties\r\n    /// @param tokenId the token id for which we register the royalties\r\n    /// @param recipient recipient of the royalties\r\n    /// @param value percentage (using 2 decimals - 10000 = 100, 0 = 0)\r\n    function _setTokenRoyalty(\r\n        uint256 tokenId,\r\n        address recipient,\r\n        uint256 value\r\n    ) internal {\r\n        require(value <= 10000, 'ERC2981Royalties: Too high');\r\n        _royalties[tokenId] = RoyaltyInfo(recipient, uint24(value));\r\n    }\r\n\r\n    /// @inheritdoc\tIERC2981Royalties\r\n    // value is the price of nft\r\n    function royaltyInfo(uint256 tokenId, uint256 value)\r\n    external\r\n    view\r\n    override\r\n    returns (address receiver, uint256 royaltyAmount)\r\n    {\r\n        RoyaltyInfo memory royalties = _royalties[tokenId];\r\n        receiver = royalties.recipient;\r\n        royaltyAmount = (value * royalties.amount) / 10000;\r\n    }\r\n}\r\n\r\n\r\n\r\n",
   "sourcePath": "C:\\Users\\Joey\\Desktop\\BA\\souvenir-minter\\src\\contracts\\ERC2981Royalty.sol",
   "ast": {
     "absolutePath": "project:/src/contracts/ERC2981Royalty.sol",
@@ -495,7 +495,7 @@
               "id": 1906,
               "nodeType": "StructuredDocumentation",
               "src": "459:228:13",
-              "text": "@dev Sets token royalties\n @param tokenId the token id fir which we register the royalties\n @param recipient recipient of the royalties\n @param value percentage (using 2 decimals - 10000 = 100, 0 = 0)"
+              "text": "@dev Sets token royalties\n @param tokenId the token id for which we register the royalties\n @param recipient recipient of the royalties\n @param value percentage (using 2 decimals - 10000 = 100, 0 = 0)"
             },
             "id": 1935,
             "implemented": true,
@@ -608,7 +608,7 @@
             "body": {
               "id": 1970,
               "nodeType": "Block",
-              "src": "1183:171:13",
+              "src": "1187:171:13",
               "statements": [
                 {
                   "assignments": [
@@ -622,7 +622,7 @@
                       "name": "royalties",
                       "nodeType": "VariableDeclaration",
                       "scope": 1970,
-                      "src": "1194:28:13",
+                      "src": "1198:28:13",
                       "stateVariable": false,
                       "storageLocation": "memory",
                       "typeDescriptions": {
@@ -637,10 +637,10 @@
                           "name": "RoyaltyInfo",
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 1870,
-                          "src": "1194:11:13"
+                          "src": "1198:11:13"
                         },
                         "referencedDeclaration": 1870,
-                        "src": "1194:11:13",
+                        "src": "1198:11:13",
                         "typeDescriptions": {
                           "typeIdentifier": "t_struct$_RoyaltyInfo_$1870_storage_ptr",
                           "typeString": "struct ERC2981Base.RoyaltyInfo"
@@ -657,7 +657,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 1905,
-                      "src": "1225:10:13",
+                      "src": "1229:10:13",
                       "typeDescriptions": {
                         "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_RoyaltyInfo_$1870_storage_$",
                         "typeString": "mapping(uint256 => struct ERC2981Base.RoyaltyInfo storage ref)"
@@ -670,7 +670,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 1938,
-                      "src": "1236:7:13",
+                      "src": "1240:7:13",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -681,14 +681,14 @@
                     "isPure": false,
                     "lValueRequested": false,
                     "nodeType": "IndexAccess",
-                    "src": "1225:19:13",
+                    "src": "1229:19:13",
                     "typeDescriptions": {
                       "typeIdentifier": "t_struct$_RoyaltyInfo_$1870_storage",
                       "typeString": "struct ERC2981Base.RoyaltyInfo storage ref"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "1194:50:13"
+                  "src": "1198:50:13"
                 },
                 {
                   "expression": {
@@ -703,7 +703,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 1944,
-                      "src": "1255:8:13",
+                      "src": "1259:8:13",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -718,7 +718,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 1950,
-                        "src": "1266:9:13",
+                        "src": "1270:9:13",
                         "typeDescriptions": {
                           "typeIdentifier": "t_struct$_RoyaltyInfo_$1870_memory_ptr",
                           "typeString": "struct ERC2981Base.RoyaltyInfo memory"
@@ -732,13 +732,13 @@
                       "memberName": "recipient",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 1867,
-                      "src": "1266:19:13",
+                      "src": "1270:19:13",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "src": "1255:30:13",
+                    "src": "1259:30:13",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -746,7 +746,7 @@
                   },
                   "id": 1959,
                   "nodeType": "ExpressionStatement",
-                  "src": "1255:30:13"
+                  "src": "1259:30:13"
                 },
                 {
                   "expression": {
@@ -761,7 +761,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 1946,
-                      "src": "1296:13:13",
+                      "src": "1300:13:13",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -797,7 +797,7 @@
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
                               "referencedDeclaration": 1940,
-                              "src": "1313:5:13",
+                              "src": "1317:5:13",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
                                 "typeString": "uint256"
@@ -812,7 +812,7 @@
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
                                 "referencedDeclaration": 1950,
-                                "src": "1321:9:13",
+                                "src": "1325:9:13",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_struct$_RoyaltyInfo_$1870_memory_ptr",
                                   "typeString": "struct ERC2981Base.RoyaltyInfo memory"
@@ -826,13 +826,13 @@
                               "memberName": "amount",
                               "nodeType": "MemberAccess",
                               "referencedDeclaration": 1869,
-                              "src": "1321:16:13",
+                              "src": "1325:16:13",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint24",
                                 "typeString": "uint24"
                               }
                             },
-                            "src": "1313:24:13",
+                            "src": "1317:24:13",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
                               "typeString": "uint256"
@@ -846,7 +846,7 @@
                         "isPure": false,
                         "lValueRequested": false,
                         "nodeType": "TupleExpression",
-                        "src": "1312:26:13",
+                        "src": "1316:26:13",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -863,20 +863,20 @@
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "1341:5:13",
+                        "src": "1345:5:13",
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_10000_by_1",
                           "typeString": "int_const 10000"
                         },
                         "value": "10000"
                       },
-                      "src": "1312:34:13",
+                      "src": "1316:34:13",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "1296:50:13",
+                    "src": "1300:50:13",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -884,7 +884,7 @@
                   },
                   "id": 1969,
                   "nodeType": "ExpressionStatement",
-                  "src": "1296:50:13"
+                  "src": "1300:50:13"
                 }
               ]
             },
@@ -905,7 +905,7 @@
               "id": 1942,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
-              "src": "1114:8:13"
+              "src": "1118:8:13"
             },
             "parameters": {
               "id": 1941,
@@ -918,7 +918,7 @@
                   "name": "tokenId",
                   "nodeType": "VariableDeclaration",
                   "scope": 1971,
-                  "src": "1053:15:13",
+                  "src": "1057:15:13",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -929,7 +929,7 @@
                     "id": 1937,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1053:7:13",
+                    "src": "1057:7:13",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -944,7 +944,7 @@
                   "name": "value",
                   "nodeType": "VariableDeclaration",
                   "scope": 1971,
-                  "src": "1070:13:13",
+                  "src": "1074:13:13",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -955,7 +955,7 @@
                     "id": 1939,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1070:7:13",
+                    "src": "1074:7:13",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -964,7 +964,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1052:32:13"
+              "src": "1056:32:13"
             },
             "returnParameters": {
               "id": 1947,
@@ -977,7 +977,7 @@
                   "name": "receiver",
                   "nodeType": "VariableDeclaration",
                   "scope": 1971,
-                  "src": "1137:16:13",
+                  "src": "1141:16:13",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -988,7 +988,7 @@
                     "id": 1943,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1137:7:13",
+                    "src": "1141:7:13",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1004,7 +1004,7 @@
                   "name": "royaltyAmount",
                   "nodeType": "VariableDeclaration",
                   "scope": 1971,
-                  "src": "1155:21:13",
+                  "src": "1159:21:13",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1015,7 +1015,7 @@
                     "id": 1945,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1155:7:13",
+                    "src": "1159:7:13",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1024,20 +1024,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1136:41:13"
+              "src": "1140:41:13"
             },
             "scope": 1972,
-            "src": "1032:322:13",
+            "src": "1036:322:13",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
         "scope": 1973,
-        "src": "344:1013:13"
+        "src": "344:1017:13"
       }
     ],
-    "src": "33:1332:13"
+    "src": "33:1336:13"
   },
   "legacyAST": {
     "absolutePath": "project:/src/contracts/ERC2981Royalty.sol",
@@ -1474,7 +1474,7 @@
               "id": 1906,
               "nodeType": "StructuredDocumentation",
               "src": "459:228:13",
-              "text": "@dev Sets token royalties\n @param tokenId the token id fir which we register the royalties\n @param recipient recipient of the royalties\n @param value percentage (using 2 decimals - 10000 = 100, 0 = 0)"
+              "text": "@dev Sets token royalties\n @param tokenId the token id for which we register the royalties\n @param recipient recipient of the royalties\n @param value percentage (using 2 decimals - 10000 = 100, 0 = 0)"
             },
             "id": 1935,
             "implemented": true,
@@ -1587,7 +1587,7 @@
             "body": {
               "id": 1970,
               "nodeType": "Block",
-              "src": "1183:171:13",
+              "src": "1187:171:13",
               "statements": [
                 {
                   "assignments": [
@@ -1601,7 +1601,7 @@
                       "name": "royalties",
                       "nodeType": "VariableDeclaration",
                       "scope": 1970,
-                      "src": "1194:28:13",
+                      "src": "1198:28:13",
                       "stateVariable": false,
                       "storageLocation": "memory",
                       "typeDescriptions": {
@@ -1616,10 +1616,10 @@
                           "name": "RoyaltyInfo",
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 1870,
-                          "src": "1194:11:13"
+                          "src": "1198:11:13"
                         },
                         "referencedDeclaration": 1870,
-                        "src": "1194:11:13",
+                        "src": "1198:11:13",
                         "typeDescriptions": {
                           "typeIdentifier": "t_struct$_RoyaltyInfo_$1870_storage_ptr",
                           "typeString": "struct ERC2981Base.RoyaltyInfo"
@@ -1636,7 +1636,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 1905,
-                      "src": "1225:10:13",
+                      "src": "1229:10:13",
                       "typeDescriptions": {
                         "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_RoyaltyInfo_$1870_storage_$",
                         "typeString": "mapping(uint256 => struct ERC2981Base.RoyaltyInfo storage ref)"
@@ -1649,7 +1649,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 1938,
-                      "src": "1236:7:13",
+                      "src": "1240:7:13",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -1660,14 +1660,14 @@
                     "isPure": false,
                     "lValueRequested": false,
                     "nodeType": "IndexAccess",
-                    "src": "1225:19:13",
+                    "src": "1229:19:13",
                     "typeDescriptions": {
                       "typeIdentifier": "t_struct$_RoyaltyInfo_$1870_storage",
                       "typeString": "struct ERC2981Base.RoyaltyInfo storage ref"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "1194:50:13"
+                  "src": "1198:50:13"
                 },
                 {
                   "expression": {
@@ -1682,7 +1682,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 1944,
-                      "src": "1255:8:13",
+                      "src": "1259:8:13",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -1697,7 +1697,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 1950,
-                        "src": "1266:9:13",
+                        "src": "1270:9:13",
                         "typeDescriptions": {
                           "typeIdentifier": "t_struct$_RoyaltyInfo_$1870_memory_ptr",
                           "typeString": "struct ERC2981Base.RoyaltyInfo memory"
@@ -1711,13 +1711,13 @@
                       "memberName": "recipient",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 1867,
-                      "src": "1266:19:13",
+                      "src": "1270:19:13",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "src": "1255:30:13",
+                    "src": "1259:30:13",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1725,7 +1725,7 @@
                   },
                   "id": 1959,
                   "nodeType": "ExpressionStatement",
-                  "src": "1255:30:13"
+                  "src": "1259:30:13"
                 },
                 {
                   "expression": {
@@ -1740,7 +1740,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 1946,
-                      "src": "1296:13:13",
+                      "src": "1300:13:13",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -1776,7 +1776,7 @@
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
                               "referencedDeclaration": 1940,
-                              "src": "1313:5:13",
+                              "src": "1317:5:13",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
                                 "typeString": "uint256"
@@ -1791,7 +1791,7 @@
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
                                 "referencedDeclaration": 1950,
-                                "src": "1321:9:13",
+                                "src": "1325:9:13",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_struct$_RoyaltyInfo_$1870_memory_ptr",
                                   "typeString": "struct ERC2981Base.RoyaltyInfo memory"
@@ -1805,13 +1805,13 @@
                               "memberName": "amount",
                               "nodeType": "MemberAccess",
                               "referencedDeclaration": 1869,
-                              "src": "1321:16:13",
+                              "src": "1325:16:13",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint24",
                                 "typeString": "uint24"
                               }
                             },
-                            "src": "1313:24:13",
+                            "src": "1317:24:13",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
                               "typeString": "uint256"
@@ -1825,7 +1825,7 @@
                         "isPure": false,
                         "lValueRequested": false,
                         "nodeType": "TupleExpression",
-                        "src": "1312:26:13",
+                        "src": "1316:26:13",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1842,20 +1842,20 @@
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "1341:5:13",
+                        "src": "1345:5:13",
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_10000_by_1",
                           "typeString": "int_const 10000"
                         },
                         "value": "10000"
                       },
-                      "src": "1312:34:13",
+                      "src": "1316:34:13",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "1296:50:13",
+                    "src": "1300:50:13",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1863,7 +1863,7 @@
                   },
                   "id": 1969,
                   "nodeType": "ExpressionStatement",
-                  "src": "1296:50:13"
+                  "src": "1300:50:13"
                 }
               ]
             },
@@ -1884,7 +1884,7 @@
               "id": 1942,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
-              "src": "1114:8:13"
+              "src": "1118:8:13"
             },
             "parameters": {
               "id": 1941,
@@ -1897,7 +1897,7 @@
                   "name": "tokenId",
                   "nodeType": "VariableDeclaration",
                   "scope": 1971,
-                  "src": "1053:15:13",
+                  "src": "1057:15:13",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1908,7 +1908,7 @@
                     "id": 1937,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1053:7:13",
+                    "src": "1057:7:13",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1923,7 +1923,7 @@
                   "name": "value",
                   "nodeType": "VariableDeclaration",
                   "scope": 1971,
-                  "src": "1070:13:13",
+                  "src": "1074:13:13",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1934,7 +1934,7 @@
                     "id": 1939,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1070:7:13",
+                    "src": "1074:7:13",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1943,7 +1943,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1052:32:13"
+              "src": "1056:32:13"
             },
             "returnParameters": {
               "id": 1947,
@@ -1956,7 +1956,7 @@
                   "name": "receiver",
                   "nodeType": "VariableDeclaration",
                   "scope": 1971,
-                  "src": "1137:16:13",
+                  "src": "1141:16:13",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1967,7 +1967,7 @@
                     "id": 1943,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1137:7:13",
+                    "src": "1141:7:13",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1983,7 +1983,7 @@
                   "name": "royaltyAmount",
                   "nodeType": "VariableDeclaration",
                   "scope": 1971,
-                  "src": "1155:21:13",
+                  "src": "1159:21:13",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1994,7 +1994,7 @@
                     "id": 1945,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1155:7:13",
+                    "src": "1159:7:13",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2003,20 +2003,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1136:41:13"
+              "src": "1140:41:13"
             },
             "scope": 1972,
-            "src": "1032:322:13",
+            "src": "1036:322:13",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
         "scope": 1973,
-        "src": "344:1013:13"
+        "src": "344:1017:13"
       }
     ],
-    "src": "33:1332:13"
+    "src": "33:1336:13"
   },
   "compiler": {
     "name": "solc",
@@ -2024,7 +2024,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-01-31T15:22:23.874Z",
+  "updatedAt": "2022-02-02T13:12:57.132Z",
   "devdoc": {
     "details": "This is a contract used to add ERC2981 support to ERC721 and 1155",
     "kind": "dev",

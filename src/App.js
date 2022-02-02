@@ -260,20 +260,20 @@ class App extends Component {
             return <div>Loading Web3, accounts, and contract...</div>;
         }
         return (
-            <Container fluid>
+            <Container fluid className="bg-light">
                 <Navbar>
                     <Container fluid>
-                        <Navbar.Text className="text-xl font-semibold text-gray-700 text-center">Contract Address: {this.state.contract._address}</Navbar.Text>
+                        <Navbar.Text className="text-xl font-semibold text-black text-center">Contract Address: {this.state.contract._address}</Navbar.Text>
                         <Navbar.Toggle />
                         <Navbar.Collapse className="justify-content-end">
-                            <Navbar.Text className="text-xl font-semibold text-gray-700 text-center">
+                            <Navbar.Text className="text-xl font-semibold text-black text-center">
                                 Signed in as: {this.state.account}
                             </Navbar.Text>
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>
                 <Error>
-                <Container fluid>
+                <Container fluid className="bg-light">
                     <Row>
                             <Form onSubmit={async (event) => {
                                 event.preventDefault();
@@ -290,7 +290,7 @@ class App extends Component {
                                 <Form.Group controlId="formName">
                                     <Form.Label>Name</Form.Label>
                                     <Form.Control placeholder='e.g. Bora Bora Beach In The Afternoon'
-                                                  // required
+                                                  required
                                                   ref={(input) => {
                                                       this.name = input
                                                   }}/>
@@ -300,7 +300,7 @@ class App extends Component {
                                 <Form.Group controlId="formDescription">
                                     <Form.Label>Description</Form.Label>
                                     <Form.Control placeholder='e.g. 30°C in the Summer'
-                                                  // required
+                                                  required
                                                   ref={(input) => {
                                                       this.description = input
                                                   }}  />
@@ -311,7 +311,7 @@ class App extends Component {
                                     <Form.Label>Asset File</Form.Label>
                                     <Form.Control type="file" onChange={this.onFileChanged}
                                                   accept="image/*, video/*, audio/*"
-                                                  // required
+                                                  required
 
                                     />
                                 </Form.Group>
@@ -341,7 +341,7 @@ class App extends Component {
                                                 <Form.Control
                                                               type="number"
                                                               min={1}
-                                                              max={100}
+                                                              max={20}
                                                               placeholder="between 1 and 100"
                                                               value={this.state.amountToMint}
                                                               onChange={((e) => {
@@ -352,6 +352,7 @@ class App extends Component {
                                                               ref={(input) => {
                                                                   this.amount = input;
                                                               }}
+                                                              required
                                                 />
                                             </Form.Group>
 
@@ -366,7 +367,9 @@ class App extends Component {
                                                               placeholder="between 0% and 30%"
                                                               ref={(input) => {
                                                                   this.royalty = input
-                                                              }}/>
+                                                              }}
+                                                              required
+                                                />
                                             </Form.Group>
                                         </Col>
                                     </Row>

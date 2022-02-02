@@ -16,9 +16,9 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIds;
-    Counters.Counter private _numOfTokens;
+    Counters.Counter private _tokenSupply;
 
-    // copied from ERC721URIStorage.sol
+    // copied from ERC721URIStorage.sol (OpenZeppelin)
     // mapping between tokenURIs and tokenIDs
     mapping(uint256 => string) private _tokenURIs;
 
@@ -26,7 +26,7 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     mapping(string => uint8) private _hashes;
 
     // amount of possible copies of one NFT
-    uint8 private constant AMOUNT_OF_COPIES = 100;
+    uint8 private constant MAX_AMOUNT_OF_COPIES = 100;
 
     // Base URI
     string private _baseURIExtended = "ipfs://";
@@ -56,7 +56,7 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
 
     // returns the amount of total NFTs minted (created)
     function totalSupply() public view returns (uint256) {
-        return _numOfTokens.current();
+        return _tokenSupply.current();
     }
 
     // collection representation
@@ -95,25 +95,25 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
         _royaltyRecipient = royaltyRecipient_;
     }
 
-    // copied from ERC721URIStorage.sol
+    // copied from ERC721URIStorage.sol (OpenZeppelin)
     // internal setter for TokenURI
     function _setTokenURI(uint256 tokenId, string memory _tokenURI) internal virtual {
         require(_exists(tokenId), "ERC721: URI set of nonexistent token");
         _tokenURIs[tokenId] = _tokenURI;
     }
 
-    // copied from ERC721URIStorage.sol
+    // copied from ERC721URIStorage.sol (OpenZeppelin)
     // internal burn _function
     function _burn(uint256 tokenId) internal virtual override {
         super._burn(tokenId);
-        _numOfTokens.decrement();
+        _tokenSupply.decrement();
         if (bytes(_tokenURIs[tokenId]).length != 0) {
             delete _tokenURIs[tokenId];
         }
     }
 
     // burns (destroys) a token.
-    function burn(uint256 tokenId) public onlyOwner{
+    function burn(uint256 tokenId) external onlyOwner{
         _burn(tokenId);
     }
     //royalty recipient getter
@@ -121,7 +121,7 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
         return _royaltyRecipient;
     }
 
-    // copied from ERC721URIStorage.sol
+    // copied from ERC721URIStorage.sol (OpenZeppelin)
     // tokenURI getter
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         require(_exists(tokenId), "ERC721: URI query for nonexistent token");
@@ -151,12 +151,12 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     onlyOwner
     {
         require(numberOfTokens<=20, "not more than 20 at once");
-        require(_hashes[tokenHash]<=AMOUNT_OF_COPIES);
+        require(_hashes[tokenHash]<= MAX_AMOUNT_OF_COPIES);
 
         for(uint256 i=0; i < numberOfTokens; i++){
             _hashes[tokenHash] = _hashes[tokenHash] + 1;
             _tokenIds.increment();
-            _numOfTokens.increment();
+            _tokenSupply.increment();
             uint256 newTokenId = _tokenIds.current();
             _safeMint(msg.sender, newTokenId);
             _setTokenURI(newTokenId, tokenHash);
@@ -168,19 +168,25 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     }
 
     // mints nft to 'receiver'
-    function mintTo(string memory tokenHash, address receiver, uint256 royaltyAmount)
+    function mint(string memory tokenHash, uint256 numberOfTokens, uint256 royaltyAmount, address receiver)
     external
     onlyOwner
     {
-        _hashes[tokenHash] = _hashes[tokenHash] + 1;
-        _tokenIds.increment();
-        _numOfTokens.increment();
-        uint256 newTokenId = _tokenIds.current();
-        _safeMint(receiver, newTokenId);
-        _setTokenURI(newTokenId, tokenHash);
-        if (royaltyAmount > 0) {
-            _setTokenRoyalty(newTokenId, _royaltyRecipient, royaltyAmount);
+        require(numberOfTokens<=20, "not more than 20 at once");
+        require(_hashes[tokenHash]<= MAX_AMOUNT_OF_COPIES);
+
+        for(uint256 i=0; i < numberOfTokens; i++){
+            _hashes[tokenHash] = _hashes[tokenHash] + 1;
+            _tokenIds.increment();
+            _tokenSupply.increment();
+            uint256 newTokenId = _tokenIds.current();
+            _safeMint(receiver, newTokenId);
+            _setTokenURI(newTokenId, tokenHash);
+            if (royaltyAmount > 0) {
+                _setTokenRoyalty(newTokenId, _royaltyRecipient, royaltyAmount);
+            }
         }
+
     }
 
 

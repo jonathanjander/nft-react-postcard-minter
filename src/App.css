@@ -36,3 +36,6 @@ td {
   overflow: hidden;
   max-width: 100%;
 }
+Label {
+  font-weight: 600;
+}
