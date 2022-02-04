@@ -91,35 +91,37 @@ class App extends Component {
 
         this.state.contract.methods.mint(hash, this.state.amountToMint ,this.state.royalty*100).send({from: this.state.account}, async (error, transactionHash) => {
             const status = await getTxStatus(transactionHash);
-            console.log(status)
+            console.log(status);
         }).on('error', function (error, receipt) { // If the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
-            this.setState({errorMessage: "error at minting the NFT: "+error.message})
-            if(receipt){
-                console.log("status: " + receipt.status);
-            }
-        }).on('receipt', receipt =>{
-            const openseaPrefix = "https://testnets.opensea.io/"+ receipt.address + "/" + receipt.returnValues.tokenId;
-            console.log(receipt)
-            if(receipt.status){
-                this.setState({statusMessage: "Minting successful. It might take some time until the NFT is visibile on "+openseaPrefix})
-            }
-            else{
-                this.setState({errorMessage: "Something went wrong with minting the NFT. The transaction was reverted"});
+            console.log("ON ERROR")
+            // this.setState({errorMessage: "error at minting the NFT: "+error.message})
+            // if(receipt){
+            //     console.log("status: " + receipt.status);
+            // }
+        }).on('receipt', async receipt =>{
+            if(receipt!=null) {
+                console.log(receipt)
+                const os = "https://testnets.opensea.io/assets/" + this.state.contract._address + "/" + receipt.events.Transfer.returnValues.tokenId;
+                if(receipt.status){
+                    this.setState({statusMessage: "Minting successful. It might take some time until the NFT is visibile on "+os})
+                }
+                else{
+                    this.setState({errorMessage: "Something went wrong with minting the NFT. The transaction was reverted"});
+                }
             }
         });
-    }
 
+    }
     onFileChanged(e) {
         this.setState({imageFile: e.target.files[0]})
     }
 
     async onFormSubmit() {
         try {
+            this.setState({statusMessage: "Please wait"})
             let metadata = this.state.metadata;
-            // const imageHash = await uploadDataToIPFS(this.state.imageFile);
             const {hash: imageHash, status: imageStatus} = await uploadDataToIPFS(this.state.imageFile);
             metadata.pinataContent.image = "ipfs://"+imageHash;
-            // metadata.pinataContent.image = "https://ipfs.io/ipfs/"+imageHash;
 
             let arr =  Object.keys(metadata.pinataContent.attributes).map((key) =>
                 metadata.pinataContent.attributes[key].trait_type
@@ -130,12 +132,9 @@ class App extends Component {
             }
             this.setState({metadata: metadata});
 
-            // const metadataHash = await uploadJSONToIPFS(metadata);
             const {hash:metadataHash, status: metadataStatus} = await uploadJSONToIPFS(metadata);
             await this.mint(metadataHash);
-
             if(metadataStatus != 200 || imageStatus != 200){
-                // this.setState({statusMessage: "There was a problem uploading the files to IPFS: "+ metadataStatus!=200? imageStatus : metadataStatus})
                 this.setState({errorMessage: "There was a problem uploading the files to IPFS: "+ metadataStatus!=200? imageStatus : metadataStatus})
             }
 

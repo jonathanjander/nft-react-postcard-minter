@@ -20,9 +20,7 @@ export const getLatestERC721Tx = async (contractAddress, accountAddress, amountO
             method: 'get',
             url: url,
         };
-        // console.log("url "+url)
         const response = await axios(request);
-        // console.log(response);
         return response;
     }
     catch (e) {

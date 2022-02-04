@@ -1,4 +1,4 @@
-//from https://github.com/neha01/nft-demo/tree/master/scripts
+//adapted from https://github.com/neha01/nft-demo/tree/master/scripts
 
 require('dotenv').config();
 const axios = require('axios'); // promise based http client
@@ -9,7 +9,8 @@ const pinataJSONEndpoint = process.env.REACT_APP_PINATA_JSON_ENDPOINT;
 const pinataApiKey = process.env.REACT_APP_PINATA_API_KEY;
 const pinataApiSecret = process.env.REACT_APP_PINATA_API_SECRET;
 
-
+// uploads a JSON file to IPFS via Pinata's API
+// used for the NFT metadata
 const uploadJSONToIPFS = async (JSONData) => {
     JSONData = formatJSON(JSONData);
     let result;
@@ -37,9 +38,11 @@ const uploadJSONToIPFS = async (JSONData) => {
             status:"Error occurred while pinning metadata to IPFS: " + err.message
         }
     }
-    return result
+    return result;
 }
 
+// uploads a file to IPFS via Pinata's API
+// used for the NFT asset
 // data must be a file or a blob otherwise it doesn't work
 const uploadDataToIPFS = async (data) => {
     const form_data = new FormData();
@@ -73,6 +76,9 @@ const uploadDataToIPFS = async (data) => {
     }
     return result;
 }
+
+// formats json data
+// removes empty attributes
 const formatJSON = (JSONData) => {
     const attributes = JSONData.pinataContent.attributes;
     for (let i = 0; i < attributes.length; i++) {
