@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: MIT
-//pragma solidity >=0.4.22 <0.9.0;
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -7,10 +6,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./ERC2981Royalty.sol";
 
-//TODO ADD METADATA FREEZING
 
-//https://github.com/neha01/nft-demo/blob/master/contracts/ArtCollectible.sol ref
-//https://forum.openzeppelin.com/t/function-settokenuri-in-erc721-is-gone-with-pragma-0-8-0/5978/3 another ref
 contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     using Strings for uint256;
     using Counters for Counters.Counter;

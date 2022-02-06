@@ -86,7 +86,6 @@ const formatJSON = (JSONData) => {
             attributes.splice(i,1);
         }
     }
-    console.log(JSON.stringify(JSONData,null,2))
     return JSONData;
 }
 

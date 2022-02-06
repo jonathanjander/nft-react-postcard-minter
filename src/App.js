@@ -30,7 +30,6 @@ class App extends Component {
         this.onFileChanged = this.onFileChanged.bind(this);
         this.getHistoryTable = this.getHistoryTable.bind(this);
         this.removeProperty = this.removeProperty.bind(this)
-        this.setStatus = this.setStatus.bind(this)
         this.renderProperties = this.renderProperties.bind(this)
         this.getStatusMessage = this.getStatusMessage.bind(this)
     }
@@ -67,7 +66,8 @@ class App extends Component {
             const networkId = await web3.eth.net.getId();
             if(contract._address === null){
                 this.setState({
-                    statusMessage: "No Contract Address found. The Smart Contract might not have been deployed yet"
+                    errorMessage: "No Contract Address found. The Smart Contract might not have been deployed yet",
+
                 })
             }
             this.setState({
@@ -75,7 +75,7 @@ class App extends Component {
                 account: account,
                 contract: contract,
                 networkId: networkId,
-                errorMessage: errorMessage
+                statusMessage: errorMessage
             });
         }
         catch (e) {
@@ -88,29 +88,30 @@ class App extends Component {
 
     };
     mint = async (hash) => {
-
         this.state.contract.methods.mint(hash, this.state.amountToMint ,this.state.royalty*100).send({from: this.state.account}, async (error, transactionHash) => {
-            const status = await getTxStatus(transactionHash);
-            console.log(status);
-        }).on('error', function (error, receipt) { // If the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
-            console.log("ON ERROR")
-            // this.setState({errorMessage: "error at minting the NFT: "+error.message})
-            // if(receipt){
-            //     console.log("status: " + receipt.status);
-            // }
+            if(this.state.networkId <= 4) {
+                this.setState({statusMessage: "Please Wait"});
+            }
+        }).on('error', function (error) { // If the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
+            console.log(error.message);
         }).on('receipt', async receipt =>{
-            if(receipt!=null) {
-                console.log(receipt)
-                const os = "https://testnets.opensea.io/assets/" + this.state.contract._address + "/" + receipt.events.Transfer.returnValues.tokenId;
+            console.log(receipt);
+            if(receipt!=null && this.state.networkId <= 4) {
+                let link;
+                if(this.state.amountToMint > 1){
+                    link = "https://testnets.opensea.io/assets/" + this.state.contract._address + "/" + receipt.events.Transfer[0].returnValues.tokenId;
+                }
+                else {
+                    link = "https://testnets.opensea.io/assets/" + this.state.contract._address + "/" + receipt.events.Transfer.returnValues.tokenId;
+                }
                 if(receipt.status){
-                    this.setState({statusMessage: "Minting successful. It might take some time until the NFT is visibile on "+os})
+                    this.setState({statusMessage: "Minting successful. It might take some time until the NFT is visibile on "+link})
                 }
                 else{
-                    this.setState({errorMessage: "Something went wrong with minting the NFT. The transaction was reverted"});
+                    this.setState({statusMessage: "Something went wrong with minting the NFT. The transaction was reverted"});
                 }
             }
         });
-
     }
     onFileChanged(e) {
         this.setState({imageFile: e.target.files[0]})
@@ -118,7 +119,7 @@ class App extends Component {
 
     async onFormSubmit() {
         try {
-            this.setState({statusMessage: "Please wait"})
+            // this.setState({statusMessage: "Please wait"})
             let metadata = this.state.metadata;
             const {hash: imageHash, status: imageStatus} = await uploadDataToIPFS(this.state.imageFile);
             metadata.pinataContent.image = "ipfs://"+imageHash;
@@ -135,12 +136,12 @@ class App extends Component {
             const {hash:metadataHash, status: metadataStatus} = await uploadJSONToIPFS(metadata);
             await this.mint(metadataHash);
             if(metadataStatus != 200 || imageStatus != 200){
-                this.setState({errorMessage: "There was a problem uploading the files to IPFS: "+ metadataStatus!=200? imageStatus : metadataStatus})
+                this.setState({statusMessage: "There was a problem uploading the files to IPFS: "+ metadataStatus!=200? imageStatus : metadataStatus})
             }
 
         } catch (e) {
             console.log("something went wrong with creating your NFT: " + e);
-            this.setState({errorMessage: "something went wrong when trying to submit: "+e.message})
+            this.setState({statusMessage: "something went wrong when trying to submit: "+e.message})
         }
     }
 
@@ -156,7 +157,7 @@ class App extends Component {
                     web3={this.state.web3}
                     account={this.state.account}
                     contract={this.state.contract}
-                    errorMessage={this.state.errorMessage}
+                    errorMessage={this.state.statusMessage}
                 />
             )
         }
@@ -217,28 +218,9 @@ class App extends Component {
         })
         return properties;
     }
-
-    // WIP
-     async setStatus(hash){
-        await this.state.web3.eth.getTransactionReceipt(hash, function (error, result) {
-                if(error){
-                    // this.setState(({
-                    //     statusMessage: "ERROR"
-                    // }));
-                }
-                if(result != null){
-                    console.log("receipt "+ result.status);
-                    this.setState(({statusMessage: "YES"}));
-
-                    // latestTx = null;
-                }
-            });
-
-
-    }
     // WIP
     getStatusMessage(variant){
-        if(this.state.statusMessage!=="") {
+        if(this.state.statusMessage !== undefined) {
             return (
                 <Row>
                     <Alert variant={variant} className="mt-3 fw-bold">
@@ -250,11 +232,11 @@ class App extends Component {
     }
 
     render() {
-        // if(this.state.errorMessage && this.state.errorMessage!=="" ){
-        //     return (<Error>
-        //         <h3>{this.state.errorMessage}</h3>
-        //     </Error>);
-        // }
+        if(this.state.errorMessage && this.state.errorMessage!=="" ){
+            return (<Error>
+                <h3>{this.state.errorMessage}</h3>
+            </Error>);
+        }
         if (!this.state.web3) {
             return <div>Loading Web3, accounts, and contract...</div>;
         }
