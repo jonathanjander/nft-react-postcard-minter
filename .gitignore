@@ -136,7 +136,7 @@ build_webpack
 
 # misc
 .DS_Store
-.env
+#.env
 npm-debug.log
 .truffle-solidity-loader
 .vagrant/**
