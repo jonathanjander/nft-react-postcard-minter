@@ -5,7 +5,6 @@ import {getContract, getWallet} from "./utils/web3"
 import History from "./History";
 import Error from "./Error";
 import {Container, Form, Button, Navbar, Row, Col, Alert} from "react-bootstrap";
-import {getTxStatus} from "./utils/etherscan"
 
 
 // https://github.com/dappuniversity/nft
@@ -67,7 +66,6 @@ class App extends Component {
             if(contract._address === null){
                 this.setState({
                     errorMessage: "No Contract Address found. The Smart Contract might not have been deployed yet",
-
                 })
             }
             this.setState({

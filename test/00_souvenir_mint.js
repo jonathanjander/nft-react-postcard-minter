@@ -1,7 +1,9 @@
 const { expect } = require('chai');
 const Souvenir = artifacts.require('src/contracts/Souvenir.sol')
 
-// https://github.com/dappuniversity/nft/blob/master/test/Color.test.js
+const TEST_HASH = 'QmTDn4XmPLoZhLkXzURYLyKgn8SYuftuF8k4VT7QJZPLFK';
+const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
+
 require('chai')
     .use(require('chai-as-promised'))
     .should()
@@ -13,7 +15,8 @@ contract('Souvenir', (accounts) => {
     before(async () => {
         souvenir = await Souvenir.deployed()
     })
-
+    // adapted from
+    // https://github.com/dappuniversity/nft/blob/master/test/Color.test.js
     describe('deployment', async () => {
         it('deploys successfully', async () => {
             const address = souvenir.address
@@ -32,18 +35,20 @@ contract('Souvenir', (accounts) => {
             assert.equal(symbol, 'SVN')
         })
     })
+    // adapted from
+    // https://github.com/dappuniversity/nft/blob/master/test/Color.test.js
     describe('minting', async () => {
 
         it('creates a new token', async () => {
-            const tx = await souvenir.mint('testhash',1,0)
+            const tx = await souvenir.mint(TEST_HASH,1,0)
             const totalSupply = await souvenir.totalSupply()
             // SUCCESS
             assert.equal(totalSupply, 1)
             const event = tx.logs[0].args
             assert.equal(event.tokenId.toNumber(), 1, 'id is correct')
-            assert.equal(event.from, '0x0000000000000000000000000000000000000000', 'from is correct')
+            assert.equal(event.from, ZERO_ADDRESS, 'from is correct')
             assert.equal(event.to, accounts[0], 'to is correct')
-            assert.equal(await souvenir.tokenURI(event.tokenId.toNumber()), 'ipfs://testhash', 'tokenURI is correct')
+            assert.equal(await souvenir.tokenURI(event.tokenId.toNumber()), 'ipfs://'+TEST_HASH, 'tokenURI is correct')
         })
     })
     describe('burning', async () => {
@@ -53,8 +58,6 @@ contract('Souvenir', (accounts) => {
             const totalSupply = await souvenir.totalSupply()
             // SUCCESS
             assert.equal(totalSupply, 0)
-            // FAILURE
-            // assert.equal()
         })
     })
 
