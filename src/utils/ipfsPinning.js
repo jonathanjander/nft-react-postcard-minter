@@ -9,8 +9,10 @@ const pinataJSONEndpoint = process.env.REACT_APP_PINATA_JSON_ENDPOINT;
 const pinataApiKey = process.env.REACT_APP_PINATA_API_KEY;
 const pinataApiSecret = process.env.REACT_APP_PINATA_API_SECRET;
 
-// uploads a JSON file to IPFS via Pinata's API
-// used for the NFT metadata
+/*
+uploads a JSON file to IPFS via Pinata's API
+used for the NFT metadata
+ */
 const uploadJSONToIPFS = async (JSONData) => {
     JSONData = formatJSON(JSONData);
     let result;
@@ -41,9 +43,12 @@ const uploadJSONToIPFS = async (JSONData) => {
     return result;
 }
 
-// uploads a file to IPFS via Pinata's API
-// used for the NFT asset
-// data must be a file or a blob otherwise it doesn't work
+/*
+uploads a file to IPFS via Pinata's API
+used for the NFT asset
+data must be a file or a blob otherwise it doesn't work
+it uses the form data format in order to upload the file
+ */
 const uploadDataToIPFS = async (data) => {
     const form_data = new FormData();
     let result;
@@ -76,9 +81,10 @@ const uploadDataToIPFS = async (data) => {
     }
     return result;
 }
-
-// formats json data
-// removes empty attributes
+/*
+formats json data before uploading it to ipfs
+removes empty attributes
+ */
 const formatJSON = (JSONData) => {
     const attributes = JSONData.pinataContent.attributes;
     for (let i = 0; i < attributes.length; i++) {

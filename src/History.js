@@ -3,8 +3,13 @@ import Table from 'react-bootstrap/Table';
 import {FileEarmarkCode} from 'react-bootstrap-icons';
 import {getLatestERC721Tx} from "./utils/etherscan";
 
+/*
+History component
+it shows the last 30 transactions made via the Souvenir Smart Contract
+it doesn't work for the local blockchain
+it currently only works on the rinkeby testnet
+ */
 class History extends Component {
-    //https://rinkeby-api.opensea.io/api/v1/assets?owner=0xc7d2e073ed4aaf735ef12fffbf7afe752d1e2390
     constructor(props) {
         super(props)
         this.state = {
@@ -18,25 +23,32 @@ class History extends Component {
 
         this.getRowData = this.getRowData.bind(this);
         this.getHeader = this.getHeader.bind(this);
-        this.loadingDataMarkup = this.loadingDataMarkup.bind(this);
-        this.loadDataAsync = this.loadDataAsync.bind(this);
         this.timeDifference = this.timeDifference.bind(this);
         this.loadTxData = this.loadTxData.bind(this);
         this.getTimeDiff = this.getTimeDiff.bind(this);
 
     }
+    /*
+    initialises the data from the etherscan api
+    max amount of entries shown is 30
+     */
     componentDidMount = async () => {
-        const entries = await getLatestERC721Tx(this.state.contract._address, this.state.account, 30);
+        const entries = await getLatestERC721Tx(this.state.contract._address, 30);
+        // calls loadTxData for every transaction
         for (const entry of entries.data.result) {
             await this.loadTxData(entry);
         }
     }
-
+    /*
+    takes a transaction and formats it into an expected table entry
+    data entry is being added into the transferHistory state array
+     */
     loadTxData = async function(tx){
+        //hard coded rinkeby links
         const etherScanAddressPrefix = "https://rinkeby.etherscan.io/address/";
         const etherScanTxPrefix = "https://rinkeby.etherscan.io/tx/";
-        let timestamp = await this.getTimeDiff(tx.timeStamp);
 
+        let timestamp = await this.getTimeDiff(tx.timeStamp);
         const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
         let from = (tx.from === ZERO_ADDRESS) ? tx.contractAddress : tx.from;
         let osUrl = "https://testnets.opensea.io/assets/" + tx.contractAddress + "/" + tx.tokenID;
@@ -63,14 +75,10 @@ class History extends Component {
         }
         this.setState({transferHistory: [...this.state.transferHistory, entry]})
     }
-
-    loadDataAsync = async function(state){
-        return new Promise((resolve) =>{
-            this.setState(state,resolve)
-            });
-    }
-
-    // from https://medium.com/@subalerts/create-dynamic-table-from-json-in-react-js-1a4a7b1146ef
+    /*
+     adapted from https://medium.com/@subalerts/create-dynamic-table-from-json-in-react-js-1a4a7b1146ef
+     renders table header
+     */
     getHeader = function(){
         if(this.state.transferHistory != null && this.state.transferHistory[0] !== undefined){
             const keys = Object.keys(this.state.transferHistory[0])
@@ -79,6 +87,9 @@ class History extends Component {
             })
         }
     }
+    /*
+    renders table row
+     */
     getRowData = function(){
         if(this.state.transferHistory != null && this.state.transferHistory[0] !== undefined){
             const items = this.state.transferHistory;
@@ -88,18 +99,20 @@ class History extends Component {
             })
         }
     }
-
-    loadingDataMarkup = function(){
-        return (<h6>Loading Table...</h6>)
-    }
-
+    /*
+    getter for the time difference
+    returns time difference between the transaction timestamp and now
+     */
     getTimeDiff = async (timestamp) =>{
         const date = new Date(timestamp*1000);
         return this.timeDifference(new Date(Date.now()), date);
 
     }
 
-    //from https://pretagteam.com/question/how-to-calculate-difference-between-two-timestamps-using-javascript
+    /*
+    adapted from https://pretagteam.com/question/how-to-calculate-difference-between-two-timestamps-using-javascript
+    returns time difference between two dates in wanted preferred format
+     */
     timeDifference(date1, date2) {
         let difference = date1.getTime() - date2.getTime();
 
@@ -129,12 +142,11 @@ class History extends Component {
         }
 
     }
+    /*
+    renders result
+     */
     render() {
-
         if(this.state.transferHistory != null) {
-            this.state.transferHistory.sort((a, b) =>{
-                return b.tokenId-a.tokenId;
-            })
             return (
                 <div>
                     <Table bordered hover>
@@ -158,7 +170,11 @@ class History extends Component {
     }
 
 }
-// from https://medium.com/@subalerts/create-dynamic-table-from-json-in-react-js-1a4a7b1146ef
+
+/*
+adapted from https://medium.com/@subalerts/create-dynamic-table-from-json-in-react-js-1a4a7b1146ef
+renders row
+ */
 const RenderRow = (historyData) =>{
     if(historyData != null){
         return historyData.keys.map((key) =>{
@@ -166,4 +182,5 @@ const RenderRow = (historyData) =>{
         })
     }
 }
+
 export default History;

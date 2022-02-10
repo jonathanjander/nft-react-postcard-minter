@@ -6,8 +6,9 @@ import History from "./History";
 import Error from "./Error";
 import {Container, Form, Button, Navbar, Row, Col, Alert} from "react-bootstrap";
 
+/*
 
-// https://github.com/dappuniversity/nft
+ */
 class App extends Component {
     constructor(props) {
         super(props)
@@ -32,6 +33,9 @@ class App extends Component {
         this.renderProperties = this.renderProperties.bind(this)
         this.getStatusMessage = this.getStatusMessage.bind(this)
     }
+    /*
+
+     */
     initState = async () =>{
         let formJSON = {
             pinataMetadata: {
@@ -57,6 +61,9 @@ class App extends Component {
             rarity:rarity
         });
     }
+    /*
+
+     */
     componentDidMount = async () => {
         try {
             await this.initState()
@@ -65,7 +72,7 @@ class App extends Component {
             const networkId = await web3.eth.net.getId();
             if(contract._address === null){
                 this.setState({
-                    errorMessage: "No Contract Address found. The Smart Contract might not have been deployed yet",
+                    errorMessage: "No Contract Address found. The Smart Contract might not have been deployed on this network. Try the rinkeby test network  or a local blockchain like Ganache",
                 })
             }
             this.setState({
@@ -85,6 +92,9 @@ class App extends Component {
         }
 
     };
+    /*
+
+     */
     mint = async (hash) => {
         this.state.contract.methods.mint(hash, this.state.amountToMint ,this.state.royalty*100).send({from: this.state.account}, async (error, transactionHash) => {
             if(this.state.networkId <= 4) {
@@ -114,7 +124,9 @@ class App extends Component {
     onFileChanged(e) {
         this.setState({imageFile: e.target.files[0]})
     }
+    /*
 
+     */
     async onFormSubmit() {
         try {
             // this.setState({statusMessage: "Please wait"})
@@ -142,7 +154,9 @@ class App extends Component {
             this.setState({statusMessage: "something went wrong when trying to submit: "+e.message})
         }
     }
+    /*
 
+     */
     getHistoryTable = () => {
         // network ids between 1 and 4 are the main- and testnets. anything after that might be local, where its not possible to render the history
         if(this.state.networkId > 4){
@@ -161,6 +175,9 @@ class App extends Component {
         }
     }
     // from https://bapunawarsaddam.medium.com/add-and-remove-form-fields-dynamically-using-react-and-react-hooks-3b033c3c0bf5
+    /*
+
+     */
     addProperty(){
         let data = this.state.metadata;
         data.pinataContent.attributes.push({trait_type: "", value: "" })
@@ -171,6 +188,9 @@ class App extends Component {
     }
 
     // from https://bapunawarsaddam.medium.com/add-and-remove-form-fields-dynamically-using-react-and-react-hooks-3b033c3c0bf5
+    /*
+
+     */
     handleChange(i, e) {
         let data = this.state.metadata;
         data.pinataContent.attributes[i][e.target.name] = e.target.value;
@@ -180,6 +200,9 @@ class App extends Component {
     }
 
     // from https://bapunawarsaddam.medium.com/add-and-remove-form-fields-dynamically-using-react-and-react-hooks-3b033c3c0bf5
+    /*
+
+     */
     removeProperty(index) {
         let data = this.state.metadata;
             data.pinataContent.attributes.splice(index,1);
@@ -187,6 +210,9 @@ class App extends Component {
                 metadata: data
             }))
     }
+    /*
+
+     */
     renderProperties() {
         let properties = [];
         this.state.metadata.pinataContent.attributes.map((element, index) =>
@@ -216,28 +242,36 @@ class App extends Component {
         })
         return properties;
     }
-    // WIP
-    getStatusMessage(variant){
+    /*
+   returns status Message
+   only works for the rinkeby testnet
+    */
+    getStatusMessage(){
         if(this.state.statusMessage !== undefined) {
             return (
                 <Row>
-                    <Alert variant={variant} className="mt-3 fw-bold">
+                    <Alert className="mt-3 fw-bold">
                         <span className="text-center">{this.state.statusMessage}</span>
                     </Alert>
                 </Row>
             )
         }
     }
-
+    /*
+    renders result
+    */
     render() {
+        //checks whether an errorMessage exists by now, if so, return Error component
         if(this.state.errorMessage && this.state.errorMessage!=="" ){
             return (<Error>
                 <h3>{this.state.errorMessage}</h3>
             </Error>);
         }
+        // waiting for web3. refresh the site to try again
         if (!this.state.web3) {
             return <div>Loading Web3, accounts, and contract...</div>;
         }
+        // returns the contents site
         return (
             <Container fluid className="bg-light">
                 <Navbar>
