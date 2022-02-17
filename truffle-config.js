@@ -64,4 +64,8 @@ module.exports = {
       }
     }
   },
+  plugins: ['truffle-plugin-verify'],
+  api_keys: {
+    etherscan: process.env.REACT_APP_ETHERSCAN_API_KEY
+  }
 };

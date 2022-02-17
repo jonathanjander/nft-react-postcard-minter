@@ -7,7 +7,8 @@ import Error from "./Error";
 import {Container, Form, Button, Navbar, Row, Col, Alert} from "react-bootstrap";
 
 /*
-
+Handles all the frontend logic
+renders the site
  */
 class App extends Component {
     constructor(props) {
@@ -34,7 +35,7 @@ class App extends Component {
         this.getStatusMessage = this.getStatusMessage.bind(this)
     }
     /*
-
+    initialise form data
      */
     initState = async () =>{
         let formJSON = {
@@ -62,7 +63,7 @@ class App extends Component {
         });
     }
     /*
-
+    initialises wallet, account and contract
      */
     componentDidMount = async () => {
         try {
@@ -93,11 +94,11 @@ class App extends Component {
 
     };
     /*
-
+    calls "mint" method from smart contract
      */
-    mint = async (hash) => {
+    mintNFT = async (hash) => {
         this.state.contract.methods.mint(hash, this.state.amountToMint ,this.state.royalty*100).send({from: this.state.account}, async (error, transactionHash) => {
-            if(this.state.networkId <= 4) {
+            if(this.state.networkId <= 4 && !error) {
                 this.setState({statusMessage: "Please Wait"});
             }
         }).on('error', function (error) { // If the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
@@ -125,11 +126,13 @@ class App extends Component {
         this.setState({imageFile: e.target.files[0]})
     }
     /*
-
+    uploads asset file to IPFS
+    uploads metadata file to IPFS
+    calls mintNFT function
      */
     async onFormSubmit() {
         try {
-            // this.setState({statusMessage: "Please wait"})
+
             let metadata = this.state.metadata;
             const {hash: imageHash, status: imageStatus} = await uploadDataToIPFS(this.state.imageFile);
             metadata.pinataContent.image = "ipfs://"+imageHash;
@@ -144,7 +147,7 @@ class App extends Component {
             this.setState({metadata: metadata});
 
             const {hash:metadataHash, status: metadataStatus} = await uploadJSONToIPFS(metadata);
-            await this.mint(metadataHash);
+            await this.mintNFT(metadataHash);
             if(metadataStatus != 200 || imageStatus != 200){
                 this.setState({statusMessage: "There was a problem uploading the files to IPFS: "+ metadataStatus!=200? imageStatus : metadataStatus})
             }
@@ -155,12 +158,11 @@ class App extends Component {
         }
     }
     /*
-
+    if network is not the local blockchain then render the history table component
      */
     getHistoryTable = () => {
         // network ids between 1 and 4 are the main- and testnets. anything after that might be local, where its not possible to render the history
         if(this.state.networkId > 4){
-            // console.log("ganache network (local)")
             return <h6 className="text-center" >The NFT History doesn't exist on a local blockchain</h6>
         }
         else{
@@ -174,9 +176,9 @@ class App extends Component {
             )
         }
     }
-    // from https://bapunawarsaddam.medium.com/add-and-remove-form-fields-dynamically-using-react-and-react-hooks-3b033c3c0bf5
     /*
-
+    adapted from https://bapunawarsaddam.medium.com/add-and-remove-form-fields-dynamically-using-react-and-react-hooks-3b033c3c0bf5
+    adds properties to metadata
      */
     addProperty(){
         let data = this.state.metadata;
@@ -187,9 +189,9 @@ class App extends Component {
 
     }
 
-    // from https://bapunawarsaddam.medium.com/add-and-remove-form-fields-dynamically-using-react-and-react-hooks-3b033c3c0bf5
     /*
-
+    adapted from https://bapunawarsaddam.medium.com/add-and-remove-form-fields-dynamically-using-react-and-react-hooks-3b033c3c0bf5
+    handles change of metadata properties
      */
     handleChange(i, e) {
         let data = this.state.metadata;
@@ -199,9 +201,9 @@ class App extends Component {
         }))
     }
 
-    // from https://bapunawarsaddam.medium.com/add-and-remove-form-fields-dynamically-using-react-and-react-hooks-3b033c3c0bf5
     /*
-
+    adapted from https://bapunawarsaddam.medium.com/add-and-remove-form-fields-dynamically-using-react-and-react-hooks-3b033c3c0bf5
+    removes properties from metadata
      */
     removeProperty(index) {
         let data = this.state.metadata;
@@ -211,7 +213,7 @@ class App extends Component {
             }))
     }
     /*
-
+    renders the form properties
      */
     renderProperties() {
         let properties = [];
@@ -258,7 +260,7 @@ class App extends Component {
         }
     }
     /*
-    renders result
+    renders site
     */
     render() {
         //checks whether an errorMessage exists by now, if so, return Error component
