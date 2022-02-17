@@ -13,7 +13,7 @@ const pinataApiSecret = process.env.REACT_APP_PINATA_API_SECRET;
 uploads a JSON file to IPFS via Pinata's API
 used for the NFT metadata
  */
-const uploadJSONToIPFS = async (JSONData) => {
+export const uploadJSONToIPFS = async (JSONData) => {
     JSONData = formatJSON(JSONData);
     let result;
     try {
@@ -49,7 +49,7 @@ used for the NFT asset
 data must be a file or a blob otherwise it doesn't work
 it uses the form data format in order to upload the file
  */
-const uploadDataToIPFS = async (data) => {
+export const uploadDataToIPFS = async (data) => {
     const form_data = new FormData();
     let result;
     try {
@@ -93,11 +93,4 @@ const formatJSON = (JSONData) => {
         }
     }
     return JSONData;
-}
-
-
-module.exports = {
-    uploadDataToIPFS,
-    uploadJSONToIPFS,
-    formatJSON
 }
