@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/souvenir-minter-dapp/static/css/main.4e0b001f.chunk.css",
+    "main.js": "/souvenir-minter-dapp/static/js/main.934bf1eb.chunk.js",
+    "main.js.map": "/souvenir-minter-dapp/static/js/main.934bf1eb.chunk.js.map",
+    "runtime-main.js": "/souvenir-minter-dapp/static/js/runtime-main.5640835a.js",
+    "runtime-main.js.map": "/souvenir-minter-dapp/static/js/runtime-main.5640835a.js.map",
+    "static/css/2.a75f5a2c.chunk.css": "/souvenir-minter-dapp/static/css/2.a75f5a2c.chunk.css",
+    "static/js/2.05f5b41f.chunk.js": "/souvenir-minter-dapp/static/js/2.05f5b41f.chunk.js",
+    "static/js/2.05f5b41f.chunk.js.map": "/souvenir-minter-dapp/static/js/2.05f5b41f.chunk.js.map",
+    "index.html": "/souvenir-minter-dapp/index.html",
+    "static/css/2.a75f5a2c.chunk.css.map": "/souvenir-minter-dapp/static/css/2.a75f5a2c.chunk.css.map",
+    "static/css/main.4e0b001f.chunk.css.map": "/souvenir-minter-dapp/static/css/main.4e0b001f.chunk.css.map",
+    "static/js/2.05f5b41f.chunk.js.LICENSE.txt": "/souvenir-minter-dapp/static/js/2.05f5b41f.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5640835a.js",
+    "static/css/2.a75f5a2c.chunk.css",
+    "static/js/2.05f5b41f.chunk.js",
+    "static/css/main.4e0b001f.chunk.css",
+    "static/js/main.934bf1eb.chunk.js"
+  ]
+}
