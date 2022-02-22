@@ -25,6 +25,7 @@ class App extends Component {
             rarity: "Rare",
             amountToMint: 1,
             royalty: 10,
+            owner:""
         }
 
         this.onFormSubmit = this.onFormSubmit.bind(this);
@@ -71,6 +72,7 @@ class App extends Component {
             const {web3, account, errorMessage} = await getWallet();
             const {contract} = await getContract(web3);
             const networkId = await web3.eth.net.getId();
+            const owner = await contract.methods.owner().call();
             if(contract._address === null){
                 this.setState({
                     errorMessage: "No Contract Address found. The Smart Contract might not have been deployed on this network. Try the rinkeby test network  or a local blockchain like Ganache",
@@ -81,7 +83,8 @@ class App extends Component {
                 account: account,
                 contract: contract,
                 networkId: networkId,
-                statusMessage: errorMessage
+                statusMessage: errorMessage,
+                owner:owner
             });
         }
         catch (e) {
@@ -249,6 +252,17 @@ class App extends Component {
    only works for the rinkeby testnet
     */
     getStatusMessage(){
+        console.log()
+        // console.log()
+        if(this.state.owner.toLowerCase()!=this.state.account.toLowerCase()){
+            return (
+                <Row>
+                    <Alert variant="warning" className="mt-3 fw-bold">
+                        <span className="text-center">You're not logged in with the owner account ({this.state.owner}). You wont be able to mint NFTs unless you use the owner account.</span>
+                    </Alert>
+                </Row>
+            )
+        }
         if(this.state.statusMessage !== undefined) {
             return (
                 <Row>
