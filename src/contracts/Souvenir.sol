@@ -144,7 +144,7 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     // max copies of one nft is 100
     function mint(string memory tokenHash, uint256 numberOfTokens, uint256 royaltyAmount)
     external
-    onlyOwner
+//    onlyOwner
     {
         require(numberOfTokens<=20, "not more than 20 at once");
         require(_hashes[tokenHash]<= MAX_AMOUNT_OF_COPIES);
@@ -166,7 +166,7 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     // mints nft to 'receiver'
     function mint(string memory tokenHash, uint256 numberOfTokens, uint256 royaltyAmount, address receiver)
     external
-    onlyOwner
+//    onlyOwner
     {
         require(numberOfTokens<=20, "not more than 20 at once");
         require(_hashes[tokenHash]<= MAX_AMOUNT_OF_COPIES);

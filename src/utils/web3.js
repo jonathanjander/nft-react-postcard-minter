@@ -8,7 +8,6 @@ export const getWallet = async ()=> {
             const web3 = await new Web3(window.ethereum);
 
             // reload page when chain or account changes
-            // from: https://docs.metamask.io/guide/ethereum-provider.html#events
             window.ethereum.on('chainChanged', (_chainId) => window.location.reload());
             window.ethereum.on('accountsChanged', function (_address) {window.location.reload()})
 
@@ -42,7 +41,7 @@ export const getWallet = async ()=> {
             );
             const web3 = await new Web3(provider);
             // Use web3 to get the user's accounts.
-            let accounts = await web3.eth.getAccounts();
+            const accounts = await web3.eth.getAccounts();
             console.log("No web3 instance injected, using Local web3.");
 
             return {
@@ -62,31 +61,30 @@ export const getWallet = async ()=> {
 }
 export const getContract = async (web3, networkId)=> {
     if(web3){
-    try {
-        // networkId 4 is the rinkeby network
-        if (typeof(networkId) == "undefined") {
-            // current networkId
-            networkId = await web3.eth.net.getId();
+        try {
+            // networkId 4 is the rinkeby network
+            if (typeof(networkId) == "undefined") {
+                // current networkId
+                networkId = await web3.eth.net.getId();
+            }
+            // Get the contract instance.
+            const deployedNetwork = SouvenirContract.networks[networkId];
+            const instance = new web3.eth.Contract(
+                SouvenirContract.abi,
+                deployedNetwork && deployedNetwork.address,
+            );
+            return {
+                contract: instance
+            };
         }
-        // Get the contract instance.
-        const deployedNetwork = SouvenirContract.networks[networkId];
-        const instance = new web3.eth.Contract(
-            SouvenirContract.abi,
-            deployedNetwork && deployedNetwork.address,
-        );
-        return {
-            contract: instance
-        };
-
-    }
-    catch (e) {
-        alert(
-            "Failed to load contract",
-        );
-        return {
-            contract: null
-        };
-    }
+        catch (e) {
+            alert(
+                "Failed to load contract",
+            );
+            return {
+                contract: null
+            };
+        }
     }
 }
 

@@ -59,7 +59,7 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\nimport '@openzeppelin/contracts/utils/introspection/ERC165.sol';\r\n\r\nimport './ERC2981Base.sol';\r\n/// from https://github.com/dievardump/EIP2981-implementation/blob/main/contracts/ERC2981PerTokenRoyalties.sol\r\n/// @dev This is a contract used to add ERC2981 support to ERC721 and 1155\r\nabstract contract ERC2981Royalty is ERC2981Base {\r\n    mapping(uint256 => RoyaltyInfo) internal _royalties;\r\n\r\n    /// @dev Sets token royalties\r\n    /// @param tokenId the token id for which we register the royalties\r\n    /// @param recipient recipient of the royalties\r\n    /// @param value percentage (using 2 decimals - 10000 = 100, 0 = 0)\r\n    function _setTokenRoyalty(\r\n        uint256 tokenId,\r\n        address recipient,\r\n        uint256 value\r\n    ) internal {\r\n        require(value <= 10000, 'ERC2981Royalties: Too high');\r\n        _royalties[tokenId] = RoyaltyInfo(recipient, uint24(value));\r\n    }\r\n\r\n    /// @inheritdoc\tIERC2981Royalties\r\n    // value is the price of nft\r\n    function royaltyInfo(uint256 tokenId, uint256 value)\r\n    external\r\n    view\r\n    override\r\n    returns (address receiver, uint256 royaltyAmount)\r\n    {\r\n        RoyaltyInfo memory royalties = _royalties[tokenId];\r\n        receiver = royalties.recipient;\r\n        royaltyAmount = (value * royalties.amount) / 10000;\r\n    }\r\n}\r\n\r\n\r\n\r\n",
-  "sourcePath": "C:\\Users\\Joey\\Desktop\\BA\\souvenir-minter\\src\\contracts\\ERC2981Royalty.sol",
+  "sourcePath": "C:\\Users\\Joey\\Desktop\\BA\\nft-react-postcard-minter\\src\\contracts\\ERC2981Royalty.sol",
   "ast": {
     "absolutePath": "project:/src/contracts/ERC2981Royalty.sol",
     "exportedSymbols": {
@@ -2024,7 +2024,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-02-17T19:17:37.906Z",
+  "updatedAt": "2022-02-24T14:37:24.071Z",
   "devdoc": {
     "details": "This is a contract used to add ERC2981 support to ERC721 and 1155",
     "kind": "dev",

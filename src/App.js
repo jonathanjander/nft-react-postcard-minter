@@ -86,6 +86,7 @@ class App extends Component {
                 statusMessage: errorMessage,
                 owner:owner
             });
+
         }
         catch (e) {
             console.log("error at initialising: "+e);
@@ -106,18 +107,20 @@ class App extends Component {
             }
         }).on('error', function (error) { // If the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
             console.log(error.message);
+
         }).on('receipt', async receipt =>{
             console.log(receipt);
-            if(receipt!=null && this.state.networkId <= 4) {
-                let link;
+            if(receipt!=null && this.state.networkId <= 4) { // doenst work for the local blockchain
+                let url;
                 if(this.state.amountToMint > 1){
-                    link = "https://testnets.opensea.io/assets/" + this.state.contract._address + "/" + receipt.events.Transfer[0].returnValues.tokenId;
+                    url = "https://testnets.opensea.io/assets/" + this.state.contract._address + "/" + receipt.events.Transfer[0].returnValues.tokenId;
                 }
                 else {
-                    link = "https://testnets.opensea.io/assets/" + this.state.contract._address + "/" + receipt.events.Transfer.returnValues.tokenId;
+                    url = "https://testnets.opensea.io/assets/" + this.state.contract._address + "/" + receipt.events.Transfer.returnValues.tokenId;
                 }
                 if(receipt.status){
-                    this.setState({statusMessage: "Minting successful. It might take some time until the NFT is visibile on "+link})
+                    let link = <a href={url} target="_blank" rel="noopener noreferrer">Opensea</a>
+                    this.setState({statusMessage: <span>Minting successful. It might take some time until the NFT is visibile on {link}</span>})
                 }
                 else{
                     this.setState({statusMessage: "Something went wrong with minting the NFT. The transaction was reverted"});
@@ -125,9 +128,11 @@ class App extends Component {
             }
         });
     }
+
     onFileChanged(e) {
         this.setState({imageFile: e.target.files[0]})
     }
+
     /*
     uploads asset file to IPFS
     uploads metadata file to IPFS
@@ -252,9 +257,8 @@ class App extends Component {
    only works for the rinkeby testnet
     */
     getStatusMessage(){
-        console.log()
-        // console.log()
-        if(this.state.owner.toLowerCase()!=this.state.account.toLowerCase()){
+        // access restriction to "owner" is disabled for testing purposes, which is why this is commented out
+        /*if(this.state.owner.toLowerCase()!=this.state.account.toLowerCase()){
             return (
                 <Row>
                     <Alert variant="warning" className="mt-3 fw-bold">
@@ -262,7 +266,7 @@ class App extends Component {
                     </Alert>
                 </Row>
             )
-        }
+        }*/
         if(this.state.statusMessage !== undefined) {
             return (
                 <Row>
@@ -371,7 +375,7 @@ class App extends Component {
                                                               type="number"
                                                               min={1}
                                                               max={20}
-                                                              placeholder="between 1 and 100"
+                                                              placeholder="between 1 and 20"
                                                               value={this.state.amountToMint}
                                                               onChange={((e) => {
                                                                   let val = e.target.value
