@@ -16,6 +16,7 @@ export const getWallet = async ()=> {
                 method: "eth_requestAccounts",
             });
 
+            await switchChain(web3);
             return {
                 web3: web3,
                 account: accounts[0]
@@ -60,7 +61,6 @@ export const getWallet = async ()=> {
     }
 }
 export const getContract = async (web3, networkId)=> {
-    if(web3){
         try {
             // networkId 4 is the rinkeby network
             if (typeof(networkId) == "undefined") {
@@ -85,6 +85,38 @@ export const getContract = async (web3, networkId)=> {
                 contract: null
             };
         }
+}
+const switchChain = async (web3)=> {
+    try {
+        // window.ethereum.on('chainChanged', (_chainId) => window.location.reload());
+        // const rinkebyID = '0x4'
+        // if(rinkebyID)
+        const networkId= await web3.eth.net.getId();
+        if(networkId!=4 && networkId!=5777)
+        await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0x4' }],
+        });
+    } catch (switchError) {
+        // This error code indicates that the chain has not been added to MetaMask.
+        // if (switchError.code === 4902) {
+        //     try {
+        //         await ethereum.request({
+        //             method: 'wallet_addEthereumChain',
+        //             params: [
+        //                 {
+        //                     chainId: '0xf00',
+        //                     chainName: '...',
+        //                     rpcUrls: ['https://...'] /* ... */,
+        //                 },
+        //             ],
+        //         });
+        //     } catch (addError) {
+        //         // handle "add" error
+        //     }
+        // }
+        // handle other "switch" errors
     }
+
 }
 

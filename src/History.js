@@ -35,45 +35,50 @@ class History extends Component {
     componentDidMount = async () => {
         const entries = await getLatestERC721Tx(this.state.contract._address, 30);
         // calls loadTxData for every transaction
-        for (const entry of entries.data.result) {
-            await this.loadTxData(entry);
+        if(entries) {
+            console.log(entries);
+            for (const entry of entries.data.result) {
+                await this.loadTxData(entry);
+            }
         }
     }
     /*
     takes a transaction and formats it into an expected table entry
     data entry is being added into the transferHistory state array
      */
-    loadTxData = async function(tx){
-        //hard coded rinkeby links
-        const etherScanAddressPrefix = "https://rinkeby.etherscan.io/address/";
-        const etherScanTxPrefix = "https://rinkeby.etherscan.io/tx/";
+    loadTxData = async function(tx) {
+        if (tx) {
+            //hard coded rinkeby links
+            const etherScanAddressPrefix = "https://rinkeby.etherscan.io/address/";
+            const etherScanTxPrefix = "https://rinkeby.etherscan.io/tx/";
 
-        let timestamp = await this.getTimeDiff(tx.timeStamp);
-        const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
-        let from = (tx.from === ZERO_ADDRESS) ? tx.contractAddress : tx.from;
-        let osUrl = "https://testnets.opensea.io/assets/" + tx.contractAddress + "/" + tx.tokenID;
-        let fromUrl = etherScanAddressPrefix + from;
-        let toUrl = etherScanAddressPrefix + tx.to;
-        let transUrl = etherScanTxPrefix + tx.hash;
+            let timestamp = await this.getTimeDiff(tx.timeStamp);
+            const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
+            let from = (tx.from === ZERO_ADDRESS) ? tx.contractAddress : tx.from;
+            let osUrl = "https://testnets.opensea.io/assets/" + tx.contractAddress + "/" + tx.tokenID;
+            let fromUrl = etherScanAddressPrefix + from;
+            let toUrl = etherScanAddressPrefix + tx.to;
+            let transUrl = etherScanTxPrefix + tx.hash;
 
-        let icon = null;
-        if (from === tx.contractAddress) {
-            icon = <FileEarmarkCode className="d-inline mb-1 me-1"/>;
+            let icon = null;
+            if (from === tx.contractAddress) {
+                icon = <FileEarmarkCode className="d-inline mb-1 me-1"/>;
+            }
+            this.state.contract.get
+            let entry = {
+                tokenID: tx.tokenID,
+                transaction: <a href={transUrl} target="_blank"
+                                rel="noopener noreferrer">{tx.hash.substr(2, 10)}</a>,
+                from: <span>
+                                {icon}
+                    <a href={fromUrl} target="_blank" rel="noopener noreferrer">{from.substr(2, 10)}</a></span>,
+                to: <a href={toUrl} target="_blank"
+                       rel="noopener noreferrer">{tx.to.substr(2, 10)}</a>,
+                created: timestamp + " ago",
+                opensea: <a href={osUrl} target="_blank" rel="noopener noreferrer">Opensea</a>
+            }
+            this.setState({transferHistory: [...this.state.transferHistory, entry]})
         }
-        this.state.contract.get
-        let entry = {
-            tokenID: tx.tokenID,
-            transaction: <a href={transUrl} target="_blank"
-                            rel="noopener noreferrer">{tx.hash.substr(2, 10)}</a>,
-            from: <span>
-                            {icon}
-                <a href={fromUrl} target="_blank" rel="noopener noreferrer">{from.substr(2, 10)}</a></span>,
-            to: <a href={toUrl} target="_blank"
-                   rel="noopener noreferrer">{tx.to.substr(2, 10)}</a>,
-            created: timestamp + " ago",
-            opensea: <a href={osUrl} target="_blank" rel="noopener noreferrer">Opensea</a>
-        }
-        this.setState({transferHistory: [...this.state.transferHistory, entry]})
     }
     /*
      adapted from https://medium.com/@subalerts/create-dynamic-table-from-json-in-react-js-1a4a7b1146ef

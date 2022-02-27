@@ -8,6 +8,7 @@ sends a get request to etherscan
 returns x amount of entries for given smart contract
  */
 export const getLatestERC721Tx = async (contractAddress, amountOfEntries) => {
+
     try {
         const url = etherScanPrefix+
             "?module=account"+
@@ -24,7 +25,8 @@ export const getLatestERC721Tx = async (contractAddress, amountOfEntries) => {
             url: url,
         };
         const response = await axios(request);
-        return response;
+        if(response.data.status==="1")
+            return response;
     }
     catch (e) {
         console.log("something went wrong fetching the history data")

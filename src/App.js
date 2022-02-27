@@ -281,12 +281,17 @@ class App extends Component {
     renders site
     */
     render() {
+        // returns message if currently connected network isnt rinkeby or the defined local blockchain
+        if(this.state.networkId !=4 &&  this.state.networkId !=5777){
+            return <div>you're connected to the wrong network. The Souvenir-NFT only exists on the Rinkeby testnet or locally. Please switch networks over MetaMask</div>
+        }
         //checks whether an errorMessage exists by now, if so, return Error component
         if(this.state.errorMessage && this.state.errorMessage!=="" ){
             return (<Error>
                 <h3>{this.state.errorMessage}</h3>
             </Error>);
         }
+
         // waiting for web3. refresh the site to try again
         if (!this.state.web3) {
             return <div>Loading Web3, accounts, and contract...</div>;
