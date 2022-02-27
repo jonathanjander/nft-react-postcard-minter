@@ -18,14 +18,6 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
 
 <!-- PROJECT LOGO -->
 <br />
@@ -82,22 +74,43 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[Souvenir-Minter-DApp](https://jonathanjander.github.io/nft-react-postcard-minter/)
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
-
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `BLANK_README.md` to get started.
+This is a bachelors thesis project. You can mint NFTs for the Souvenir collection
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+<!-- GETTING STARTED -->
+## Testing it
+In order to test the DApp, you need to have a web3 provider like [MetaMask](https://metamask.io/). It was only tested with the MetaMask browser extension, so preferably use MetaMask as the web3 provider. You also need to create a MetaMask Account.
 
+Open [Souvenir-Minter-DApp](https://jonathanjander.github.io/nft-react-postcard-minter/).
+
+Once openened, sign up on MetaMask and connect an ethereum account with the website. Next to the account there is a status symbol which shows if you are connected or not. You can only connect to the website, if the website is open.
+
+![image](https://user-images.githubusercontent.com/63592190/155850389-9c121324-868f-4d7e-8279-0d283a3b53d3.png)
+
+You also need to switch to the Rinkeby Testnetwork. Click on the dropdown menu on top of the MetaMask interface. If you just installed MetaMask, it will say "Ethereum Mainnet". If you can't find the Rinkeby Testnetwork, turn on "show test networks" in the settings.
+
+![image](https://user-images.githubusercontent.com/63592190/155850285-de898228-a0c1-46cd-b2cb-6039d8ed27c4.png)
+
+Only if the ethereum account is connected to the website and the you're connected to the rinkeby testwork, only then will you be able to see and interact with the website.
+
+![image](https://user-images.githubusercontent.com/63592190/155850346-954f22c8-5d48-4f6e-8c26-dc8d9d8ebf51.png)
+
+The screenshot above shows how it should look.
+
+
+In Order to mint (create) Souvenir-NFTs, you need to get some Rinkeby ETH. 
+Use one of the following links or ask me to send some rinkeby ETH to you:
+
+Paste your Ethereum account address into the field. You can find your account address on MetaMask or if you are already connected to the souvenir-minter-DApp, you can find it in the top right corner. 
+* [rinkebyfaucet.com (only works once a day)](https://www.rinkebyfaucet.com/)
+* [faucets.chain.link/rinkeby](https://faucets.chain.link/rinkeby)
+
+The feature that only the owner of the smart contract can mint (create) NFTs was disabled for easier testing.
+
+If the steps were followed correctly, then you should be able to mint NFTs.
 
 ### Built With
 
@@ -115,11 +128,7 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 
 
-<!-- GETTING STARTED -->
-## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
@@ -131,7 +140,7 @@ This is an example of how to list things you need to use the software and how to
 * [MetaMask](https://metamask.io/)
   ```
   you need to have MetaMask or another Web3 Provider extension for your browser
-  (it was only tested with MetaMask
+  (it was only tested with MetaMask)
   ```
 * Rinkeby-Testnetwork
   ```
