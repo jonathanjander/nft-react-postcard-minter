@@ -17,8 +17,7 @@ class History extends Component {
             contract: this.props.contract,
             web3: this.props.web3,
             transferHistory: [],
-            networkId: null,
-            errorMessage: this.props.errorMessage
+            networkId: null
         }
 
         this.getRowData = this.getRowData.bind(this);
@@ -36,7 +35,6 @@ class History extends Component {
         const entries = await getLatestERC721Tx(this.state.contract._address, 30);
         // calls loadTxData for every transaction
         if(entries) {
-            console.log(entries);
             for (const entry of entries.data.result) {
                 await this.loadTxData(entry);
             }

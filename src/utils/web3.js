@@ -6,7 +6,6 @@ export const getWallet = async ()=> {
         try {
             // Get network provider and web3 instance.
             const web3 = await new Web3(window.ethereum);
-
             // reload page when chain or account changes
             window.ethereum.on('chainChanged', (_chainId) => window.location.reload());
             window.ethereum.on('accountsChanged', function (_address) {window.location.reload()})
@@ -15,7 +14,6 @@ export const getWallet = async ()=> {
             const accounts = await window.ethereum.request({
                 method: "eth_requestAccounts",
             });
-
             await switchChain(web3);
             return {
                 web3: web3,
@@ -30,7 +28,6 @@ export const getWallet = async ()=> {
             return {
                 web3: null,
                 account: "",
-                errorMessage: "Failed to connect to Wallet: "+ error.message
             }
         }
     }
@@ -44,7 +41,6 @@ export const getWallet = async ()=> {
             // Use web3 to get the user's accounts.
             const accounts = await web3.eth.getAccounts();
             console.log("No web3 instance injected, using Local web3.");
-
             return {
                 web3: web3,
                 account: accounts[0]
@@ -54,8 +50,7 @@ export const getWallet = async ()=> {
             alert("No global or local web3 instance injected",);
             return {
                 web3: null,
-                account: "",
-                errorMessage: "Failed to connect to Wallet: "+ error.message
+                account: ""
             }
         }
     }
@@ -93,10 +88,10 @@ const switchChain = async (web3)=> {
         // if(rinkebyID)
         const networkId= await web3.eth.net.getId();
         if(networkId!=4 && networkId!=5777)
-        await window.ethereum.request({
+        window.ethereum.request({
             method: 'wallet_switchEthereumChain',
             params: [{ chainId: '0x4' }],
-        });
+        }).on();
     } catch (switchError) {
         // This error code indicates that the chain has not been added to MetaMask.
         // if (switchError.code === 4902) {

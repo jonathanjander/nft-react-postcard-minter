@@ -18,7 +18,6 @@ class App extends Component {
             contract: null,
             web3: null,
             statusMessage: "",
-            errorMessage: "",
             networkId: null,
             imageFile: null,
             metadata: null,
@@ -69,31 +68,20 @@ class App extends Component {
     componentDidMount = async () => {
         try {
             await this.initState()
-            const {web3, account, errorMessage} = await getWallet();
+            const {web3, account} = await getWallet();
+            this.setState({web3:web3,account: account})
             const {contract} = await getContract(web3);
             const networkId = await web3.eth.net.getId();
             const owner = await contract.methods.owner().call();
-            if(contract._address === null){
-                this.setState({
-                    errorMessage: "No Contract Address found. The Smart Contract might not have been deployed on this network. Try the rinkeby test network  or a local blockchain like Ganache",
-                })
-            }
             this.setState({
-                web3: web3,
-                account: account,
                 contract: contract,
                 networkId: networkId,
-                statusMessage: errorMessage,
                 owner:owner
             });
 
         }
         catch (e) {
             console.log("error at initialising: "+e);
-            if(this.state.errorMessage===""){
-                this.setState({errorMessage: "error at initialising: "+e.message})
-            }
-
         }
 
     };
@@ -179,7 +167,6 @@ class App extends Component {
                     web3={this.state.web3}
                     account={this.state.account}
                     contract={this.state.contract}
-                    errorMessage={this.state.statusMessage}
                 />
             )
         }
@@ -257,6 +244,15 @@ class App extends Component {
    only works for the rinkeby testnet
     */
     getStatusMessage(){
+        if(this.state.statusMessage !== undefined && this.state.statusMessage !== "" ) {
+            return (
+                <Row>
+                    <Alert className="mt-3 fw-bold">
+                        <span className="text-center">{this.state.statusMessage}</span>
+                    </Alert>
+                </Row>
+            )
+        }
         // access restriction to "owner" is disabled for testing purposes, which is why this is commented out
         /*if(this.state.owner.toLowerCase()!=this.state.account.toLowerCase()){
             return (
@@ -267,34 +263,25 @@ class App extends Component {
                 </Row>
             )
         }*/
-        if(this.state.statusMessage !== undefined) {
-            return (
-                <Row>
-                    <Alert className="mt-3 fw-bold">
-                        <span className="text-center">{this.state.statusMessage}</span>
-                    </Alert>
-                </Row>
-            )
-        }
+
     }
     /*
     renders site
     */
     render() {
-        // returns message if currently connected network isnt rinkeby or the defined local blockchain
-        if(this.state.networkId !=4 &&  this.state.networkId !=5777){
-            return <div>you're connected to the wrong network. The Souvenir-NFT only exists on the Rinkeby testnet or locally. Please switch networks over MetaMask</div>
-        }
-        //checks whether an errorMessage exists by now, if so, return Error component
-        if(this.state.errorMessage && this.state.errorMessage!=="" ){
-            return (<Error>
-                <h3>{this.state.errorMessage}</h3>
-            </Error>);
-        }
-
         // waiting for web3. refresh the site to try again
         if (!this.state.web3) {
-            return <div>Loading Web3, accounts, and contract...</div>;
+            return (
+                <div> <h4>Loading Web3, accounts, and contract...</h4>
+                    <br/>
+                    <h4>If you aren't logged in to MetaMask, please do so!</h4>
+                    <br/>
+                    <h4>If you haven't downloaded the MetaMask browser extension, please download it <a href="https://metamask.io/download/">here</a></h4>
+                </div>);
+        }
+        // returns message if currently connected network isnt rinkeby or the defined local blockchain
+        else if(this.state.networkId !=4 &&  this.state.networkId !=5777){
+            return <h4>you're connected to the wrong network. The Souvenir-NFT only exists on the Rinkeby testnet or locally. Please switch networks over MetaMask</h4>
         }
         // returns the contents site
         return (
