@@ -11,19 +11,15 @@ export const getWallet = async ()=> {
             window.ethereum.on('accountsChanged', function (_address) {window.location.reload()})
 
             // Use web3 to get the user's accounts.
-            const accounts = await window.ethereum.request({
-                method: "eth_requestAccounts",
-            });
-            await switchChain(web3);
+            const accounts = await requestAccounts(web3);
             return {
                 web3: web3,
                 account: accounts[0]
             }
         } catch (error) {
-            // Catch any errors for any of the above operations.
-            alert(
-                "Failed to connect to Wallet: " + error.message,
-            );
+            // alert(
+            //     "Failed to connect to Wallet: " + error.message,
+            // );
             console.error(error);
             return {
                 web3: null,
@@ -48,6 +44,7 @@ export const getWallet = async ()=> {
         }
         catch (error) {
             alert("No global or local web3 instance injected",);
+            console.error(error);
             return {
                 web3: null,
                 account: ""
@@ -72,46 +69,44 @@ export const getContract = async (web3, networkId)=> {
                 contract: instance
             };
         }
-        catch (e) {
-            alert(
-                "Failed to load contract",
-            );
+        catch (error) {
+            // alert(
+            //     "Failed to load contract",
+            // );
+            console.error(error);
             return {
                 contract: null
             };
         }
 }
-const switchChain = async (web3)=> {
+export const requestNetwork = async ()=> {
     try {
         // window.ethereum.on('chainChanged', (_chainId) => window.location.reload());
         // const rinkebyID = '0x4'
         // if(rinkebyID)
-        const networkId= await web3.eth.net.getId();
+        // const networkId= await web3.eth.net.getId();
+        const networkId= await window.ethereum.networkVersion;
         if(networkId!=4 && networkId!=5777)
         window.ethereum.request({
             method: 'wallet_switchEthereumChain',
             params: [{ chainId: '0x4' }],
         }).on();
-    } catch (switchError) {
-        // This error code indicates that the chain has not been added to MetaMask.
-        // if (switchError.code === 4902) {
-        //     try {
-        //         await ethereum.request({
-        //             method: 'wallet_addEthereumChain',
-        //             params: [
-        //                 {
-        //                     chainId: '0xf00',
-        //                     chainName: '...',
-        //                     rpcUrls: ['https://...'] /* ... */,
-        //                 },
-        //             ],
-        //         });
-        //     } catch (addError) {
-        //         // handle "add" error
-        //     }
-        // }
-        // handle other "switch" errors
+    } catch (error) {
+        console.error(error);
+    }
+}
+// requests account
+export const requestAccounts = async ()=> {
+    try{
+        // Use web3 to get the user's accounts.
+        const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts",
+        });
+        return accounts;
+    }
+    catch (error) {
+        console.error(error);
     }
 
-}
 
+}

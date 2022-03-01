@@ -1,10 +1,11 @@
 import React, {Component} from "react";
 import "./App.css";
 import {uploadDataToIPFS, uploadJSONToIPFS} from "./utils/ipfsPinning";
-import {getContract, getWallet} from "./utils/web3"
+import {getContract, getWallet, requestAccounts, requestNetwork} from "./utils/web3"
 import History from "./History";
 import Error from "./Error";
 import {Container, Form, Button, Navbar, Row, Col, Alert} from "react-bootstrap";
+import {isDisabled} from "bootstrap/js/src/util";
 
 /*
 Handles all the frontend logic
@@ -24,7 +25,9 @@ class App extends Component {
             rarity: "Rare",
             amountToMint: 1,
             royalty: 10,
-            owner:""
+            owner:"",
+            isNetworkDisabled: false,
+            isAccountDisabled: false,
         }
 
         this.onFormSubmit = this.onFormSubmit.bind(this);
@@ -33,6 +36,7 @@ class App extends Component {
         this.removeProperty = this.removeProperty.bind(this)
         this.renderProperties = this.renderProperties.bind(this)
         this.getStatusMessage = this.getStatusMessage.bind(this)
+        this.requestNetworkButton = this.requestNetworkButton.bind(this)
     }
     /*
     initialise form data
@@ -171,6 +175,10 @@ class App extends Component {
             )
         }
     }
+
+    requestNetworkButton = () => {
+        return <Alert variant={"info"}> A request was sent to MetaMask. If the MetaMask notification window doesn't open automatically, please open the MetaMask extension manually.</Alert>
+    }
     /*
     adapted from https://bapunawarsaddam.medium.com/add-and-remove-form-fields-dynamically-using-react-and-react-hooks-3b033c3c0bf5
     adds properties to metadata
@@ -272,16 +280,43 @@ class App extends Component {
         // waiting for web3. refresh the site to try again
         if (!this.state.web3) {
             return (
-                <div> <h4>Loading Web3, accounts, and contract...</h4>
-                    <br/>
-                    <h4>If you aren't logged in to MetaMask, please do so!</h4>
+                <div>
+                    <h4>Couldn't establish a connection to the Web3 provider</h4>
                     <br/>
                     <h4>If you haven't downloaded the MetaMask browser extension, please download it <a href="https://metamask.io/download/">here</a></h4>
+                    <br/>
+                    <h4>Please check if you're logged in to the MetaMask browser extension. If not, please do so!</h4>
+                    <br/>
+                    <h5>Press the button to connect your Ethereum account to the website.</h5>
+                    <Button type="button" size="sm" className="" disabled={this.state.isAccountDisabled} onClick={async ()=> {
+                        window.location.reload();
+                        this.setState({isAccountDisabled: true})
+                        await requestAccounts();
+                        await requestNetwork();
+                    }
+                    }>
+                        Connect Account
+                    </Button>
+                    {/*{this.state.isAccountDisabled && <Alert variant={"info"}> A request was sent to MetaMask. If the MetaMask notification window doesn't open automatically, please open the MetaMask extension manually.</Alert>}*/}
+
                 </div>);
         }
         // returns message if currently connected network isnt rinkeby or the defined local blockchain
         else if(this.state.networkId !=4 &&  this.state.networkId !=5777){
-            return <h4>you're connected to the wrong network. The Souvenir-NFT only exists on the Rinkeby testnet or locally. Please switch networks over MetaMask</h4>
+            return (
+                <div><h4>you're connected to an ethereum-network where the Souvenir-NFT wasn't deployed. The Souvenir-NFT only exists on the Rinkeby test network or locally.</h4>
+                    <br/>
+                    <h5>Please switch networks over MetaMask or click the button down below</h5>
+                    <Button type="button" size="sm" className="mt-1" disabled={this.state.isNetworkDisabled} onClick={async ()=> {
+                        this.setState({isNetworkDisabled: true})
+                        await requestNetwork();
+                    }
+                    }>
+                        Connect Network
+                    </Button>
+                    {this.state.isNetworkDisabled && <Alert variant={"info"}> A request was sent to MetaMask. If the MetaMask notification window doesn't open automatically, please open the MetaMask extension manually.</Alert>}
+                </div>
+            );
         }
         // returns the contents site
         return (
