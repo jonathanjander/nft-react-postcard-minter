@@ -19,31 +19,6 @@
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
-  <h3 align="center">Best-README-Template</h3>
-
-  <p align="center">
-    An awesome README template to jumpstart your projects!
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
-  </p>
-</div>
-
-
-
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
@@ -82,9 +57,17 @@ This is a bachelors thesis project. You can mint NFTs for the Souvenir collectio
 
 <!-- GETTING STARTED -->
 ## Testing it
-In order to test the DApp, you need to have a web3 provider like [MetaMask](https://metamask.io/). It was only tested with the MetaMask browser extension, so preferably use MetaMask as the web3 provider. You also need to create a MetaMask Account.
+1. In order to test the DApp, you need to have a web3 provider like [MetaMask](https://metamask.io/download/). It was only tested with the MetaMask browser extension, so preferably use that. 
+2. Create a MetaMask account and sign up over the browser extension. It only works if you're logged in over the browser extension.
+3. Open [Souvenir-Minter-DApp](https://jonathanjander.github.io/nft-react-postcard-minter/).
+4. The site should tell you to change networks to the Rinkeby testnet. You might get a notification window from MetaMask asking you if you want to change networks to the Rinkeby testnetwork. Please accept that request. If there is no notification window popping up, please open the MetaMask browser extension over the browser. MetaMask should show you a blue 1 indicating that you have a notification.
+![notification](https://user-images.githubusercontent.com/63592190/156237856-c59cab42-c01e-4137-8bf4-1ce6fe822c96.png)
 
-Open [Souvenir-Minter-DApp](https://jonathanjander.github.io/nft-react-postcard-minter/).
+The notification should look like this
+
+![switchnetworks](https://user-images.githubusercontent.com/63592190/156238326-e14dfa72-8f5a-483d-b96d-dfdd5196fbe5.png)
+
+5.
 
 Once openened, sign up on MetaMask and connect an ethereum account with the website. Next to the account there is a status symbol which shows if you are connected or not. You can only connect to the website, if the website is open.
 
