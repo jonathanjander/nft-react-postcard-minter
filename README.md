@@ -56,40 +56,38 @@ This is a bachelors thesis project. You can mint NFTs for the Souvenir collectio
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
-## Testing it
+## Set up for testing
 1. In order to test the DApp, you need to have a web3 provider like [MetaMask](https://metamask.io/download/). It was only tested with the MetaMask browser extension, so preferably use that. 
 2. Create a MetaMask account and sign up over the browser extension. It only works if you're logged in over the browser extension.
-3. Open [Souvenir-Minter-DApp](https://jonathanjander.github.io/nft-react-postcard-minter/).
-4. The site should tell you to change networks to the Rinkeby testnet. You might get a notification window from MetaMask asking you if you want to change networks to the Rinkeby testnetwork. Please accept that request. If there is no notification window popping up, please open the MetaMask browser extension over the browser. MetaMask should show you a blue 1 indicating that you have a notification.
-![notification](https://user-images.githubusercontent.com/63592190/156237856-c59cab42-c01e-4137-8bf4-1ce6fe822c96.png)
 
-The notification should look like this
+   ![login](https://user-images.githubusercontent.com/63592190/156354768-2779a23a-97bb-4966-b533-d9f4080e1799.png)
 
-![switchnetworks](https://user-images.githubusercontent.com/63592190/156238326-e14dfa72-8f5a-483d-b96d-dfdd5196fbe5.png)
+3. Open the [Souvenir-Minter-DApp](https://jonathanjander.github.io/nft-react-postcard-minter/).
+4. You should get a MetaMask notification to connect one of your Ethereum accounts to the website. 
+ 
+   ![connect-account](https://user-images.githubusercontent.com/63592190/156241574-000869ec-0de8-4636-85b1-6dc21a581ea5.png)
 
-5.
+5. After successfully connecting your Ethereum account to the website, you should get asked to switch networks to the Rinkbey test network because that is the only public network with a deployed Souvenir Smart Contract. You should get a MetaMask notification to connect one of your Ethereum accounts to the website. If not, press the "Connect to Rinkeby" button shown on the website.
 
-Once openened, sign up on MetaMask and connect an ethereum account with the website. Next to the account there is a status symbol which shows if you are connected or not. You can only connect to the website, if the website is open.
+   ![switchnetworks](https://user-images.githubusercontent.com/63592190/156238326-e14dfa72-8f5a-483d-b96d-dfdd5196fbe5.png)
 
-![image](https://user-images.githubusercontent.com/63592190/155850389-9c121324-868f-4d7e-8279-0d283a3b53d3.png)
+6. You need ETH (Ether) on Rinkeby in order to pay for transactions.
+   * [rinkebyfaucet.com](https://www.rinkebyfaucet.com/) (only works once a day)
+   * [faucets.chain.link/rinkeby](https://faucets.chain.link/rinkeby) (you need to connect your Ethereum account to this site if you want to get Rinkeby ETH with this method)
+   * ask me to send you some Rinkeby ETH (email: Jonathan.Jander@Student.HTW-Berlin.de)
+7. If you see the Frontend of the website, then it worked! MetaMask should look like this:
 
-You also need to switch to the Rinkeby Testnetwork. Click on the dropdown menu on top of the MetaMask interface. If you just installed MetaMask, it will say "Ethereum Mainnet". If you can't find the Rinkeby Testnetwork, turn on "show test networks" in the settings.
+   ![how-it-should-look](https://user-images.githubusercontent.com/63592190/156360738-7ca66bac-e8b5-49a9-b532-33a3d0b12c61.png)
 
-![image](https://user-images.githubusercontent.com/63592190/155850285-de898228-a0c1-46cd-b2cb-6039d8ed27c4.png)
-
-Only if the ethereum account is connected to the website and the you're connected to the rinkeby testwork, only then will you be able to see and interact with the website.
-
-![image](https://user-images.githubusercontent.com/63592190/155850346-954f22c8-5d48-4f6e-8c26-dc8d9d8ebf51.png)
-
-The screenshot above shows how it should look.
-
+## Testing it
+To mint an NFT you need to complete the set up first.
 
 In Order to mint (create) Souvenir-NFTs, you need to get some Rinkeby ETH. 
 Use one of the following links or ask me to send some rinkeby ETH to you:
 
 Paste your Ethereum account address into the field. You can find your account address on MetaMask or if you are already connected to the souvenir-minter-DApp, you can find it in the top right corner. 
 * [rinkebyfaucet.com (only works once a day)](https://www.rinkebyfaucet.com/)
-* [faucets.chain.link/rinkeby](https://faucets.chain.link/rinkeby)
+* [faucets.chain.link/rinkeby (you need to connect your ethereum-account with metamask)](https://faucets.chain.link/rinkeby)
 
 The feature that only the owner of the smart contract can mint (create) NFTs was disabled for easier testing.
 
