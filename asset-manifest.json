@@ -1,23 +1,23 @@
 {
   "files": {
     "main.css": "/nft-react-postcard-minter/static/css/main.418ef122.chunk.css",
-    "main.js": "/nft-react-postcard-minter/static/js/main.24d4e49a.chunk.js",
-    "main.js.map": "/nft-react-postcard-minter/static/js/main.24d4e49a.chunk.js.map",
+    "main.js": "/nft-react-postcard-minter/static/js/main.2b498192.chunk.js",
+    "main.js.map": "/nft-react-postcard-minter/static/js/main.2b498192.chunk.js.map",
     "runtime-main.js": "/nft-react-postcard-minter/static/js/runtime-main.b8daa3aa.js",
     "runtime-main.js.map": "/nft-react-postcard-minter/static/js/runtime-main.b8daa3aa.js.map",
     "static/css/2.a75f5a2c.chunk.css": "/nft-react-postcard-minter/static/css/2.a75f5a2c.chunk.css",
-    "static/js/2.856ffd8e.chunk.js": "/nft-react-postcard-minter/static/js/2.856ffd8e.chunk.js",
-    "static/js/2.856ffd8e.chunk.js.map": "/nft-react-postcard-minter/static/js/2.856ffd8e.chunk.js.map",
+    "static/js/2.48af91d1.chunk.js": "/nft-react-postcard-minter/static/js/2.48af91d1.chunk.js",
+    "static/js/2.48af91d1.chunk.js.map": "/nft-react-postcard-minter/static/js/2.48af91d1.chunk.js.map",
     "index.html": "/nft-react-postcard-minter/index.html",
     "static/css/2.a75f5a2c.chunk.css.map": "/nft-react-postcard-minter/static/css/2.a75f5a2c.chunk.css.map",
     "static/css/main.418ef122.chunk.css.map": "/nft-react-postcard-minter/static/css/main.418ef122.chunk.css.map",
-    "static/js/2.856ffd8e.chunk.js.LICENSE.txt": "/nft-react-postcard-minter/static/js/2.856ffd8e.chunk.js.LICENSE.txt"
+    "static/js/2.48af91d1.chunk.js.LICENSE.txt": "/nft-react-postcard-minter/static/js/2.48af91d1.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.b8daa3aa.js",
     "static/css/2.a75f5a2c.chunk.css",
-    "static/js/2.856ffd8e.chunk.js",
+    "static/js/2.48af91d1.chunk.js",
     "static/css/main.418ef122.chunk.css",
-    "static/js/main.24d4e49a.chunk.js"
+    "static/js/main.2b498192.chunk.js"
   ]
 }
