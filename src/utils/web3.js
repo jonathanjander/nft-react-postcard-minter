@@ -12,6 +12,7 @@ export const getWallet = async ()=> {
 
             // Use web3 to get the user's accounts.
             const accounts = await requestAccounts(web3);
+            await requestNetwork();
             return {
                 web3: web3,
                 account: accounts[0]
@@ -52,6 +53,7 @@ export const getWallet = async ()=> {
         }
     }
 }
+// creates contract instance with web3
 export const getContract = async (web3, networkId)=> {
         try {
             // networkId 4 is the rinkeby network
@@ -79,12 +81,9 @@ export const getContract = async (web3, networkId)=> {
             };
         }
 }
+// requests network switch to rinkeby
 export const requestNetwork = async ()=> {
     try {
-        // window.ethereum.on('chainChanged', (_chainId) => window.location.reload());
-        // const rinkebyID = '0x4'
-        // if(rinkebyID)
-        // const networkId= await web3.eth.net.getId();
         const networkId= await window.ethereum.networkVersion;
         if(networkId!=4 && networkId!=5777)
         window.ethereum.request({
@@ -95,7 +94,7 @@ export const requestNetwork = async ()=> {
         console.error(error);
     }
 }
-// requests account
+// requests accounts
 export const requestAccounts = async ()=> {
     try{
         // Use web3 to get the user's accounts.

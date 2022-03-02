@@ -1,4 +1,4 @@
-//adapted from https://github.com/neha01/nft-demo/tree/master/scripts
+// adapted from https://github.com/neha01/nft-demo/tree/master/scripts
 
 require('dotenv').config();
 const axios = require('axios'); // promise based http client

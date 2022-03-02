@@ -312,7 +312,7 @@ class App extends Component {
                         await requestNetwork();
                     }
                     }>
-                        Connect Network
+                        Connect to Rinkeby
                     </Button>
                     {this.state.isNetworkDisabled && <Alert variant={"info"}> A request was sent to MetaMask. If the MetaMask notification window doesn't open automatically, please open the MetaMask extension manually.</Alert>}
                 </div>

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 //pragma solidity >=0.4.22 <0.9.0;
 pragma solidity ^0.8.0;
-
+// automatically created by truffle in order to deploy contracts
 contract Migrations {
   address public owner = msg.sender;
   uint public last_completed_migration;

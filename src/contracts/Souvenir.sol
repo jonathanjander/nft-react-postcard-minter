@@ -6,7 +6,8 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./ERC2981Royalty.sol";
 
-
+// Souvenir-NFT Contract
+// Created in the context of my bachelors thesis
 contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     using Strings for uint256;
     using Counters for Counters.Counter;
@@ -142,6 +143,7 @@ contract Souvenir is ERC721, Ownable, ERC2981Royalty{
     // value percentage (using 2 decimals - 10000 = 100, 0 = 0)
     // numberOfTokens limited to 20 at once
     // max copies of one nft is 100
+    // "onlyOwner" commented out for testing purposes
     function mint(string memory tokenHash, uint256 numberOfTokens, uint256 royaltyAmount)
     external
 //    onlyOwner

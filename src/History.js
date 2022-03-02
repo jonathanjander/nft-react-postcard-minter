@@ -6,7 +6,7 @@ import {getLatestERC721Tx} from "./utils/etherscan";
 /*
 History component
 it shows the last 30 transactions made via the Souvenir Smart Contract
-it doesn't work for the local blockchain
+it doesn't work for local blockchains
 it currently only works on the rinkeby testnet
  */
 class History extends Component {
