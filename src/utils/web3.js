@@ -1,6 +1,6 @@
 import SouvenirContract from "../abis/Souvenir.json";
 import Web3 from "web3";
-// tries to get the wallet and requests the user account from injected ethereum API
+//  instantiates wallet and requests the user account from injected ethereum API
 export const getWallet = async ()=> {
     if(window.ethereum) {
         try {
