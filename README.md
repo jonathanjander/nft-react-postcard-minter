@@ -96,8 +96,6 @@ You might have to wait a bit until you're able to view the NFT on OpenSea. That 
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
 * [Truffle Suite (Truffle, Ganache)](https://trufflesuite.com/)
 * [React.js](https://reactjs.org/)
 * [React Bootstrap](https://react-bootstrap.github.io/)
@@ -157,8 +155,6 @@ Jonathan Jander - Jonathan.Jander@Student.HTW-Berlin.de
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
 
 * [GitHub Pages](https://pages.github.com)
 * [Dapp University](https://www.dappuniversity.com/)
