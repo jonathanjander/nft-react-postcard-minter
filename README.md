@@ -25,20 +25,10 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
     </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
+    <li><a href="#set-up-for-testing">Set up for testing</a></li>
+    <li><a href="#testing-it">Testing it</a></li>
+    <li><a href="#installation">Installation</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
@@ -52,8 +42,8 @@
 [Souvenir-Minter-DApp](https://jonathanjander.github.io/nft-react-postcard-minter/)
 
 This is a bachelors thesis project. A DApp which allows you to configure and mint Souvenir-NFTs.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
+The thesis is about SIDS (Small Island Developing States) and how they might use NFTs as a possible source of income.
+For that, two protoypes were created. One prototype for the NFT collection and one prototype for an accompanying decentralised system to mint so-called Souvenir-NFTs. 
 
 <!-- GETTING STARTED -->
 ## Set up for testing
@@ -96,7 +86,7 @@ You can mint up to 20 token copies at a time.
 The royalty fees can go between 0% and 30%
 Add as many property fields as you like.
 
-After pressing the "mint" button, wait for metamask to ask for your digital signature. It takes some time until the transaction is confirmed.
+After pressing the "mint" button, wait for MetaMask to ask for your digital signature. It takes some time until the transaction is confirmed.
 
 Once confirmed, you should see a status message telling you that the transaction was successful. 
 
