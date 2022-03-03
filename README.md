@@ -86,10 +86,16 @@ This is a bachelors thesis project. A DApp which allows you to configure and min
 
 
 ## Testing it
+Fill out the form. Name, Description and Asset are required fields. 
+In order to use the OpenSea representation, use one of the following supported file formats for the Asset File:
+  gif, jpg, png, svg, mp4, mp3, WebM, wav, glb, ogg, gltf
+The file can't be bigger than 100MB.
 
-The feature that only the owner of the smart contract can mint NFTs was disabled for testing purposes.
+You can mint up to 20 token copies at a time.
+The royalty fees can go between 0% and 30%
+Add as many property fields as you like.
 
-If the steps were followed correctly you should be able to mint NFTs now.
+TO BE CONTINUED
 
 ### Built With
 
