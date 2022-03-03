@@ -44,7 +44,7 @@ export const getWallet = async ()=> {
             }
         }
         catch (error) {
-            alert("No global or local web3 instance injected",);
+            alert("No global or local web3 provider found. Please install MetaMask and follow the steps from the GitHub README to proceed.",);
             console.error(error);
             return {
                 web3: null,
