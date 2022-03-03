@@ -51,7 +51,7 @@
 
 [Souvenir-Minter-DApp](https://jonathanjander.github.io/nft-react-postcard-minter/)
 
-This is a bachelors thesis project. You can mint NFTs for the Souvenir collection
+This is a bachelors thesis project. A DApp which allows you to configure and mint Souvenir-NFTs.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -79,19 +79,17 @@ This is a bachelors thesis project. You can mint NFTs for the Souvenir collectio
 
    ![how-it-should-look](https://user-images.githubusercontent.com/63592190/156360738-7ca66bac-e8b5-49a9-b532-33a3d0b12c61.png)
 
+8. Only follow this step if you want to test the DApp locally aswell (not recommended because some features are missing locally)
+   * install [Ganache](https://trufflesuite.com/ganache/index.html)
+   * create a new workspace with the Quickstart function on ganache
+   * Add the local network to MetaMask (RPC-URL is HTTP://127.0.0.1:7545 and the Chain ID is 1337)
+
+
 ## Testing it
-To mint an NFT you need to complete the set up first.
 
-In Order to mint (create) Souvenir-NFTs, you need to get some Rinkeby ETH. 
-Use one of the following links or ask me to send some rinkeby ETH to you:
+The feature that only the owner of the smart contract can mint NFTs was disabled for testing purposes.
 
-Paste your Ethereum account address into the field. You can find your account address on MetaMask or if you are already connected to the souvenir-minter-DApp, you can find it in the top right corner. 
-* [rinkebyfaucet.com (only works once a day)](https://www.rinkebyfaucet.com/)
-* [faucets.chain.link/rinkeby (you need to connect your ethereum-account with metamask)](https://faucets.chain.link/rinkeby)
-
-The feature that only the owner of the smart contract can mint (create) NFTs was disabled for easier testing.
-
-If the steps were followed correctly, then you should be able to mint NFTs.
+If the steps were followed correctly you should be able to mint NFTs now.
 
 ### Built With
 
@@ -103,34 +101,9 @@ This section should list any major frameworks/libraries used to bootstrap your p
 * [Node.js](https://nodejs.org/en/)
 * [Chai.js](https://www.chaijs.com/)
 * [OpenZeppelin Smart Contract Library](https://github.com/OpenZeppelin/openzeppelin-contracts)
-* [erc2981 maybe](https://www.chaijs.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```
-  npm install npm@latest -g
-  ```
-* [MetaMask](https://metamask.io/)
-  ```
-  you need to have MetaMask or another Web3 Provider extension for your browser
-  (it was only tested with MetaMask)
-  ```
-* Rinkeby-Testnetwork
-  ```
-  you need Ether on the Rinkeby testnet in order to pay for the transactions.
-  some possible solutions for that are:
-    https://faucets.chain.link/rinkeby (recommended)
-    https://faucet.rinkeby.io/
-    https://rinkeby-faucet.com/
-  ```
 
 ### Installation
 
@@ -165,55 +138,17 @@ _Below is an example of how you can instruct your audience on installing and set
    REACT_APP_PUBLIC_KEY = "YOUR_ETH_ACCOUNT_PUBLIC_KEY"
    REACT_APP_PRIVATE_KEY = "YOUR_ETH_PRIVATE_KEY"
    ```
+4. To start the DApp locally
+   ```sh
+   npm run start 
+   ```
+   
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 <!-- CONTACT -->
 ## Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
+Jonathan Jander - Jonathan.Jander@Student.HTW-Berlin.de
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
@@ -223,14 +158,8 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 
 Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
 
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
 * [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
+* [Dapp University](https://www.dappuniversity.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -252,10 +181,3 @@ Use this space to list resources you find helpful and would like to give credit 
 [linkedin-url]: https://linkedin.com/in/othneildrew
 [product-screenshot]: images/screenshot.png
 
-
-#.env file
-pinata keys
-pinata endpoints
-mnemonic
-infura client url
-key of account
