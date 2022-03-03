@@ -89,13 +89,20 @@ This is a bachelors thesis project. A DApp which allows you to configure and min
 Fill out the form. Name, Description and Asset are required fields. 
 In order to use the OpenSea representation, use one of the following supported file formats for the Asset File:
   gif, jpg, png, svg, mp4, mp3, WebM, wav, glb, ogg, gltf
+  
 The file can't be bigger than 100MB.
 
 You can mint up to 20 token copies at a time.
 The royalty fees can go between 0% and 30%
 Add as many property fields as you like.
 
-TO BE CONTINUED
+After pressing the "mint" button, wait for metamask to ask for your digital signature. It takes some time until the transaction is confirmed.
+
+Once confirmed, you should see a status message telling you that the transaction was successful. 
+
+![statusmessage](https://user-images.githubusercontent.com/63592190/156620470-5e50e702-f366-42f7-8b04-8875819ea275.png)
+
+You might have to wait a bit until you're able to view the NFT on OpenSea. That is because of the IPFS network delay.
 
 ### Built With
 
@@ -112,8 +119,7 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 
 ### Installation
-
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+This is for if you want to try it out locally.
 
 1. Get your free API Keys at [Pinata (IPFS)](https://www.pinata.cloud/)
 2. Get your free API Keys at [Etherscan](https://etherscan.io/apis)
@@ -166,6 +172,9 @@ Use this space to list resources you find helpful and would like to give credit 
 
 * [GitHub Pages](https://pages.github.com)
 * [Dapp University](https://www.dappuniversity.com/)
+* [Dievardump](https://github.com/dievardump/EIP2981-implementation)
+
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
