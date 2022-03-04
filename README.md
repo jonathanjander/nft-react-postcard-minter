@@ -45,6 +45,8 @@ This is a bachelors thesis project. A DApp which allows you to configure and min
 The thesis is about SIDS (Small Island Developing States) and how they might use NFTs as a possible source of income.
 For that, two protoypes were created. One prototype for the NFT collection and one prototype for an accompanying decentralised system to mint so-called Souvenir-NFTs. 
 
+This repo is archived. Which means, it is read-only. If you want to try it out locally, please fork this repository.
+
 <!-- GETTING STARTED -->
 ## Set up for testing
 1. In order to test the DApp, you need to have a web3 provider like [MetaMask](https://metamask.io/download/). It was only tested with the MetaMask browser extension, so preferably use that. 
